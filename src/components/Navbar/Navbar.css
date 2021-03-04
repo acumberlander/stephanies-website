@@ -1,0 +1,15 @@
+.app-bar {
+	display: flex;
+}
+
+.toolbar {
+	display: flex;
+	justify-content: space-between;
+}
+
+.title {
+	display: flex;
+	/* flex-grow: 1; */
+	align-items: center;
+	text-decoration: none;
+}
