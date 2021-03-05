@@ -6,6 +6,8 @@ import Cart from './components/Cart/Cart';
 import Checkout from './components/CheckoutForm/Checkout/Checkout';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
+import Shop from './components/Shop/Shop';
+import Footer from './components/Footer/Footer';
 
 const App = () => {
 	const [products, setProducts] = useState([]);
@@ -100,7 +102,11 @@ const App = () => {
 							error={errorMessage}
 						/>
 					</Route>
+					<Route exact path="/shop">
+						<Shop />
+					</Route>
 				</Switch>
+				<Footer />
 			</div>
 		</Router>
 	);

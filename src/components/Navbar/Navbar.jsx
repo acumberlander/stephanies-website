@@ -1,75 +1,140 @@
-import React from 'react';
 import {
 	AppBar,
 	Toolbar,
-	IconButton,
-	Badge,
-	MenuItem,
-	Menu,
 	Typography,
+	makeStyles,
+	Button,
+	IconButton,
+	Drawer,
+	Link,
+	MenuItem,
 } from '@material-ui/core';
-import { ShoppingCart } from '@material-ui/icons';
-import { Link, useLocation } from 'react-router-dom';
-
-import logo from '../../assets/ecommerce-icon.png';
-
+import MenuIcon from '@material-ui/icons/Menu';
+import React, { useState, useEffect } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import useStyles from './navbarStyles';
 
-const Navbar = ({ totalItems }) => {
-	const classes = useStyles();
-	const location = useLocation();
+const headersData = [
+	{
+		label: 'Home',
+		href: '/',
+	},
+	{
+		label: 'Shop',
+		href: '/shop',
+	},
+	{
+		label: 'Log Out',
+		href: '/logout',
+	},
+];
+
+export default function Header() {
+	const { header, logo, menuButton, toolbar, drawerContainer } = useStyles();
+
+	const [state, setState] = useState({
+		mobileView: false,
+		drawerOpen: false,
+	});
+
+	const { mobileView, drawerOpen } = state;
+
+	useEffect(() => {
+		const setResponsiveness = () => {
+			return window.innerWidth < 900
+				? setState((prevState) => ({ ...prevState, mobileView: true }))
+				: setState((prevState) => ({ ...prevState, mobileView: false }));
+		};
+
+		setResponsiveness();
+
+		window.addEventListener('resize', () => setResponsiveness());
+	}, []);
+
+	const displayDesktop = () => {
+		return (
+			<Toolbar className={toolbar}>
+				{femmecubatorLogo}
+				<div>{getMenuButtons()}</div>
+			</Toolbar>
+		);
+	};
+
+	const displayMobile = () => {
+		const handleDrawerOpen = () =>
+			setState((prevState) => ({ ...prevState, drawerOpen: true }));
+		const handleDrawerClose = () =>
+			setState((prevState) => ({ ...prevState, drawerOpen: false }));
+
+		return (
+			<Toolbar className={toolbar}>
+				<div>{femmecubatorLogo}</div>
+				<IconButton
+					{...{
+						edge: 'start',
+						color: 'inherit',
+						'aria-label': 'menu',
+						'aria-haspopup': 'true',
+						onClick: handleDrawerOpen,
+					}}
+				>
+					<MenuIcon />
+				</IconButton>
+
+				<Drawer
+					{...{
+						anchor: 'right',
+						open: drawerOpen,
+						onClose: handleDrawerClose,
+					}}
+				>
+					<div className={drawerContainer}>{getDrawerChoices()}</div>
+				</Drawer>
+			</Toolbar>
+		);
+	};
+
+	const getDrawerChoices = () => {
+		return headersData.map(({ label, href }) => {
+			return (
+				<Link
+					component={RouterLink}
+					to={href}
+					color="inherit"
+					style={{ textDecoration: 'none' }}
+					key={label}
+				>
+					<MenuItem>{label}</MenuItem>
+				</Link>
+			);
+		});
+	};
+
+	const femmecubatorLogo = (
+		<Typography variant="h6" component="h1" className={logo}>
+			Sexes
+		</Typography>
+	);
+
+	const getMenuButtons = () => {
+		return headersData.map(({ label, href }) => {
+			return (
+				<Button
+					key={label}
+					color="inherit"
+					to={href}
+					component={RouterLink}
+					className={menuButton}
+				>
+					{label}
+				</Button>
+			);
+		});
+	};
 
 	return (
-		<>
-			<AppBar position="fixed" className={classes.appBar} color="inherit">
-				<Toolbar>
-					<>
-						<Typography
-							component={Link}
-							to="/"
-							variant="h6"
-							className={classes.title}
-							color="inherit"
-						>
-							<img
-								src={logo}
-								alt="Sexes"
-								height="25px"
-								className={classes.image}
-							/>
-							Sexes
-						</Typography>
-						{/* <div className={classes.grow} /> */}
-					</>
-
-					<span style={{ display: 'flex' }}>
-						<Typography style={{ margin: '0 10px' }}>Home</Typography>
-						<Typography style={{ margin: '0 10px' }}>Shop</Typography>
-						<Typography style={{ margin: '0 10px' }}>About</Typography>
-						<Typography style={{ margin: '0 10px' }}>Contact</Typography>
-					</span>
-
-					<span>
-						<Typography>Log In</Typography>
-						{location.pathname === '/' && (
-							<div className={classes.button}>
-								<IconButton
-									component={Link}
-									to="/cart"
-									aria-label="Show cart items"
-									color="inherit"
-								>
-									<Badge badgeContent={totalItems} color="secondary">
-										<ShoppingCart />
-									</Badge>
-								</IconButton>
-							</div>
-						)}
-					</span>
-				</Toolbar>
-			</AppBar>
-		</>
+		<div className={header}>
+			<AppBar>{mobileView ? displayMobile() : displayDesktop()}</AppBar>
+		</div>
 	);
-};
-
-export default Navbar;
+}
