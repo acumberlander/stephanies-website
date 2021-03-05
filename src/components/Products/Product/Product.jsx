@@ -19,15 +19,17 @@ const Product = ({ product, onAddToCart }) => {
 				<img className="product-image" alt="" src={steph} />
 				<img className="product-image-overlay" alt="" src={steph2} />
 			</div>
-			<Typography className="product-name">
-				<h2>Text</h2>
-			</Typography>
-			<Typography className="hyphen">
-				<hr className="line-break" />
-			</Typography>
-			<Typography className="price">
-				<h2>$100.00</h2>
-			</Typography>
+			<div className="card-content">
+				<Typography variant="h6" className="product-name">
+					Text
+				</Typography>
+				<Typography className="hyphen">
+					<hr className="line-break" />
+				</Typography>
+				<Typography variant="h6" className="price">
+					$100.00
+				</Typography>
+			</div>
 		</div>
 	);
 };

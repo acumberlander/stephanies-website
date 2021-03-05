@@ -2,7 +2,6 @@ import React from 'react';
 import Carousel from '../Carousel/Carousel';
 import { Link } from 'react-router-dom';
 import steph from '../../assets/steph-1.jpg';
-import Shop from '../Shop/Shop';
 
 import './Home.scss';
 

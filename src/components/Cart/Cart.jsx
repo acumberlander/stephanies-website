@@ -13,69 +13,94 @@ const Cart = ({
 }) => {
 	const classes = useStyles();
 
+	const testItems = [1, 2];
+
 	const EmptyCart = () => (
-		<Typography variant="subtitle1">
-			You have no items in your shopping cart,{' '}
-			<Link to="/" className={classes.link}>
-				start adding some
-			</Link>
-			!
-		</Typography>
+		<div className={classes.emptyCartContainer}>
+			<Typography variant="subtitle1">
+				You have no items in your shopping cart,{' '}
+				<Link to="/" className={classes.link}>
+					start adding some
+				</Link>
+				!
+			</Typography>
+		</div>
 	);
 
 	const FilledCart = () => (
-		<>
-			<Grid container spacing={3}>
-				{cart.line_items.map((item) => (
-					<Grid item xs={12} sm={4} key={item.id}>
+		<div className={classes.cartItemsContainer}>
+			<div className={classes.toolbar} />
+			<Typography className={classes.title} variant="h6">
+				My Cart
+			</Typography>
+			<hr />
+			<div>
+				{testItems.map((item) => (
+					<div key={item.id}>
 						<CartItem
 							item={item}
 							onUpdateCartQty={handleUpdateCartQty}
 							onRemoveFromCart={handleRemoveFromCart}
 						/>
-					</Grid>
+					</div>
 				))}
-			</Grid>
-			<div className={classes.cardDetails}>
-				<Typography variant="h4">
-					Subtotal: {cart.subtotal.formatted_with_symbol}
-				</Typography>
-				<div>
-					<Button
-						className={classes.emptyButton}
-						size="large"
-						type="button"
-						variant="contained"
-						color="secondary"
-						onClick={handleEmptyCart}
-					>
-						Empty Cart
-					</Button>
-					<Button
-						component={Link}
-						to="/checkout"
-						className={classes.checkoutButton}
-						size="large"
-						type="button"
-						variant="contained"
-						color="primary"
-					>
-						Checkout
-					</Button>
-				</div>
 			</div>
-		</>
+			<div className={classes.emptyButtonContainer}>
+				<Button
+					className={classes.emptyButton}
+					size="large"
+					type="button"
+					variant="contained"
+					color="secondary"
+					onClick={handleEmptyCart}
+				>
+					Empty Cart
+				</Button>
+			</div>
+		</div>
 	);
 
-	if (!cart.line_items) return 'Loading...';
+	const OrderSummary = () => (
+		<div className={classes.orderSummaryContainer}>
+			<div className={classes.toolbar} />
+			<Typography className={classes.title} variant="h6">
+				Order Summary
+			</Typography>
+			<hr />
+			<div className={classes.subtotalContainer}>
+				<Typography>Subtotal</Typography>
+				<Typography>$500.00</Typography>
+			</div>
+			<Typography>Estimate Shipping</Typography>
+			<hr />
+			<div className={classes.totalContainer}>
+				<Typography>Total</Typography>
+				<Typography>$500.00</Typography>
+			</div>
+			<div className={classes.checkoutButtonContainer}>
+				<Button
+					component={Link}
+					to="/checkout"
+					className={classes.checkoutButton}
+					size="large"
+					type="button"
+					variant="contained"
+					color="primary"
+				>
+					Checkout
+				</Button>
+			</div>
+		</div>
+	);
+
+	// if (!cart.line_items) return 'Loading...';
 
 	return (
-		<Container>
-			<div className={classes.toolbar} />
-			<Typography className={classes.title} variant="h3" gutterBottom>
-				Your Shopping Cart
-			</Typography>
-			{!cart.line_items.length ? <EmptyCart /> : <FilledCart />}
+		<Container className={classes.cartContainer}>
+			{/* {!cart.line_items.length ? <EmptyCart /> : <FilledCart />} */}
+			{/* <EmptyCart /> */}
+			<FilledCart />
+			<OrderSummary />
 		</Container>
 	);
 };
