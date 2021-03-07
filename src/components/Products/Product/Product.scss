@@ -3,13 +3,20 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	text-decoration: none;
+	color: black;
 
 	.product-image {
-		width: 350px;
-		height: 500px;
-		margin: 20px;
+		max-width: 298px;
+		max-height: 450px;
 		position: absolute;
 		transition: opacity 0.25s;
+		cursor: pointer;
+	}
+
+	.card-content {
+		margin-top: 30px;
+		text-align: center;
 	}
 
 	.product-image:hover {
@@ -33,14 +40,14 @@
 	}
 
 	.product-image-overlay {
-		width: 350px;
-		height: 500px;
-		margin: 20px;
+		max-width: 298px;
+		max-height: 450px;
+		cursor: pointer;
 	}
 
 	.product-image-overlay:hover {
-		width: 350px;
-		height: 500px;
+		max-width: 298px;
+		max-height: 450px;
 		margin: 20px;
 	}
 

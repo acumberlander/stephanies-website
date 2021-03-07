@@ -2,11 +2,34 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
 	toolbar: theme.mixins.toolbar,
-	title: {
-		marginTop: '5%',
+	cartContainer: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'flex-start',
+		marginBottom: 475,
+		[theme.breakpoints.down('md')]: {
+			flexDirection: 'column',
+			justifyContent: 'center',
+		},
+	},
+	emptyCartContainer: {
+		marginTop: 200,
+	},
+	cartItemsContainer: {
+		width: '75%',
+		marginRight: 50,
+		[theme.breakpoints.down('md')]: {
+			width: '100%',
+		},
+	},
+	orderSummaryContainer: {
+		width: '25%',
+		[theme.breakpoints.down('md')]: {
+			width: '100%',
+		},
 	},
 	emptyButton: {
-		minWidth: '150px',
+		minWidth: '25%',
 		[theme.breakpoints.down('xs')]: {
 			marginBottom: '5px',
 		},
@@ -15,15 +38,33 @@ export default makeStyles((theme) => ({
 		},
 	},
 	checkoutButton: {
-		minWidth: '150px',
+		width: '100%',
+		[theme.breakpoints.down('md')]: {
+			width: '25%',
+		},
 	},
 	link: {
 		textDecoration: 'none',
 	},
-	cardDetails: {
+	emptyButtonContainer: {
 		display: 'flex',
 		marginTop: '10%',
 		width: '100%',
+		justifyContent: 'center',
+	},
+	checkoutButtonContainer: {
+		display: 'flex',
+		marginTop: '10%',
+		width: '100%',
+		justifyContent: 'center',
+	},
+	subtotalContainer: {
+		display: 'flex',
 		justifyContent: 'space-between',
+	},
+	totalContainer: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		marginBottom: 20,
 	},
 }));
