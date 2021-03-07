@@ -1,30 +1,44 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useStyles } from './productDetailsStyles';
+import { commerce } from '../../../../lib/commerce';
 import {
 	Container,
-	Grid,
 	Select,
 	Typography,
 	MenuItem,
 	Input,
 	Button,
-	Accordion,
-	AccordionSummary,
-	AccordionDetails,
+	CircularProgress,
+	Grow,
+	Fade,
 } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import hoodie from '../../../../assets/sexes-hoodie.jpg';
 import PinterestIcon from '@material-ui/icons/Pinterest';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
+import productModel from '../../../Models/Product';
+import ProductDetailsDropdowns from '../../../ProductDetailsDropdowns/ProductDetailsDropdowns';
 
-const ProductDetails = () => {
+const ProductDetails = ({ addToCart }) => {
 	const [age, setAge] = useState('');
+	const [product, setProduct] = useState(productModel);
+	const [displayedProduct, setDisplayedProduct] = useState('');
 	const classes = useStyles();
 
-	useEffect(() => {});
+	let params = useParams();
 
-	const productImages = [1, 2];
+	const fetchProductById = async (id) => {
+		const data = await commerce.products.retrieve(id);
+
+		console.log(data);
+
+		setProduct(data);
+		setDisplayedProduct(data.assets[0].url);
+	};
+
+	useEffect(() => {
+		fetchProductById(params.id);
+	}, []);
 
 	const handleChange = (event) => {
 		setAge(event.target.value);
@@ -38,11 +52,32 @@ const ProductDetails = () => {
 					<Typography>Prev | Next</Typography>
 				</span> */}
 				<div className={classes.productAndDetails}>
+					{/* Left Section */}
 					<div className={classes.leftSection}>
-						<img className={classes.productImage} src={hoodie} alt="hoodie" />
+						<div className={classes.displayContainer}>
+							{!displayedProduct ? (
+								<CircularProgress size={80} />
+							) : (
+								<Fade
+									in={displayedProduct !== null}
+									style={{ transformOrigin: '0 0 0' }}
+									{...(displayedProduct !== null ? { timeout: 1000 } : {})}
+								>
+									<img
+										className={classes.productImage}
+										src={displayedProduct}
+										alt="hoodie"
+									/>
+								</Fade>
+							)}
+						</div>
 						<div style={{ display: 'flex', margin: '10px 0' }}>
-							{productImages.map((option) => (
-								<div>
+							{product.assets.map((imageObj) => (
+								<div
+									onClick={(e) => setDisplayedProduct(e.target.src)}
+									className={classes.thumbnailContainer}
+									key={imageObj.id}
+								>
 									<img
 										style={{
 											height: '50px',
@@ -50,24 +85,28 @@ const ProductDetails = () => {
 											margin: '10px',
 											cursor: 'pointer',
 										}}
-										src={hoodie}
+										src={imageObj.url}
 										alt="hoodie"
 									/>
 								</div>
 							))}
 						</div>
 						<Typography>
+							{product.name}
 							Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus
 							libero aliquid ab necessitatibus quo mollitia fugiat, tempora eos,
 							assumenda consectetur, excepturi voluptas. Nulla exercitationem
 							incidunt earum accusantium magnam atque harum.
 						</Typography>
 					</div>
+					{/* Right Section */}
 					<div className={classes.rightSection}>
 						<Typography className={classes.productName} variant="h5">
-							Product
+							{product.name}
 						</Typography>
-						<Typography className={classes.priceText}>$109.00</Typography>
+						<Typography className={classes.priceText}>
+							{product.price.formatted_with_symbol}
+						</Typography>
 						<Typography>Color: Default</Typography>
 						<Typography>Size</Typography>
 						<Select
@@ -87,64 +126,12 @@ const ProductDetails = () => {
 							variant="contained"
 							className={classes.button}
 							color="primary"
+							onClick={() => addToCart(product.id, 1)}
 						>
 							Add To Cart
 						</Button>
 						<div className={classes.accordionContainer}>
-							<Accordion className={classes.accordion}>
-								<AccordionSummary
-									expandIcon={<ExpandMoreIcon />}
-									aria-controls="panel1a-content"
-									id="panel1a-header"
-								>
-									<Typography className={classes.heading}>
-										Product Info
-									</Typography>
-								</AccordionSummary>
-								<AccordionDetails>
-									<Typography>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-										Suspendisse malesuada lacus ex, sit amet blandit leo
-										lobortis eget.
-									</Typography>
-								</AccordionDetails>
-							</Accordion>
-							<Accordion className={classes.accordion}>
-								<AccordionSummary
-									expandIcon={<ExpandMoreIcon />}
-									aria-controls="panel1a-content"
-									id="panel1a-header"
-								>
-									<Typography className={classes.heading}>
-										Return & Refund Policy
-									</Typography>
-								</AccordionSummary>
-								<AccordionDetails>
-									<Typography>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-										Suspendisse malesuada lacus ex, sit amet blandit leo
-										lobortis eget.
-									</Typography>
-								</AccordionDetails>
-							</Accordion>
-							<Accordion className={classes.accordion}>
-								<AccordionSummary
-									expandIcon={<ExpandMoreIcon />}
-									aria-controls="panel1a-content"
-									id="panel1a-header"
-								>
-									<Typography className={classes.heading}>
-										Shipping Info
-									</Typography>
-								</AccordionSummary>
-								<AccordionDetails>
-									<Typography>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-										Suspendisse malesuada lacus ex, sit amet blandit leo
-										lobortis eget.
-									</Typography>
-								</AccordionDetails>
-							</Accordion>
+							<ProductDetailsDropdowns />
 						</div>
 						<div className={classes.socialMediaGroup}>
 							<PinterestIcon className={classes.socialIcon} />

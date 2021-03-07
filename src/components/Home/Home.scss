@@ -1,6 +1,3 @@
-.container {
-}
-
 .carousel-container {
 	display: flex;
 	flex-direction: column;
@@ -14,6 +11,26 @@
 	position: absolute;
 	z-index: 100;
 	color: white;
+	font-family: 'Philosopher', sans-serif;
+
+	#carousel-subtitle {
+		font-size: 1.5rem;
+	}
+
+	.carousel-header {
+		font-size: 15rem;
+		font-weight: normal;
+		margin: 0;
+	}
+
+	.link-container {
+		display: flex;
+		justify-content: center;
+	}
+
+	.shop-link {
+		font-size: 1.5rem;
+	}
 }
 
 .options {
@@ -31,6 +48,7 @@
 
 .shop-link {
 	color: white;
+	width: auto;
 }
 
 .option-image-container {
@@ -47,4 +65,28 @@
 
 .content-wrapper {
 	padding: 0 200px;
+}
+
+@media only screen and (max-width: 800px) {
+	.carousel-text {
+		text-align: center;
+		position: absolute;
+		z-index: 100;
+		color: white;
+		font-family: 'Philosopher', sans-serif;
+
+		#carousel-subtitle {
+			font-size: 1rem;
+		}
+
+		.carousel-header {
+			font-size: 10rem;
+			font-weight: normal;
+			margin: 0;
+		}
+
+		.shop-link {
+			font-size: 1rem;
+		}
+	}
 }

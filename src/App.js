@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { commerce } from './lib/commerce';
-import Products from './components/Products/Products';
 import MyNavbar from './components/MyNavbar/MyNavbar';
 import Cart from './components/Cart/Cart';
 import Checkout from './components/CheckoutForm/Checkout/Checkout';
@@ -19,11 +18,14 @@ const App = () => {
 	const fetchProducts = async () => {
 		const { data } = await commerce.products.list();
 
+		console.log(data);
+
 		setProducts(data);
 	};
 
 	const fetchCart = async () => {
 		setCart(await commerce.cart.retrieve());
+		console.log(cart);
 	};
 
 	const handleAddToCart = async (productId, quantity) => {
@@ -104,10 +106,10 @@ const App = () => {
 						/>
 					</Route>
 					<Route exact path="/shop">
-						<Shop />
+						<Shop products={products} />
 					</Route>
-					<Route exact path="/product/1">
-						<ProductDetails />
+					<Route exact path="/product/:id">
+						<ProductDetails addToCart={handleAddToCart} />
 					</Route>
 				</Switch>
 				<Footer />

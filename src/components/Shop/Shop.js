@@ -1,31 +1,3 @@
-// import React from 'react';
-// import { Container, Grow, Grid, Card, Typography } from '@material-ui/core';
-// import Product from '../Products/Product/Product.jsx';
-// import './Shop.scss';
-// import { makeStyles } from '@material-ui/core';
-
-// const useStyles = makeStyles((theme) => ({
-// 	header: {
-// 		textAlign: 'center',
-// 		margin: '70px 0',
-// 	},
-// }));
-
-// const Shop = () => {
-// 	const { header } = useStyles();
-
-// 	return (
-// 		<Container>
-// 			<Typography className={header}>
-// 				<h1>All Products</h1>
-// 			</Typography>
-// 			<Product />
-// 		</Container>
-// 	);
-// };
-
-// export default Shop;
-
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -37,9 +9,9 @@ import Container from '@material-ui/core/Container';
 import { useStyles } from './shopStyles.js';
 import Product from '../Products/Product/Product.jsx';
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+// const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-export default function Shop() {
+export default function Shop({ products }) {
 	const classes = useStyles();
 
 	return (
@@ -60,16 +32,16 @@ export default function Shop() {
 			{/* End header unit */}
 			<Container className={classes.cardGrid} maxWidth="xl">
 				<Grid container spacing={6}>
-					{cards.map((card) => (
+					{products.map((product) => (
 						<Grid
 							className={classes.gridItem}
 							item
-							key={card}
+							key={product.id}
 							xs={12}
 							sm={6}
 							md={4}
 						>
-							<Product className={classes.card} />
+							<Product product={product} className={classes.card} />
 						</Grid>
 					))}
 				</Grid>

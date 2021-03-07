@@ -13,7 +13,9 @@ const Cart = ({
 }) => {
 	const classes = useStyles();
 
-	const testItems = [1, 2];
+	// const testItems = [1, 2];
+
+	// let uniqueItems = [...new Set(cart)];
 
 	const EmptyCart = () => (
 		<div className={classes.emptyCartContainer}>
@@ -35,14 +37,13 @@ const Cart = ({
 			</Typography>
 			<hr />
 			<div>
-				{testItems.map((item) => (
-					<div key={item.id}>
-						<CartItem
-							item={item}
-							onUpdateCartQty={handleUpdateCartQty}
-							onRemoveFromCart={handleRemoveFromCart}
-						/>
-					</div>
+				{cart.line_items.map((item) => (
+					<CartItem
+						key={item.id}
+						item={item}
+						onUpdateCartQty={handleUpdateCartQty}
+						onRemoveFromCart={handleRemoveFromCart}
+					/>
 				))}
 			</div>
 			<div className={classes.emptyButtonContainer}>
@@ -93,14 +94,18 @@ const Cart = ({
 		</div>
 	);
 
-	// if (!cart.line_items) return 'Loading...';
+	if (!cart.line_items) return 'Loading...';
 
 	return (
 		<Container className={classes.cartContainer}>
-			{/* {!cart.line_items.length ? <EmptyCart /> : <FilledCart />} */}
-			{/* <EmptyCart /> */}
-			<FilledCart />
-			<OrderSummary />
+			{!cart.line_items.length ? (
+				<EmptyCart />
+			) : (
+				<>
+					<FilledCart />
+					<OrderSummary />
+				</>
+			)}
 		</Container>
 	);
 };

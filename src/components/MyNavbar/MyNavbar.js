@@ -12,7 +12,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingCart } from '@material-ui/icons';
 import useStyles from './navbarStyles';
 
-const MyNavbar = () => {
+const MyNavbar = ({ totalItems }) => {
 	const { header, logo, logoLink, menuButton, toolbar, cartIcon } = useStyles();
 
 	const [mobileView, setMobileView] = useState(false);
@@ -75,7 +75,7 @@ const MyNavbar = () => {
 								aria-label="Show cart items"
 								color="inherit"
 							>
-								<Badge badgeContent={1} color="secondary">
+								<Badge badgeContent={totalItems} color="secondary">
 									<ShoppingCart className={cartIcon} />
 								</Badge>
 							</IconButton>

@@ -23,9 +23,21 @@ export const useStyles = makeStyles((theme) => ({
 	leftSection: {
 		maxWidth: '550px',
 	},
+	displayContainer: {
+		maxWidth: '450px',
+		height: '600px',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 	productImage: {
 		maxWidth: '450px',
 		height: '600px',
+	},
+	thumbnailContainer: {
+		'&:hover': {
+			border: '1px solid lightblue',
+		},
 	},
 	rightSection: {
 		display: 'flex',
