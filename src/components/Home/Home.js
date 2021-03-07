@@ -2,7 +2,6 @@ import React from 'react';
 import Carousel from '../Carousel/Carousel';
 import { Link } from 'react-router-dom';
 import steph from '../../assets/steph-1.jpg';
-import Shop from '../Shop/Shop';
 
 import './Home.scss';
 
@@ -11,11 +10,13 @@ const Home = () => {
 		<div className="container">
 			<div className="carousel-container">
 				<div className="carousel-text">
-					<h3>Brand by Stephanie Wilburn</h3>
-					<h1>SEXES</h1>
-					<Link className="shop-link" to={'/shop'}>
-						<h3>Shop Now</h3>
-					</Link>
+					<h3 id="carousel-subtitle">Brand by Stephanie Wilburn</h3>
+					<h1 className="carousel-header">SEXES</h1>
+					<div className="link-container">
+						<Link className="shop-link" to={'/shop'}>
+							<h3>Shop Now</h3>
+						</Link>
+					</div>
 				</div>
 				<Carousel />
 			</div>

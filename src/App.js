@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { commerce } from './lib/commerce';
-import Products from './components/Products/Products';
-import Navbar from './components/Navbar/Navbar';
+import MyNavbar from './components/MyNavbar/MyNavbar';
 import Cart from './components/Cart/Cart';
 import Checkout from './components/CheckoutForm/Checkout/Checkout';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Shop from './components/Shop/Shop';
 import Footer from './components/Footer/Footer';
+import ProductDetails from './components/Products/Product/ProductDetails/ProductDetails';
 
 const App = () => {
 	const [products, setProducts] = useState([]);
@@ -18,11 +18,14 @@ const App = () => {
 	const fetchProducts = async () => {
 		const { data } = await commerce.products.list();
 
+		console.log(data);
+
 		setProducts(data);
 	};
 
 	const fetchCart = async () => {
 		setCart(await commerce.cart.retrieve());
+		console.log(cart);
 	};
 
 	const handleAddToCart = async (productId, quantity) => {
@@ -79,7 +82,7 @@ const App = () => {
 	return (
 		<Router>
 			<div>
-				<Navbar totalItems={cart.total_items} />
+				<MyNavbar totalItems={cart.total_items} />
 				<Switch>
 					<Route exact path="/">
 						<Home />
@@ -103,7 +106,10 @@ const App = () => {
 						/>
 					</Route>
 					<Route exact path="/shop">
-						<Shop />
+						<Shop products={products} />
+					</Route>
+					<Route exact path="/product/:id">
+						<ProductDetails addToCart={handleAddToCart} />
 					</Route>
 				</Switch>
 				<Footer />

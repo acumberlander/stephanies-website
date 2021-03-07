@@ -16,12 +16,19 @@ export default makeStyles(() => ({
 		fontWeight: 600,
 		color: '#FFFEFE',
 		textAlign: 'left',
+		cursor: 'pointer',
+	},
+	logoLink: {
+		textDecoration: 'none',
+	},
+	cartIcon: {
+		color: 'white',
 	},
 	menuButton: {
 		fontFamily: 'Open Sans, sans-serif',
 		fontWeight: 700,
 		size: '18px',
-		marginLeft: '38px',
+		marginLeft: '20px',
 	},
 	toolbar: {
 		display: 'flex',
