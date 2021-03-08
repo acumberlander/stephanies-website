@@ -12,8 +12,9 @@ export default makeStyles(() => ({
 		},
 	},
 	logo: {
-		fontFamily: 'Work Sans, sans-serif',
-		fontWeight: 600,
+		fontFamily: 'Philosopher, sans-serif',
+		fontWeight: 'regular',
+		fontSize: 32,
 		color: '#FFFEFE',
 		textAlign: 'left',
 		cursor: 'pointer',
@@ -25,7 +26,7 @@ export default makeStyles(() => ({
 		color: 'white',
 	},
 	menuButton: {
-		fontFamily: 'Open Sans, sans-serif',
+		fontFamily: 'Philosopher, sans-serif',
 		fontWeight: 700,
 		size: '18px',
 		marginLeft: '20px',

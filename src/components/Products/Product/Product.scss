@@ -17,6 +17,14 @@
 	.card-content {
 		margin-top: 30px;
 		text-align: center;
+
+		.product-name {
+			font-family: 'Philosopher, sans-serif';
+		}
+
+		.price {
+			font-family: 'Philosopher, sans-serif';
+		}
 	}
 
 	.product-image:hover {

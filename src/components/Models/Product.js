@@ -1,6 +1,6 @@
 const product = {
 	active: true,
-	assets: [],
+	assets: ['', ''],
 	categories: [],
 	checkout_url: { checkout: '', display: '' },
 	collects: {

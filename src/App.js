@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { commerce } from './lib/commerce';
+import commerce from './lib/commerce';
+import { useDispatch } from 'react-redux';
 import MyNavbar from './components/MyNavbar/MyNavbar';
 import Cart from './components/Cart/Cart';
 import Checkout from './components/CheckoutForm/Checkout/Checkout';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { fetchProducts } from './actions/products';
 import Home from './components/Home/Home';
 import Shop from './components/Shop/Shop';
 import Footer from './components/Footer/Footer';
@@ -14,14 +16,13 @@ const App = () => {
 	const [cart, setCart] = useState({});
 	const [order, setOrder] = useState({});
 	const [errorMessage, setErrorMessage] = useState('');
+	const dispatch = useDispatch();
 
-	const fetchProducts = async () => {
-		const { data } = await commerce.products.list();
+	// const fetchProducts = async () => {
+	// 	const { data } = await commerce.products.list();
 
-		console.log(data);
-
-		setProducts(data);
-	};
+	// 	setProducts(data);
+	// };
 
 	const fetchCart = async () => {
 		setCart(await commerce.cart.retrieve());
@@ -30,7 +31,7 @@ const App = () => {
 
 	const handleAddToCart = async (productId, quantity) => {
 		const { cart } = await commerce.cart.add(productId, quantity);
-
+		console.log(cart);
 		setCart(cart);
 	};
 
@@ -75,9 +76,10 @@ const App = () => {
 	};
 
 	useEffect(() => {
-		fetchProducts();
-		fetchCart();
-	}, []);
+		dispatch(fetchProducts());
+		// fetchProducts();
+		// fetchCart();
+	}, [dispatch]);
 
 	return (
 		<Router>

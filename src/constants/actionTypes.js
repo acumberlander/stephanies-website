@@ -1,4 +1,5 @@
 export const FETCH_ALL_PRODUCTS = 'FETCH_ALL_PRODUCTS';
+export const FETCH_PRODUCT_BY_ID = 'FETCH_PRODUCT_BY_ID';
 export const FETCH_CART = 'FETCH_ALL';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';

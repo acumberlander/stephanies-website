@@ -19,7 +19,7 @@ export const handleAddToCart = (productId, quantity) => async (dispatch) => {
 	try {
 		const { cart } = await commerce.cart.add(productId, quantity);
 
-		dispatch({ type: ADD_TO_CART, payload: cart });
+		dispatch({ type: ADD_TO_CART, payload: cart, id: productId });
 	} catch (error) {
 		console.log(error);
 	}
@@ -31,7 +31,7 @@ export const handleUpdateCartQty = (productId, quantity) => async (
 	try {
 		const { cart } = await commerce.cart.update(productId, { quantity });
 
-		dispatch({ type: UPDATE_QUANTITY, payload: cart });
+		dispatch({ type: UPDATE_QUANTITY, payload: cart, id: productId });
 	} catch (error) {
 		console.log(error);
 	}
@@ -41,7 +41,7 @@ export const handleRemoveFromCart = (productId) => async (dispatch) => {
 	try {
 		const { cart } = await commerce.cart.remove(productId);
 
-		dispatch({ type: REMOVE_FROM_CART, payload: cart });
+		dispatch({ type: REMOVE_FROM_CART, payload: cart, id: productId });
 	} catch (error) {
 		console.log(error);
 	}

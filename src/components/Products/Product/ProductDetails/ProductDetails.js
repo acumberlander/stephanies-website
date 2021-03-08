@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useStyles } from './productDetailsStyles';
-import { commerce } from '../../../../lib/commerce';
+import commerce from '../../../../lib/commerce';
 import {
 	Container,
 	Select,
@@ -13,6 +13,8 @@ import {
 	Grow,
 	Fade,
 } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+// import { fetchProductById } from '../../../../actions/products';
 import PinterestIcon from '@material-ui/icons/Pinterest';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
@@ -22,10 +24,19 @@ import ProductDetailsDropdowns from '../../../ProductDetailsDropdowns/ProductDet
 const ProductDetails = ({ addToCart }) => {
 	const [age, setAge] = useState('');
 	const [product, setProduct] = useState(productModel);
+	// const product = useSelector((state) => (state.product = productModel));
 	const [displayedProduct, setDisplayedProduct] = useState('');
+	// const dispatch = useDispatch();
 	const classes = useStyles();
 
 	let params = useParams();
+
+	// const initializeProduct = async () => {
+	// 	let data = await fetchProductById(params.id);
+
+	// 	setSelectedProduct(data);
+	// 	setDisplayedProduct(product.assets[0].url);
+	// };
 
 	const fetchProductById = async (id) => {
 		const data = await commerce.products.retrieve(id);
@@ -37,8 +48,10 @@ const ProductDetails = ({ addToCart }) => {
 	};
 
 	useEffect(() => {
+		// dispatch(fetchProductById(params.id));
+		// initializeProduct();
 		fetchProductById(params.id);
-	}, []);
+	}, [params]);
 
 	const handleChange = (event) => {
 		setAge(event.target.value);
@@ -74,9 +87,9 @@ const ProductDetails = ({ addToCart }) => {
 						<div style={{ display: 'flex', margin: '10px 0' }}>
 							{product.assets.map((imageObj) => (
 								<div
+									key={imageObj.id}
 									onClick={(e) => setDisplayedProduct(e.target.src)}
 									className={classes.thumbnailContainer}
-									key={imageObj.id}
 								>
 									<img
 										style={{

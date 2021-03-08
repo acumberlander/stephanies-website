@@ -1,18 +1,15 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import CameraIcon from '@material-ui/icons/PhotoCamera';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+import { Container, Typography, Fade } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import { useStyles } from './shopStyles.js';
 import Product from '../Products/Product/Product.jsx';
 
 // const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-export default function Shop({ products }) {
+export default function Shop() {
 	const classes = useStyles();
+	const products = useSelector((state) => state.products);
 
 	return (
 		<>
@@ -23,6 +20,7 @@ export default function Shop({ products }) {
 						variant="h2"
 						align="center"
 						color="textPrimary"
+						className={classes.header}
 						gutterBottom
 					>
 						All Products
@@ -31,18 +29,18 @@ export default function Shop({ products }) {
 			</div>
 			{/* End header unit */}
 			<Container className={classes.cardGrid} maxWidth="xl">
-				<Grid container spacing={6}>
+				<Grid container spacing={3}>
 					{products.map((product) => (
-						<Grid
-							className={classes.gridItem}
-							item
+						<Fade
 							key={product.id}
-							xs={12}
-							sm={6}
-							md={4}
+							in={product !== null}
+							style={{ transformOrigin: '0 0 0' }}
+							{...(product !== null ? { timeout: 1500 } : {})}
 						>
-							<Product product={product} className={classes.card} />
-						</Grid>
+							<Grid className={classes.gridItem} item xs={12} sm={6} md={4}>
+								<Product product={product} className={classes.card} />
+							</Grid>
+						</Fade>
 					))}
 				</Grid>
 			</Container>
