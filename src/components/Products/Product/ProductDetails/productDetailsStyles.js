@@ -53,6 +53,28 @@ export const useStyles = makeStyles((theme) => ({
 	button: {
 		backgroundColor: theme.palette.primary,
 	},
+	quantityHeader: {
+		marginTop: 20,
+	},
+	sizeHeader: {
+		marginTop: 20,
+	},
+	colorHeader: {
+		marginTop: 20,
+	},
+	priceHeader: {
+		marginTop: 20,
+	},
+	quantityContainer: {
+		display: 'flex',
+		justifyContent: 'space-around',
+		alignItems: 'center',
+		border: '1px solid black',
+	},
+	quantityButton: {
+		maxWidth: 30,
+		maxHeight: 30,
+	},
 	accordion: {
 		boxShadow: 'none',
 		margin: '0 !important',

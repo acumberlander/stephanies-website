@@ -7,14 +7,15 @@ import {
 	Badge,
 	IconButton,
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import MobileView from './Views/MobileView';
 import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingCart } from '@material-ui/icons';
 import useStyles from './navbarStyles';
 
-const MyNavbar = ({ totalItems }) => {
+const MyNavbar = () => {
 	const { header, logo, logoLink, menuButton, toolbar, cartIcon } = useStyles();
-
+	const totalItems = useSelector((state) => state.cart.total_items);
 	const [mobileView, setMobileView] = useState(false);
 	const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -25,10 +26,12 @@ const MyNavbar = ({ totalItems }) => {
 				: setMobileView(false);
 		};
 
+		console.log(totalItems);
+
 		setResponsiveness();
 
 		window.addEventListener('resize', () => setResponsiveness());
-	}, []);
+	}, [totalItems]);
 
 	const stephaniesLogo = (
 		<RouterLink className={logoLink} to="/">
@@ -46,6 +49,7 @@ const MyNavbar = ({ totalItems }) => {
 						stephaniesLogo={stephaniesLogo}
 						setDrawerOpen={setDrawerOpen}
 						drawerOpen={drawerOpen}
+						totalItems={totalItems}
 					/>
 				) : (
 					<Toolbar className={toolbar}>

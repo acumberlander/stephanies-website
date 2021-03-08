@@ -10,7 +10,7 @@ import {
 import { useForm, FormProvider } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import { commerce } from '../../lib/commerce';
+import commerce from '../../lib/commerce';
 import FormInput from './CustomTextField';
 
 const AddressForm = ({ checkoutToken, test }) => {
