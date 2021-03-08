@@ -60,7 +60,10 @@ const product = {
 	sort_order: 0,
 	thank_you_url: null,
 	updated: null,
-	variant_groups: [],
+	variant_groups: [
+		{ name: '', options: [{ name: '' }, { name: '' }, { name: '' }] },
+		{ name: '', options: [{ name: '' }, { name: '' }, { name: '' }] },
+	],
 };
 
 export default product;

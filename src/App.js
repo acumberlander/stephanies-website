@@ -6,6 +6,7 @@ import Cart from './components/Cart/Cart';
 import Checkout from './components/CheckoutForm/Checkout/Checkout';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { fetchProducts } from './actions/products';
+import { fetchCart, refreshCart } from './actions/cart';
 import Home from './components/Home/Home';
 import Shop from './components/Shop/Shop';
 import Footer from './components/Footer/Footer';
@@ -17,47 +18,6 @@ const App = () => {
 	const [order, setOrder] = useState({});
 	const [errorMessage, setErrorMessage] = useState('');
 	const dispatch = useDispatch();
-
-	// const fetchProducts = async () => {
-	// 	const { data } = await commerce.products.list();
-
-	// 	setProducts(data);
-	// };
-
-	const fetchCart = async () => {
-		setCart(await commerce.cart.retrieve());
-		console.log(cart);
-	};
-
-	const handleAddToCart = async (productId, quantity) => {
-		const { cart } = await commerce.cart.add(productId, quantity);
-		console.log(cart);
-		setCart(cart);
-	};
-
-	const handleUpdateCartQty = async (productId, quantity) => {
-		const { cart } = await commerce.cart.update(productId, { quantity });
-
-		setCart(cart);
-	};
-
-	const handleRemoveFromCart = async (productId) => {
-		const { cart } = await commerce.cart.remove(productId);
-
-		setCart(cart);
-	};
-
-	const handleEmptyCart = async () => {
-		const { cart } = await commerce.cart.empty();
-
-		setCart(cart);
-	};
-
-	const refreshCart = async () => {
-		const newCart = await commerce.cart.refresh();
-
-		setCart(newCart);
-	};
 
 	const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
 		try {
@@ -77,45 +37,37 @@ const App = () => {
 
 	useEffect(() => {
 		dispatch(fetchProducts());
-		// fetchProducts();
-		// fetchCart();
+		dispatch(fetchCart());
 	}, [dispatch]);
 
 	return (
 		<Router>
-			<div>
-				<MyNavbar totalItems={cart.total_items} />
-				<Switch>
-					<Route exact path="/">
-						<Home />
-						{/* <h1>HELLO</h1> */}
-						{/* <Products products={products} onAddToCart={handleAddToCart} /> */}
-					</Route>
-					<Route exact path="/cart">
-						<Cart
-							cart={cart}
-							handleUpdateCartQty={handleUpdateCartQty}
-							handleRemoveFromCart={handleRemoveFromCart}
-							handleEmptyCart={handleEmptyCart}
-						/>
-					</Route>
-					<Route exact path="/checkout">
-						<Checkout
-							cart={cart}
-							order={order}
-							onCaptureCheckout={handleCaptureCheckout}
-							error={errorMessage}
-						/>
-					</Route>
-					<Route exact path="/shop">
-						<Shop products={products} />
-					</Route>
-					<Route exact path="/product/:id">
-						<ProductDetails addToCart={handleAddToCart} />
-					</Route>
-				</Switch>
-				<Footer />
-			</div>
+			<MyNavbar totalItems={cart.total_items} />
+			<Switch>
+				<Route exact path="/">
+					<Home />
+					{/* <h1>HELLO</h1> */}
+					{/* <Products products={products} onAddToCart={handleAddToCart} /> */}
+				</Route>
+				<Route exact path="/cart">
+					<Cart />
+				</Route>
+				<Route exact path="/checkout">
+					<Checkout
+						cart={cart}
+						order={order}
+						onCaptureCheckout={handleCaptureCheckout}
+						error={errorMessage}
+					/>
+				</Route>
+				<Route exact path="/shop">
+					<Shop products={products} />
+				</Route>
+				<Route exact path="/product/:id">
+					<ProductDetails />
+				</Route>
+			</Switch>
+			<Footer />
 		</Router>
 	);
 };

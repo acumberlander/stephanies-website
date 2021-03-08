@@ -10,10 +10,10 @@ import {
 	Input,
 	Button,
 	CircularProgress,
-	Grow,
 	Fade,
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, fetchCart, updateCartQty } from '../../../../actions/cart';
 // import { fetchProductById } from '../../../../actions/products';
 import PinterestIcon from '@material-ui/icons/Pinterest';
 import FacebookIcon from '@material-ui/icons/Facebook';
@@ -21,22 +21,17 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import productModel from '../../../Models/Product';
 import ProductDetailsDropdowns from '../../../ProductDetailsDropdowns/ProductDetailsDropdowns';
 
-const ProductDetails = ({ addToCart }) => {
-	const [age, setAge] = useState('');
+const ProductDetails = () => {
+	const [size, setSize] = useState('Medium');
 	const [product, setProduct] = useState(productModel);
+	const [quantity, setQuantity] = useState(1);
+	const totalItems = useSelector((state) => state.cart.total_items);
 	// const product = useSelector((state) => (state.product = productModel));
 	const [displayedProduct, setDisplayedProduct] = useState('');
-	// const dispatch = useDispatch();
+	const dispatch = useDispatch();
 	const classes = useStyles();
 
 	let params = useParams();
-
-	// const initializeProduct = async () => {
-	// 	let data = await fetchProductById(params.id);
-
-	// 	setSelectedProduct(data);
-	// 	setDisplayedProduct(product.assets[0].url);
-	// };
 
 	const fetchProductById = async (id) => {
 		const data = await commerce.products.retrieve(id);
@@ -47,15 +42,18 @@ const ProductDetails = ({ addToCart }) => {
 		setDisplayedProduct(data.assets[0].url);
 	};
 
-	useEffect(() => {
-		// dispatch(fetchProductById(params.id));
-		// initializeProduct();
-		fetchProductById(params.id);
-	}, [params]);
-
-	const handleChange = (event) => {
-		setAge(event.target.value);
+	const handleAddToCart = () => {
+		dispatch(addToCart(product.id, quantity));
 	};
+
+	useEffect(() => {
+		fetchProductById(params.id);
+		dispatch(fetchCart());
+	}, [params, dispatch]);
+
+	const sizeOptions = product.variant_groups[0].options.map((size) => (
+		<MenuItem value={size.name}>{size.name}</MenuItem>
+	));
 
 	return (
 		<Container className={classes.container}>
@@ -84,6 +82,7 @@ const ProductDetails = ({ addToCart }) => {
 								</Fade>
 							)}
 						</div>
+
 						<div style={{ display: 'flex', margin: '10px 0' }}>
 							{product.assets.map((imageObj) => (
 								<div
@@ -104,6 +103,7 @@ const ProductDetails = ({ addToCart }) => {
 								</div>
 							))}
 						</div>
+
 						<Typography>
 							{product.name}
 							Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus
@@ -117,35 +117,58 @@ const ProductDetails = ({ addToCart }) => {
 						<Typography className={classes.productName} variant="h5">
 							{product.name}
 						</Typography>
-						<Typography className={classes.priceText}>
+						<Typography className={classes.priceHeader}>
 							{product.price.formatted_with_symbol}
 						</Typography>
-						<Typography>Color: Default</Typography>
-						<Typography>Size</Typography>
+						<Typography className={classes.colorHeader}>
+							Color: Default
+						</Typography>
+						<Typography className={classes.sizeHeader}>Size</Typography>
+
 						<Select
 							className={classes.sizeSelection}
-							placeholder="Select"
-							value={age}
-							onChange={handleChange}
+							onChange={(e) => setSize(e.target.value)}
+							value={size}
 						>
-							<MenuItem value={'small'}>Small</MenuItem>
-							<MenuItem value={'medium'}>Medium</MenuItem>
-							<MenuItem value={'large'}>Large</MenuItem>
+							{sizeOptions}
 						</Select>
-						<Typography>Quantity</Typography>
-						<Input className={classes.quantityInput} placeholder="1" />
+
+						<Typography className={classes.quantityHeader}>Quantity</Typography>
+
+						<div className={classes.quantityContainer}>
+							<Button
+								className={classes.quantityButton}
+								onClick={() =>
+									dispatch(updateCartQty(product.id, quantity - 1))
+								}
+							>
+								-
+							</Button>
+							<Typography>{quantity}</Typography>
+							<Button
+								className={classes.quantityButton}
+								onClick={() =>
+									dispatch(updateCartQty(product.id, quantity + 1))
+								}
+							>
+								+
+							</Button>
+						</div>
 						<br />
+
 						<Button
 							variant="contained"
 							className={classes.button}
 							color="primary"
-							onClick={() => addToCart(product.id, 1)}
+							onClick={handleAddToCart}
 						>
 							Add To Cart
 						</Button>
+
 						<div className={classes.accordionContainer}>
 							<ProductDetailsDropdowns />
 						</div>
+
 						<div className={classes.socialMediaGroup}>
 							<PinterestIcon className={classes.socialIcon} />
 							<FacebookIcon className={classes.socialIcon} />

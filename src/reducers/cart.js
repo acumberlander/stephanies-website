@@ -8,7 +8,7 @@ import {
 	CAPTURE_CHECKOUT,
 } from '../constants/actionTypes';
 
-const cartReducer = (cart = {}, action) => {
+const cartReducer = (cart = { line_items: [] }, action) => {
 	// return action.payload;
 	switch (action.type) {
 		case FETCH_CART:
@@ -21,30 +21,40 @@ const cartReducer = (cart = {}, action) => {
 			return action.payload;
 
 		case REFRESH_CART:
+			console.log(action.payload);
 			return action.payload;
 
 		case ADD_TO_CART:
-			let itemToAdd = cart.line_items.find((item) => item.id === action.id);
-
-			// check if the action id exists in the line_items
-			if (!itemToAdd) {
-				return action.payload;
-			} else {
-				itemToAdd.quantity += 1;
+			const itemToAdd = action.payload;
+			const product = cart.line_items.find((item) => item.id === itemToAdd.id);
+			if (product) {
 				return {
-					...cart,
-					line_items: [...cart.line_items, itemToAdd],
-					subtotal: {
-						raw: `${cart.subtotal.raw + itemToAdd.price}`,
-						formatted: `${cart.subtotal.raw + itemToAdd.price}.00`,
-						formatted_with_symbol: `$${cart.subtotal.raw + itemToAdd.price}.00`,
-						formatted_with_code: `$${
-							cart.subtotal.raw + itemToAdd.price
-						}.00 USD`,
-					},
-					total_items: cart.total_items + 1,
+					line_items: cart.line_items.map((item) =>
+						item.id === product.id ? itemToAdd : item
+					),
 				};
 			}
+			return { line_items: [...cart.line_items, itemToAdd] };
+
+		// check if the action id exists in the line_items
+		// if (itemToAdd === null || itemToAdd === undefined) {
+		// 	return action.payload;
+		// } else {
+		// 	itemToAdd.quantity += 1;
+		// 	return {
+		// 		...cart,
+		// 		line_items: [...cart.line_items, itemToAdd],
+		// 		subtotal: {
+		// 			raw: `${cart.subtotal.raw + itemToAdd.price}`,
+		// 			formatted: `${cart.subtotal.raw + itemToAdd.price}.00`,
+		// 			formatted_with_symbol: `$${cart.subtotal.raw + itemToAdd.price}.00`,
+		// 			formatted_with_code: `$${
+		// 				cart.subtotal.raw + itemToAdd.price
+		// 			}.00 USD`,
+		// 		},
+		// 		total_items: cart.total_items + 1,
+		// 	};
+		// }
 
 		case REMOVE_FROM_CART:
 			let itemToRemove = cart.line_items.find((item) => item.id === action.id);
@@ -58,11 +68,13 @@ const cartReducer = (cart = {}, action) => {
 					...cart,
 					line_items: newArray,
 					subtotal: {
-						raw: `${cart.subtotal.raw - itemToAdd.price}`,
-						formatted: `${cart.subtotal.raw - itemToAdd.price}.00`,
-						formatted_with_symbol: `$${cart.subtotal.raw - itemToAdd.price}.00`,
+						raw: `${cart.subtotal.raw - itemToRemove.price}`,
+						formatted: `${cart.subtotal.raw - itemToRemove.price}.00`,
+						formatted_with_symbol: `$${
+							cart.subtotal.raw - itemToRemove.price
+						}.00`,
 						formatted_with_code: `$${
-							cart.subtotal.raw - itemToAdd.price
+							cart.subtotal.raw - itemToRemove.price
 						}.00 USD`,
 					},
 					total_items: cart.total_items - 1,

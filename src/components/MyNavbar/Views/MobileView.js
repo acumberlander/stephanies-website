@@ -12,7 +12,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { Link as RouterLink } from 'react-router-dom';
 import useStyles from '../navbarStyles';
 
-const MobileView = ({ stephaniesLogo, setDrawerOpen, drawerOpen }) => {
+const MobileView = ({
+	stephaniesLogo,
+	setDrawerOpen,
+	drawerOpen,
+	totalItems,
+}) => {
 	const handleDrawerOpen = () => setDrawerOpen(true);
 	const handleDrawerClose = () => setDrawerOpen(false);
 
@@ -28,7 +33,7 @@ const MobileView = ({ stephaniesLogo, setDrawerOpen, drawerOpen }) => {
 					aria-label="Show cart items"
 					color="inherit"
 				>
-					<Badge badgeContent={1} color="secondary">
+					<Badge badgeContent={totalItems} color="secondary">
 						<ShoppingCart className={cartIcon} />
 					</Badge>
 				</IconButton>
