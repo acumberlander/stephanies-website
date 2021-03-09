@@ -1,9 +1,6 @@
 import React from 'react';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { AddShoppingCart } from '@material-ui/icons';
-import steph from '../../../assets/steph-1.jpg';
-import steph2 from '../../../assets/steph-2.jpg';
 
 import useStyles from './productStyles';
 import './Product.scss';

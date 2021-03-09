@@ -4,24 +4,23 @@ import { Link } from 'react-router-dom';
 
 import useStyles from './cartStyles';
 import CartItem from './CartItem/CartItem';
+import { emptyCart } from '../../actions/cart';
+import { useSelector, useDispatch } from 'react-redux';
 
-const Cart = ({
-	cart,
-	handleUpdateCartQty,
-	handleRemoveFromCart,
-	handleEmptyCart,
-}) => {
+const Cart = () => {
+	const dispatch = useDispatch();
+	const cart = useSelector((state) => state.cart);
 	const classes = useStyles();
 
-	// const testItems = [1, 2];
-
-	// let uniqueItems = [...new Set(cart)];
+	const handleEmptyCart = () => {
+		dispatch(emptyCart());
+	};
 
 	const EmptyCart = () => (
 		<div className={classes.emptyCartContainer}>
 			<Typography variant="subtitle1">
 				You have no items in your shopping cart,{' '}
-				<Link to="/" className={classes.link}>
+				<Link to="/shop" className={classes.link}>
 					start adding some
 				</Link>
 				!
@@ -38,12 +37,7 @@ const Cart = ({
 			<hr />
 			<div>
 				{cart.line_items.map((item) => (
-					<CartItem
-						key={item.id}
-						item={item}
-						onUpdateCartQty={handleUpdateCartQty}
-						onRemoveFromCart={handleRemoveFromCart}
-					/>
+					<CartItem key={item.id} item={item} />
 				))}
 			</div>
 			<div className={classes.emptyButtonContainer}>
@@ -70,13 +64,14 @@ const Cart = ({
 			<hr />
 			<div className={classes.subtotalContainer}>
 				<Typography>Subtotal</Typography>
-				<Typography>$500.00</Typography>
+				<Typography>{cart.subtotal.formatted_with_symbol}</Typography>
 			</div>
 			<Typography>Estimate Shipping</Typography>
 			<hr />
 			<div className={classes.totalContainer}>
 				<Typography>Total</Typography>
-				<Typography>$500.00</Typography>
+				{/* TODO Need to add logic that accounts for shipping and other costs/discounts (taxes or discount codes) */}
+				<Typography>{cart.subtotal.formatted_with_symbol}</Typography>
 			</div>
 			<div className={classes.checkoutButtonContainer}>
 				<Button

@@ -15,9 +15,11 @@ export const fetchCart = () => async (dispatch) => {
 	dispatch({ type: FETCH_CART, payload: data });
 };
 
-export const addToCart = (productId, quantity) => async (dispatch) => {
+export const addToCart = (productId, quantity, variant = {}) => async (
+	dispatch
+) => {
 	try {
-		const { cart } = await commerce.cart.add(productId, quantity);
+		const { cart } = await commerce.cart.add(productId, quantity, variant);
 
 		dispatch({ type: ADD_TO_CART, payload: cart, id: productId });
 	} catch (error) {

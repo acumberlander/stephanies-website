@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import commerce from './lib/commerce';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MyNavbar from './components/MyNavbar/MyNavbar';
 import Cart from './components/Cart/Cart';
 import Checkout from './components/CheckoutForm/Checkout/Checkout';
@@ -13,8 +13,7 @@ import Footer from './components/Footer/Footer';
 import ProductDetails from './components/Products/Product/ProductDetails/ProductDetails';
 
 const App = () => {
-	const [products, setProducts] = useState([]);
-	const [cart, setCart] = useState({});
+	const cart = useSelector((state) => state.cart);
 	const [order, setOrder] = useState({});
 	const [errorMessage, setErrorMessage] = useState('');
 	const dispatch = useDispatch();
@@ -29,7 +28,6 @@ const App = () => {
 			setOrder(incomingOrder);
 			refreshCart();
 		} catch (error) {
-			debugger;
 			console.log(error);
 			setErrorMessage(error.data.error.message);
 		}
@@ -42,12 +40,10 @@ const App = () => {
 
 	return (
 		<Router>
-			<MyNavbar totalItems={cart.total_items} />
+			<MyNavbar />
 			<Switch>
 				<Route exact path="/">
 					<Home />
-					{/* <h1>HELLO</h1> */}
-					{/* <Products products={products} onAddToCart={handleAddToCart} /> */}
 				</Route>
 				<Route exact path="/cart">
 					<Cart />
@@ -61,7 +57,7 @@ const App = () => {
 					/>
 				</Route>
 				<Route exact path="/shop">
-					<Shop products={products} />
+					<Shop />
 				</Route>
 				<Route exact path="/product/:id">
 					<ProductDetails />

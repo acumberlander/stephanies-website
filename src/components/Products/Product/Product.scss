@@ -8,7 +8,7 @@
 
 	.product-image {
 		max-width: 298px;
-		max-height: 450px;
+		max-height: 300px;
 		position: absolute;
 		transition: opacity 0.25s;
 		cursor: pointer;
@@ -32,6 +32,7 @@
 		transition-timing-function: ease-in;
 	}
 
+	// TODO figure out how to do this with material UI makestyles()
 	.product-image:hover + .quick-view-div {
 		display: flex;
 		justify-content: center;

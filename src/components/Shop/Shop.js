@@ -29,18 +29,50 @@ export default function Shop() {
 			</div>
 			{/* End header unit */}
 			<Container className={classes.cardGrid} maxWidth="xl">
-				<Grid container spacing={3}>
+				<Grid container spacing={6}>
 					{products.map((product) => (
-						<Fade
-							key={product.id}
-							in={product !== null}
-							style={{ transformOrigin: '0 0 0' }}
-							{...(product !== null ? { timeout: 1500 } : {})}
-						>
-							<Grid className={classes.gridItem} item xs={12} sm={6} md={4}>
-								<Product product={product} className={classes.card} />
-							</Grid>
-						</Fade>
+						<>
+							<Fade
+								key={product.id}
+								in={product !== null}
+								style={{ transformOrigin: '0 0 0' }}
+								{...(product !== null ? { timeout: 1500 } : {})}
+							>
+								<Grid className={classes.gridItem} item xs={12} sm={6} md={3}>
+									<Product product={product} className={classes.card} />
+								</Grid>
+							</Fade>
+							<Fade
+								key={product.id}
+								in={product !== null}
+								style={{ transformOrigin: '0 0 0' }}
+								{...(product !== null ? { timeout: 1500 } : {})}
+							>
+								<Grid className={classes.gridItem} item xs={12} sm={6} md={3}>
+									<Product product={product} className={classes.card} />
+								</Grid>
+							</Fade>
+							<Fade
+								key={product.id}
+								in={product !== null}
+								style={{ transformOrigin: '0 0 0' }}
+								{...(product !== null ? { timeout: 1500 } : {})}
+							>
+								<Grid className={classes.gridItem} item xs={12} sm={6} md={3}>
+									<Product product={product} className={classes.card} />
+								</Grid>
+							</Fade>
+							<Fade
+								key={product.id}
+								in={product !== null}
+								style={{ transformOrigin: '0 0 0' }}
+								{...(product !== null ? { timeout: 1500 } : {})}
+							>
+								<Grid className={classes.gridItem} item xs={12} sm={6} md={3}>
+									<Product product={product} className={classes.card} />
+								</Grid>
+							</Fade>
+						</>
 					))}
 				</Grid>
 			</Container>

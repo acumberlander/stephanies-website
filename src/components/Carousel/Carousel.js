@@ -9,7 +9,7 @@ const Carousel = () => {
 	const classes = useStyles();
 
 	return (
-		<HeroCarousel interval={4000}>
+		<HeroCarousel interval={3000}>
 			<img
 				className={classes.carouselImage}
 				src={demo2}

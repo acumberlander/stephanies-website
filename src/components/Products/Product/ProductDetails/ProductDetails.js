@@ -25,8 +25,6 @@ const ProductDetails = () => {
 	const [size, setSize] = useState('Medium');
 	const [product, setProduct] = useState(productModel);
 	const [quantity, setQuantity] = useState(1);
-	const totalItems = useSelector((state) => state.cart.total_items);
-	// const product = useSelector((state) => (state.product = productModel));
 	const [displayedProduct, setDisplayedProduct] = useState('');
 	const dispatch = useDispatch();
 	const classes = useStyles();
@@ -43,12 +41,14 @@ const ProductDetails = () => {
 	};
 
 	const handleAddToCart = () => {
-		dispatch(addToCart(product.id, quantity));
+		dispatch(
+			addToCart(product.id, quantity, product.variant_groups[0].options[size])
+		);
+		setQuantity(1);
 	};
 
 	useEffect(() => {
 		fetchProductById(params.id);
-		dispatch(fetchCart());
 	}, [params, dispatch]);
 
 	const sizeOptions = product.variant_groups[0].options.map((size) => (
@@ -58,13 +58,12 @@ const ProductDetails = () => {
 	return (
 		<Container className={classes.container}>
 			<div className={classes.contentContainer}>
-				{/* <span className={classes.navbar}>
-					<Typography>Home/Shop/Lulo</Typography>
-					<Typography>Prev | Next</Typography>
-				</span> */}
 				<div className={classes.productAndDetails}>
 					{/* Left Section */}
 					<div className={classes.leftSection}>
+						<Typography className={classes.productName} variant="h5">
+							{product.name}
+						</Typography>
 						<div className={classes.displayContainer}>
 							{!displayedProduct ? (
 								<CircularProgress size={80} />
@@ -106,17 +105,11 @@ const ProductDetails = () => {
 
 						<Typography>
 							{product.name}
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus
-							libero aliquid ab necessitatibus quo mollitia fugiat, tempora eos,
-							assumenda consectetur, excepturi voluptas. Nulla exercitationem
-							incidunt earum accusantium magnam atque harum.
+							Lorem ipsum dolor sit amet consectetur adipisicing elit.
 						</Typography>
 					</div>
 					{/* Right Section */}
 					<div className={classes.rightSection}>
-						<Typography className={classes.productName} variant="h5">
-							{product.name}
-						</Typography>
 						<Typography className={classes.priceHeader}>
 							{product.price.formatted_with_symbol}
 						</Typography>
@@ -138,18 +131,14 @@ const ProductDetails = () => {
 						<div className={classes.quantityContainer}>
 							<Button
 								className={classes.quantityButton}
-								onClick={() =>
-									dispatch(updateCartQty(product.id, quantity - 1))
-								}
+								onClick={() => setQuantity(quantity - 1)}
 							>
 								-
 							</Button>
 							<Typography>{quantity}</Typography>
 							<Button
 								className={classes.quantityButton}
-								onClick={() =>
-									dispatch(updateCartQty(product.id, quantity + 1))
-								}
+								onClick={() => setQuantity(quantity + 1)}
 							>
 								+
 							</Button>

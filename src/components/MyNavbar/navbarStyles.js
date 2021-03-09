@@ -1,7 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles(() => ({
-	header: {
+	navContainer: {
+		display: 'flex',
 		backgroundColor: '#400CCC',
 		paddingRight: '10px',
 		paddingLeft: '118px',
@@ -25,7 +26,7 @@ export default makeStyles(() => ({
 	cartIcon: {
 		color: 'white',
 	},
-	menuButton: {
+	navButton: {
 		fontFamily: 'Philosopher, sans-serif',
 		fontWeight: 700,
 		size: '18px',

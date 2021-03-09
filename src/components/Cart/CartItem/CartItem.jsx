@@ -1,22 +1,19 @@
 import React from 'react';
 import { Typography, Button, Container } from '@material-ui/core';
 import hoodie from '../../../assets/sexes-hoodie.jpg';
+import { updateCartQty } from '../../../actions/cart';
+import { useDispatch } from 'react-redux';
 
 import useStyles from './cartItemStyles';
 
-const CartItem = ({ item, onUpdateCartQty, onRemoveFromCart }) => {
+const CartItem = ({ item }) => {
+	const dispatch = useDispatch();
 	const classes = useStyles();
 
 	return (
 		<Container className={classes.container}>
 			<div className={classes.imageAndDescription}>
-				<img
-					// image={item.media.source}
-					src={hoodie}
-					alt="hoodie"
-					// alt={item.name}
-					className={classes.media}
-				/>
+				<img src={hoodie} alt="hoodie" className={classes.media} />
 				{/* <Typography variant="h4">{item.name}</Typography> */}
 				<div>
 					<Typography variant="h6" className={classes.productName}>
@@ -28,7 +25,9 @@ const CartItem = ({ item, onUpdateCartQty, onRemoveFromCart }) => {
 						<Button
 							type="button"
 							size="small"
-							onClick={() => onUpdateCartQty(item.id, item.quantity - 1)}
+							onClick={() =>
+								dispatch(updateCartQty(item.id, item.quantity - 1))
+							}
 						>
 							-
 						</Button>
@@ -36,7 +35,9 @@ const CartItem = ({ item, onUpdateCartQty, onRemoveFromCart }) => {
 						<Button
 							type="button"
 							size="small"
-							onClick={() => onUpdateCartQty(item.id, item.quantity + 1)}
+							onClick={() =>
+								dispatch(updateCartQty(item.id, item.quantity + 1))
+							}
 						>
 							+
 						</Button>
@@ -44,11 +45,14 @@ const CartItem = ({ item, onUpdateCartQty, onRemoveFromCart }) => {
 				</div>
 			</div>
 			<div className={classes.priceAndRemove}>
-				<Typography>$190.00</Typography>
+				{/* TODO need to apply logic to account for dynamic change amount (money) */}
+				<Typography>{`$${item.price.raw * item.quantity}.00`}</Typography>
 				<Button
 					type="button"
 					color="secondary"
-					// onClick={() => onRemoveFromCart(item.id)}
+					onClick={() =>
+						dispatch(updateCartQty(item.id, item.quantity - item.quantity))
+					}
 				>
 					X
 				</Button>
