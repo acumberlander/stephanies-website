@@ -5,7 +5,7 @@ export const useStyles = makeStyles((theme) => ({
 		// margin: theme.spacing(3, 0),
 	},
 	galleryHeader: {
-		fontFamily: 'Philosopher sans-serif',
+		fontFamily: 'Philosopher, sans-serif',
 		textAlign: 'center',
 		marginBottom: 50,
 	},

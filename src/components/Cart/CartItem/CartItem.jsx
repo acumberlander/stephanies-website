@@ -13,14 +13,15 @@ const CartItem = ({ item }) => {
 	return (
 		<Container className={classes.container}>
 			<div className={classes.imageAndDescription}>
-				<img src={hoodie} alt="hoodie" className={classes.media} />
-				{/* <Typography variant="h4">{item.name}</Typography> */}
+				<img src={item.media.source} alt="hoodie" className={classes.media} />
 				<div>
 					<Typography variant="h6" className={classes.productName}>
-						Item Name
+						{item.name}
 					</Typography>
-					<Typography>Color: Default</Typography>
+					<Typography>{`Color: Default`}</Typography>
+					{/* TODO Make size appear dynamically */}
 					<Typography>Size: Medium</Typography>
+					{/* <Typography>{`Size: ${item.}`}</Typography> */}
 					<div className={classes.buttons}>
 						<Button
 							type="button"
