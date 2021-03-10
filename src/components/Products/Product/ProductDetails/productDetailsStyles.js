@@ -3,7 +3,10 @@ import { makeStyles } from '@material-ui/core';
 export const useStyles = makeStyles((theme) => ({
 	container: {
 		marginTop: '100px',
-		padding: theme.spacing(4, 20),
+		padding: theme.spacing(4, 16),
+	},
+	productName: {
+		marginBottom: '10px',
 	},
 	contentContainer: {
 		display: 'flex',
@@ -44,11 +47,11 @@ export const useStyles = makeStyles((theme) => ({
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
 		width: '100%',
+		maxWidth: '450px',
 		[theme.breakpoints.down('md')]: {
 			padding: theme.spacing(1, 0),
 		},
-		padding: theme.spacing(1, 4),
-		// minWidth: '400px',
+		padding: theme.spacing(2, 6),
 	},
 	button: {
 		backgroundColor: theme.palette.primary,

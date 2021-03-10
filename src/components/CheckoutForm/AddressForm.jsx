@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import commerce from '../../lib/commerce';
 import FormInput from './CustomTextField';
 
-const AddressForm = ({ checkoutToken, test }) => {
+const AddressForm = ({ setShippingData, checkoutToken, test }) => {
 	const [shippingCountries, setShippingCountries] = useState([]);
 	const [shippingCountry, setShippingCountry] = useState('');
 	const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
@@ -36,6 +36,8 @@ const AddressForm = ({ checkoutToken, test }) => {
 			countryCode
 		);
 
+		console.log(subdivisions);
+
 		setShippingSubdivisions(subdivisions);
 		setShippingSubdivision(Object.keys(subdivisions)[0]);
 	};
@@ -51,7 +53,8 @@ const AddressForm = ({ checkoutToken, test }) => {
 		);
 
 		setShippingOptions(options);
-		setShippingOption(options[0].id);
+		console.log(options);
+		// setShippingOption(options[0].id);
 	};
 
 	useEffect(() => {

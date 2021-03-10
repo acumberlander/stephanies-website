@@ -14,7 +14,15 @@ import { ShoppingCart } from '@material-ui/icons';
 import useStyles from './navbarStyles';
 
 const MyNavbar = () => {
-	const { header, logo, logoLink, menuButton, toolbar, cartIcon } = useStyles();
+	const {
+		navContainer,
+		logo,
+		logoLink,
+		menuButton,
+		toolbar,
+		cartIcon,
+		navButton,
+	} = useStyles();
 	const totalItems = useSelector((state) => state.cart.total_items);
 	const [mobileView, setMobileView] = useState(false);
 	const [drawerOpen, setDrawerOpen] = useState(false);
@@ -25,8 +33,6 @@ const MyNavbar = () => {
 				? setMobileView(true)
 				: setMobileView(false);
 		};
-
-		console.log(totalItems);
 
 		setResponsiveness();
 
@@ -42,7 +48,7 @@ const MyNavbar = () => {
 	);
 
 	return (
-		<div className={header}>
+		<div className={navContainer}>
 			<AppBar>
 				{mobileView ? (
 					<MobileView
@@ -54,13 +60,13 @@ const MyNavbar = () => {
 				) : (
 					<Toolbar className={toolbar}>
 						{stephaniesLogo}
-						<div>
+						<span>
 							<Button
 								key="Home"
 								color="inherit"
 								to="/"
 								component={RouterLink}
-								className={menuButton}
+								className={navButton}
 							>
 								Home
 							</Button>
@@ -69,21 +75,22 @@ const MyNavbar = () => {
 								color="inherit"
 								to="/shop"
 								component={RouterLink}
-								className={menuButton}
+								className={navButton}
 							>
 								Shop
 							</Button>
-							<IconButton
-								component={RouterLink}
-								to="/cart"
-								aria-label="Show cart items"
-								color="inherit"
-							>
-								<Badge badgeContent={totalItems} color="secondary">
-									<ShoppingCart className={cartIcon} />
-								</Badge>
-							</IconButton>
-						</div>
+						</span>
+
+						<IconButton
+							component={RouterLink}
+							to="/cart"
+							aria-label="Show cart items"
+							color="inherit"
+						>
+							<Badge badgeContent={totalItems} color="secondary">
+								<ShoppingCart className={cartIcon} />
+							</Badge>
+						</IconButton>
 					</Toolbar>
 				)}
 			</AppBar>

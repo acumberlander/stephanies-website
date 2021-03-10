@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import steph from '../../assets/steph-1.jpg';
 
 import './Home.scss';
+import MyGallery from '../MyGallery/MyGallery';
 
 const Home = () => {
 	return (
@@ -36,6 +37,7 @@ const Home = () => {
 					</div>
 				</div>
 			</div>
+			<MyGallery />
 		</div>
 	);
 };
