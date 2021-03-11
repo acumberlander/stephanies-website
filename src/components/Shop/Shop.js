@@ -1,16 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
+import { useParams } from 'react-router-dom';
 import { Container, Typography, Fade } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { useStyles } from './shopStyles.js';
 import Product from '../Products/Product/Product.jsx';
 
+// TODO need to filter based on routing instead of having multiple components for different product categories
+const paramOptions = {
+	glassware: 'Glassware',
+	hoodies: 'Hoodies',
+	watches: 'Watches',
+	ascots: 'Ascots',
+};
+
 export default function Shop() {
 	const classes = useStyles();
-	const products = useSelector((state) => state.products);
+	const allProducts = useSelector((state) => state.products);
+	const [products, setProducts] = useState([]);
+
+	let params = useParams();
+
+	const headerName = () => {
+		const key = Object.keys(paramOptions).find((p) => {
+			return p === params.category;
+		});
+		const header = paramOptions[key];
+
+		return header === undefined ? 'All Products' : header;
+	};
+
+	useEffect(() => {
+		const data = allProducts.filter((product) => {
+			return product.categories.every((category) => {
+				return category.slug === params.category;
+			});
+		});
+		if (!data.length) {
+			setProducts(allProducts);
+		} else {
+			setProducts(data);
+		}
+	}, [allProducts, params]);
 
 	return (
-		<>
+		<div className={classes.shopContainer}>
 			{/* Header unit */}
 			<div className={classes.shopHeader}>
 				<Container maxWidth="sm">
@@ -21,7 +55,7 @@ export default function Shop() {
 						className={classes.header}
 						gutterBottom
 					>
-						All Products
+						{headerName()}
 					</Typography>
 				</Container>
 			</div>
@@ -52,6 +86,6 @@ export default function Shop() {
 					))}
 				</Grid>
 			</Container>
-		</>
+		</div>
 	);
 }

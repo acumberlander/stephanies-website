@@ -6,6 +6,7 @@ import {
 	Drawer,
 	Link,
 	MenuItem,
+	Divider,
 } from '@material-ui/core';
 import { ShoppingCart } from '@material-ui/icons';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -21,13 +22,24 @@ const MobileView = ({
 	const handleDrawerOpen = () => setDrawerOpen(true);
 	const handleDrawerClose = () => setDrawerOpen(false);
 
-	const { menuButton, toolbar, cartIcon, drawerContainer } = useStyles();
+	const openModal = () => {
+		handleDrawerClose();
+	};
+
+	const {
+		menuButton,
+		toolbar,
+		cartIcon,
+		drawerContainer,
+		cartButton,
+	} = useStyles();
 
 	return (
 		<Toolbar className={toolbar}>
 			<div>{stephaniesLogo}</div>
 			<div>
 				<IconButton
+					className={cartButton}
 					component={RouterLink}
 					to="/cart"
 					aria-label="Show cart items"
@@ -58,6 +70,8 @@ const MobileView = ({
 				}}
 			>
 				<div className={drawerContainer}>
+					<MenuItem onClick={openModal}>Log In</MenuItem>
+					<Divider></Divider>
 					<Link
 						component={RouterLink}
 						to="/"

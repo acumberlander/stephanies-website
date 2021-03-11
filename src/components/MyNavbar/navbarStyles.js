@@ -32,6 +32,12 @@ export default makeStyles(() => ({
 		size: '18px',
 		marginLeft: '20px',
 	},
+	cartButton: {
+		fontFamily: 'Philosopher, sans-serif',
+		fontWeight: 700,
+		size: '18px',
+		marginRight: 10,
+	},
 	toolbar: {
 		display: 'flex',
 		justifyContent: 'space-between',

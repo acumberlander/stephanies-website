@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MyNavbar from './components/MyNavbar/MyNavbar';
 import Cart from './components/Cart/Cart';
 import Checkout from './components/CheckoutForm/Checkout/Checkout';
+import About from './components/About/About';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { fetchProducts } from './actions/products';
 import { fetchCart, refreshCart } from './actions/cart';
@@ -45,6 +46,15 @@ const App = () => {
 				<Route exact path="/">
 					<Home />
 				</Route>
+				{/* <Route exact path="/shop">
+					<Shop />
+				</Route> */}
+				<Route exact path="/shop/:category">
+					<Shop />
+				</Route>
+				<Route exact path="/about">
+					<About />
+				</Route>
 				<Route exact path="/cart">
 					<Cart />
 				</Route>
@@ -55,21 +65,6 @@ const App = () => {
 						onCaptureCheckout={handleCaptureCheckout}
 						error={errorMessage}
 					/>
-				</Route>
-				<Route exact path="/shop">
-					<Shop />
-				</Route>
-				<Route exact path="/shop/glassware">
-					<Shop />
-				</Route>
-				<Route exact path="/shop/ascots">
-					<Shop />
-				</Route>
-				<Route exact path="/shop/t-shirts">
-					<Shop />
-				</Route>
-				<Route exact path="/shop/accessories">
-					<Shop />
 				</Route>
 				<Route exact path="/product/:id">
 					<ProductDetails />

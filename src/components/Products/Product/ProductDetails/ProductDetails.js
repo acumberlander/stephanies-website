@@ -34,8 +34,6 @@ const ProductDetails = () => {
 	const fetchProductById = async (id) => {
 		const data = await commerce.products.retrieve(id);
 
-		console.log(data);
-
 		setProduct(data);
 		setDisplayedProduct(data.assets[0].url);
 	};
@@ -49,7 +47,7 @@ const ProductDetails = () => {
 
 	useEffect(() => {
 		fetchProductById(params.id);
-	}, [params, dispatch]);
+	}, [params]);
 
 	const sizeOptions = product.variant_groups[0].options.map((size) => (
 		<MenuItem value={size.name}>{size.name}</MenuItem>
