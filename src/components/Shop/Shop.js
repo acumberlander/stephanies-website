@@ -5,8 +5,6 @@ import { useSelector } from 'react-redux';
 import { useStyles } from './shopStyles.js';
 import Product from '../Products/Product/Product.jsx';
 
-// const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 export default function Shop() {
 	const classes = useStyles();
 	const products = useSelector((state) => state.products);
@@ -17,7 +15,7 @@ export default function Shop() {
 			<div className={classes.shopHeader}>
 				<Container maxWidth="sm">
 					<Typography
-						variant="h2"
+						variant="h3"
 						align="center"
 						color="textPrimary"
 						className={classes.header}
@@ -38,37 +36,15 @@ export default function Shop() {
 								style={{ transformOrigin: '0 0 0' }}
 								{...(product !== null ? { timeout: 1500 } : {})}
 							>
-								<Grid className={classes.gridItem} item xs={12} sm={6} md={3}>
-									<Product product={product} className={classes.card} />
-								</Grid>
-							</Fade>
-							<Fade
-								key={product.id}
-								in={product !== null}
-								style={{ transformOrigin: '0 0 0' }}
-								{...(product !== null ? { timeout: 1500 } : {})}
-							>
-								<Grid className={classes.gridItem} item xs={12} sm={6} md={3}>
-									<Product product={product} className={classes.card} />
-								</Grid>
-							</Fade>
-							<Fade
-								key={product.id}
-								in={product !== null}
-								style={{ transformOrigin: '0 0 0' }}
-								{...(product !== null ? { timeout: 1500 } : {})}
-							>
-								<Grid className={classes.gridItem} item xs={12} sm={6} md={3}>
-									<Product product={product} className={classes.card} />
-								</Grid>
-							</Fade>
-							<Fade
-								key={product.id}
-								in={product !== null}
-								style={{ transformOrigin: '0 0 0' }}
-								{...(product !== null ? { timeout: 1500 } : {})}
-							>
-								<Grid className={classes.gridItem} item xs={12} sm={6} md={3}>
+								<Grid
+									className={classes.gridItem}
+									item
+									xs={12}
+									sm={6}
+									md={4}
+									lg={4}
+									xl={3}
+								>
 									<Product product={product} className={classes.card} />
 								</Grid>
 							</Fade>

@@ -14,7 +14,6 @@ const Product = ({ product }) => {
 				<span className="quick-view-div">
 					<Typography>Quick View</Typography>
 				</span>
-
 				{!product ? (
 					<CircularProgress />
 				) : (

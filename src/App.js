@@ -59,6 +59,18 @@ const App = () => {
 				<Route exact path="/shop">
 					<Shop />
 				</Route>
+				<Route exact path="/shop/glassware">
+					<Shop />
+				</Route>
+				<Route exact path="/shop/ascots">
+					<Shop />
+				</Route>
+				<Route exact path="/shop/t-shirts">
+					<Shop />
+				</Route>
+				<Route exact path="/shop/accessories">
+					<Shop />
+				</Route>
 				<Route exact path="/product/:id">
 					<ProductDetails />
 				</Route>
