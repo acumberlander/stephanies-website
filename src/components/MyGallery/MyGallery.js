@@ -13,6 +13,7 @@ const MyGallery = () => {
 				<a
 					className={classes.instaTag}
 					href="https://www.instagram.com/sexesbystephanie/"
+					target="_blank"
 				>
 					@sexesbystephanie
 				</a>

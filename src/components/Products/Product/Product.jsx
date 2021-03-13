@@ -14,9 +14,6 @@ const Product = ({ product }) => {
 	return (
 		<div className={classes.productContainer}>
 			<div>
-				{/* <span className="quick-view-div">
-					<Typography>Quick View</Typography>
-				</span> */}
 				{!product ? (
 					<CircularProgress />
 				) : (

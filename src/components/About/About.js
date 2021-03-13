@@ -14,7 +14,7 @@ const About = () => {
 					<img
 						className={classes.ownerImage}
 						src={steph}
-						alt="Stephanie Wilburn"
+						alt="Stephanie Wilbourn"
 					/>
 				</div>
 				<Typography className={classes.aboutText}>

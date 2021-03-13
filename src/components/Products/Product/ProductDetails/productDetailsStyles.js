@@ -7,6 +7,7 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	productName: {
 		marginBottom: '10px',
+		fontFamily: 'Philosopher, sans-serif',
 	},
 	contentContainer: {
 		display: 'flex',
@@ -52,6 +53,7 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	productDetailsText: {
 		maxWidth: '450px',
+		fontFamily: 'Philosopher, sans-serif',
 	},
 	rightSection: {
 		display: 'flex',
@@ -69,15 +71,19 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	quantityHeader: {
 		marginTop: 20,
+		fontFamily: 'Philosopher, sans-serif',
 	},
 	sizeHeader: {
 		marginTop: 20,
+		fontFamily: 'Philosopher, sans-serif',
 	},
 	colorHeader: {
 		marginTop: 20,
+		fontFamily: 'Philosopher, sans-serif',
 	},
 	priceHeader: {
 		marginTop: 20,
+		fontFamily: 'Philosopher, sans-serif',
 	},
 	quantityContainer: {
 		display: 'flex',

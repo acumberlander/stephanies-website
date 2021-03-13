@@ -11,4 +11,10 @@ export const useStyles = makeStyles((theme) => ({
 	accordionContainer: {
 		margin: '30px 0',
 	},
+	heading: {
+		fontFamily: 'Philosopher, sans-serif',
+	},
+	text: {
+		fontFamily: 'Philosopher, sans-serif',
+	},
 }));

@@ -7,7 +7,7 @@ export const useStyles = makeStyles((theme) => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 		height: 'auto',
-		paddingTop: 100,
+		padding: '100px 50px 0',
 		fontFamily: 'Philosopher, sans-serif',
 	},
 	imageAndTextContainer: {
