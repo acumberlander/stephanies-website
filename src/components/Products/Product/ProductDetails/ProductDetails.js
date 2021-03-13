@@ -12,8 +12,8 @@ import {
 	CircularProgress,
 	Fade,
 } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, fetchCart, updateCartQty } from '../../../../actions/cart';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../../../actions/cart';
 // import { fetchProductById } from '../../../../actions/products';
 import PinterestIcon from '@material-ui/icons/Pinterest';
 import FacebookIcon from '@material-ui/icons/Facebook';
@@ -34,8 +34,6 @@ const ProductDetails = () => {
 	const fetchProductById = async (id) => {
 		const data = await commerce.products.retrieve(id);
 
-		console.log(data);
-
 		setProduct(data);
 		setDisplayedProduct(data.assets[0].url);
 	};
@@ -49,11 +47,13 @@ const ProductDetails = () => {
 
 	useEffect(() => {
 		fetchProductById(params.id);
-	}, [params, dispatch]);
+	}, [params]);
 
-	const sizeOptions = product.variant_groups[0].options.map((size) => (
-		<MenuItem value={size.name}>{size.name}</MenuItem>
-	));
+	const sizeOptions = product.variant_groups[0]
+		? product.variant_groups[0].options.map((size) => (
+				<MenuItem value={size.name}>{size.name}</MenuItem>
+		  ))
+		: null;
 
 	return (
 		<Container className={classes.container}>
@@ -103,7 +103,7 @@ const ProductDetails = () => {
 							))}
 						</div>
 
-						<Typography>
+						<Typography className={classes.productDetailsText}>
 							{product.name}
 							Lorem ipsum dolor sit amet consectetur adipisicing elit.
 						</Typography>
@@ -116,15 +116,19 @@ const ProductDetails = () => {
 						<Typography className={classes.colorHeader}>
 							Color: Default
 						</Typography>
-						<Typography className={classes.sizeHeader}>Size</Typography>
+						{sizeOptions && (
+							<>
+								<Typography className={classes.sizeHeader}>Size</Typography>
 
-						<Select
-							className={classes.sizeSelection}
-							onChange={(e) => setSize(e.target.value)}
-							value={size}
-						>
-							{sizeOptions}
-						</Select>
+								<Select
+									className={classes.sizeSelection}
+									onChange={(e) => setSize(e.target.value)}
+									value={size}
+								>
+									{sizeOptions}
+								</Select>
+							</>
+						)}
 
 						<Typography className={classes.quantityHeader}>Quantity</Typography>
 

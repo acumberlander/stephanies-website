@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
+	shopContainer: {
+		height: 'auto',
+	},
 	header: {
 		fontFamily: 'Philosopher, sans-serif',
 	},

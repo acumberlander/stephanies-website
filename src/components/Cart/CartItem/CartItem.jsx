@@ -3,6 +3,7 @@ import { Typography, Button, Container } from '@material-ui/core';
 import hoodie from '../../../assets/sexes-hoodie.jpg';
 import { updateCartQty } from '../../../actions/cart';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import useStyles from './cartItemStyles';
 
@@ -13,11 +14,15 @@ const CartItem = ({ item }) => {
 	return (
 		<Container className={classes.container}>
 			<div className={classes.imageAndDescription}>
-				<img src={item.media.source} alt="hoodie" className={classes.media} />
+				<Link className={classes.shopLink} to={`/product/${item.product_id}`}>
+					<img src={item.media.source} alt="hoodie" className={classes.media} />
+				</Link>
 				<div>
-					<Typography variant="h6" className={classes.productName}>
-						{item.name}
-					</Typography>
+					<Link className={classes.shopLink} to={`/product/${item.product_id}`}>
+						<Typography variant="h6" className={classes.productName}>
+							{item.name}
+						</Typography>
+					</Link>
 					<Typography>{`Color: Default`}</Typography>
 					{/* TODO Make size appear dynamically */}
 					<Typography>Size: Medium</Typography>

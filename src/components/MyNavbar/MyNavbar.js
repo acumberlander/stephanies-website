@@ -18,7 +18,7 @@ const MyNavbar = () => {
 		navContainer,
 		logo,
 		logoLink,
-		menuButton,
+		cartButton,
 		toolbar,
 		cartIcon,
 		navButton,
@@ -73,24 +73,43 @@ const MyNavbar = () => {
 							<Button
 								key="Shop"
 								color="inherit"
-								to="/shop"
+								to="/shop/all-products"
 								component={RouterLink}
 								className={navButton}
 							>
 								Shop
 							</Button>
+							<Button
+								key="About"
+								color="inherit"
+								to="/about"
+								component={RouterLink}
+								className={navButton}
+							>
+								About
+							</Button>
 						</span>
 
-						<IconButton
-							component={RouterLink}
-							to="/cart"
-							aria-label="Show cart items"
-							color="inherit"
-						>
-							<Badge badgeContent={totalItems} color="secondary">
-								<ShoppingCart className={cartIcon} />
-							</Badge>
-						</IconButton>
+						<span>
+							<Button
+								key="About"
+								color="inherit"
+								component={RouterLink}
+								className={navButton}
+							>
+								Log In
+							</Button>
+							<IconButton
+								component={RouterLink}
+								to="/cart"
+								aria-label="Show cart items"
+								color="inherit"
+							>
+								<Badge badgeContent={totalItems} color="secondary">
+									<ShoppingCart className={cartIcon} />
+								</Badge>
+							</IconButton>
+						</span>
 					</Toolbar>
 				)}
 			</AppBar>

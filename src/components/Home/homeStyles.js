@@ -19,6 +19,7 @@ export const useStyles = makeStyles((theme) => ({
 		zIndex: 100,
 		color: 'white',
 		fontFamily: 'Philosopher, sans-serif',
+		marginBottom: 200,
 	},
 	carouselHeader: {
 		fontSize: '15rem',
@@ -33,7 +34,10 @@ export const useStyles = makeStyles((theme) => ({
 	carouselSubtitle: {
 		fontSize: '1.5rem',
 		[theme.breakpoints.down('md')]: {
-			fontSize: '1rem',
+			fontSize: '1.3rem',
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1.1rem',
 		},
 	},
 	linkContainer: {
@@ -42,14 +46,22 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	shopLink: {
 		fontSize: '1.5rem',
+		color: 'white',
 		[theme.breakpoints.down('md')]: {
-			fontSize: '1rem',
+			fontSize: '1.3rem',
 		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1.1rem',
+		},
+	},
+	linkText: {
+		margin: 0,
 	},
 	options: {
 		flexGrow: 1,
+		padding: '100px 0 200px',
 	},
 	contentWrapper: {
-		// padding: '2.5rem 200px',
+		padding: '5rem 200px',
 	},
 }));

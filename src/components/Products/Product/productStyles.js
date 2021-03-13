@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
 	root: {
 		maxWidth: '100%',
 	},
@@ -12,20 +12,11 @@ export default makeStyles(() => ({
 		textDecoration: 'none',
 		color: 'black',
 	},
-	productImage: {
-		maxWidth: '298px',
-		maxHeight: '450px',
-		position: 'absolute',
-		transition: 'opacity 0.25s',
-		cursor: 'pointer',
-		'&:hover': {
-			opacity: 0,
-			transitionTimingFunction: 'ease-in',
-		},
-	},
 	cardContent: {
 		maxTop: '20px',
 		textAlign: 'center',
+		textDecoration: 'none',
+		color: 'black',
 	},
 	productName: {
 		fontFamily: 'Philosopher, sans-serif',
@@ -33,14 +24,55 @@ export default makeStyles(() => ({
 	price: {
 		fontFamily: 'Philosopher, sans-serif',
 	},
-	productImageOverlay: {
-		maxWidth: '298px',
-		maxHeight: '450px',
+	productImage: {
+		width: '300px',
+		height: '450px',
+		position: 'absolute',
+		transition: 'opacity 0.25s',
 		cursor: 'pointer',
 		'&:hover': {
-			maxWidth: '298px',
-			maxHeight: '450px',
+			opacity: 0,
+			transitionTimingFunction: 'ease-in',
+		},
+		[theme.breakpoints.down('sm')]: {
+			width: '200px',
+			height: '350px',
+			cursor: 'pointer',
+			'&:hover': {
+				opacity: 0,
+				transitionTimingFunction: 'ease-in',
+			},
+		},
+	},
+	onlyOneProductImage: {
+		width: '300px',
+		height: '450px',
+		transition: 'opacity 0.25s',
+		cursor: 'pointer',
+		[theme.breakpoints.down('sm')]: {
+			width: '200px',
+			height: '350px',
+			cursor: 'pointer',
+		},
+	},
+	productImageOverlay: {
+		width: '300px',
+		height: '450px',
+		cursor: 'pointer',
+		'&:hover': {
+			width: '300px',
+			height: '450px',
 			margin: '20px',
+		},
+		[theme.breakpoints.down('sm')]: {
+			width: '200px',
+			height: '350px',
+			cursor: 'pointer',
+			'&:hover': {
+				width: '200px',
+				height: '350px',
+				margin: '20px',
+			},
 		},
 	},
 	quickViewDiv: {

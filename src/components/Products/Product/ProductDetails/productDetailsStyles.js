@@ -29,6 +29,10 @@ export const useStyles = makeStyles((theme) => ({
 	displayContainer: {
 		maxWidth: '450px',
 		height: '600px',
+		[theme.breakpoints.down('sm')]: {
+			maxWidth: '350px',
+			height: '500px',
+		},
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -36,11 +40,18 @@ export const useStyles = makeStyles((theme) => ({
 	productImage: {
 		maxWidth: '450px',
 		height: '600px',
+		[theme.breakpoints.down('sm')]: {
+			maxWidth: '350px',
+			height: '500px',
+		},
 	},
 	thumbnailContainer: {
 		'&:hover': {
 			border: '1px solid lightblue',
 		},
+	},
+	productDetailsText: {
+		maxWidth: '450px',
 	},
 	rightSection: {
 		display: 'flex',

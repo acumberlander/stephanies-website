@@ -6,6 +6,7 @@ import {
 	Drawer,
 	Link,
 	MenuItem,
+	Divider,
 } from '@material-ui/core';
 import { ShoppingCart } from '@material-ui/icons';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -21,13 +22,25 @@ const MobileView = ({
 	const handleDrawerOpen = () => setDrawerOpen(true);
 	const handleDrawerClose = () => setDrawerOpen(false);
 
-	const { menuButton, toolbar, cartIcon, drawerContainer } = useStyles();
+	const toggleDrawer = () => {
+		setDrawerOpen(!drawerOpen);
+	};
+
+	const {
+		menuButton,
+		toolbar,
+		cartIcon,
+		drawerContainer,
+		cartButton,
+		drawerContent,
+	} = useStyles();
 
 	return (
 		<Toolbar className={toolbar}>
 			<div>{stephaniesLogo}</div>
 			<div>
 				<IconButton
+					className={cartButton}
 					component={RouterLink}
 					to="/cart"
 					aria-label="Show cart items"
@@ -51,15 +64,17 @@ const MobileView = ({
 			</div>
 
 			<Drawer
-				{...{
-					anchor: 'right',
-					open: drawerOpen,
-					onClose: handleDrawerClose,
-				}}
+				className={drawerContainer}
+				anchor="right"
+				open={drawerOpen}
+				onClose={handleDrawerClose}
 			>
-				<div className={drawerContainer}>
+				<div className={drawerContent}>
+					<MenuItem onClick={toggleDrawer}>Log In</MenuItem>
+					<Divider></Divider>
 					<Link
 						component={RouterLink}
+						onClick={toggleDrawer}
 						to="/"
 						color="inherit"
 						style={{ textDecoration: 'none' }}
@@ -69,12 +84,23 @@ const MobileView = ({
 					</Link>
 					<Link
 						component={RouterLink}
-						to="/shop"
+						onClick={toggleDrawer}
+						to="/shop/all-products"
 						color="inherit"
 						style={{ textDecoration: 'none' }}
 						key="Shop"
 					>
 						<MenuItem>Shop</MenuItem>
+					</Link>
+					<Link
+						component={RouterLink}
+						onClick={toggleDrawer}
+						to="/about"
+						color="inherit"
+						style={{ textDecoration: 'none' }}
+						key="About"
+					>
+						<MenuItem>About</MenuItem>
 					</Link>
 				</div>
 			</Drawer>

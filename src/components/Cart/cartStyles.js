@@ -14,6 +14,7 @@ export default makeStyles((theme) => ({
 	},
 	emptyCartContainer: {
 		marginTop: 200,
+		marginBottom: 36,
 	},
 	cartItemsContainer: {
 		width: '75%',
@@ -33,14 +34,12 @@ export default makeStyles((theme) => ({
 		[theme.breakpoints.down('xs')]: {
 			marginBottom: '5px',
 		},
-		[theme.breakpoints.up('xs')]: {
-			marginRight: '20px',
-		},
 	},
 	checkoutButton: {
 		width: '100%',
 		[theme.breakpoints.down('md')]: {
 			width: '25%',
+			minWidth: 150,
 		},
 	},
 	link: {
@@ -66,5 +65,9 @@ export default makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		marginBottom: 20,
+	},
+	divider: {
+		backgroundColor: 'black',
+		marginBottom: 10,
 	},
 }));
