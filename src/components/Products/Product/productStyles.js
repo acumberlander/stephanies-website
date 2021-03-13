@@ -34,26 +34,26 @@ export default makeStyles((theme) => ({
 			opacity: 0,
 			transitionTimingFunction: 'ease-in',
 		},
-		[theme.breakpoints.down('sm')]: {
-			width: '200px',
-			height: '350px',
-			cursor: 'pointer',
-			'&:hover': {
-				opacity: 0,
-				transitionTimingFunction: 'ease-in',
-			},
-		},
+		// [theme.breakpoints.down('sm')]: {
+		// 	width: '200px',
+		// 	height: '350px',
+		// 	cursor: 'pointer',
+		// 	'&:hover': {
+		// 		opacity: 0,
+		// 		transitionTimingFunction: 'ease-in',
+		// 	},
+		// },
 	},
 	onlyOneProductImage: {
 		width: '300px',
 		height: '450px',
 		transition: 'opacity 0.25s',
 		cursor: 'pointer',
-		[theme.breakpoints.down('sm')]: {
-			width: '200px',
-			height: '350px',
-			cursor: 'pointer',
-		},
+		// [theme.breakpoints.down('sm')]: {
+		// 	width: '200px',
+		// 	height: '350px',
+		// 	cursor: 'pointer',
+		// },
 	},
 	productImageOverlay: {
 		width: '300px',
@@ -64,16 +64,16 @@ export default makeStyles((theme) => ({
 			height: '450px',
 			margin: '20px',
 		},
-		[theme.breakpoints.down('sm')]: {
-			width: '200px',
-			height: '350px',
-			cursor: 'pointer',
-			'&:hover': {
-				width: '200px',
-				height: '350px',
-				margin: '20px',
-			},
-		},
+		// [theme.breakpoints.down('sm')]: {
+		// 	width: '200px',
+		// 	height: '350px',
+		// 	cursor: 'pointer',
+		// 	'&:hover': {
+		// 		width: '200px',
+		// 		height: '350px',
+		// 		margin: '20px',
+		// 	},
+		// },
 	},
 	quickViewDiv: {
 		display: 'none',
