@@ -22,8 +22,8 @@ const MobileView = ({
 	const handleDrawerOpen = () => setDrawerOpen(true);
 	const handleDrawerClose = () => setDrawerOpen(false);
 
-	const openModal = () => {
-		handleDrawerClose();
+	const toggleDrawer = () => {
+		setDrawerOpen(!drawerOpen);
 	};
 
 	const {
@@ -32,6 +32,7 @@ const MobileView = ({
 		cartIcon,
 		drawerContainer,
 		cartButton,
+		drawerContent,
 	} = useStyles();
 
 	return (
@@ -63,17 +64,17 @@ const MobileView = ({
 			</div>
 
 			<Drawer
-				{...{
-					anchor: 'right',
-					open: drawerOpen,
-					onClose: handleDrawerClose,
-				}}
+				className={drawerContainer}
+				anchor="right"
+				open={drawerOpen}
+				onClose={handleDrawerClose}
 			>
-				<div className={drawerContainer}>
-					<MenuItem onClick={openModal}>Log In</MenuItem>
+				<div className={drawerContent}>
+					<MenuItem onClick={toggleDrawer}>Log In</MenuItem>
 					<Divider></Divider>
 					<Link
 						component={RouterLink}
+						onClick={toggleDrawer}
 						to="/"
 						color="inherit"
 						style={{ textDecoration: 'none' }}
@@ -83,12 +84,23 @@ const MobileView = ({
 					</Link>
 					<Link
 						component={RouterLink}
-						to="/shop"
+						onClick={toggleDrawer}
+						to="/shop/all-products"
 						color="inherit"
 						style={{ textDecoration: 'none' }}
 						key="Shop"
 					>
 						<MenuItem>Shop</MenuItem>
+					</Link>
+					<Link
+						component={RouterLink}
+						onClick={toggleDrawer}
+						to="/about"
+						color="inherit"
+						style={{ textDecoration: 'none' }}
+						key="About"
+					>
+						<MenuItem>About</MenuItem>
 					</Link>
 				</div>
 			</Drawer>

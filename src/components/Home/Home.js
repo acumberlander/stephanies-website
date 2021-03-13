@@ -48,9 +48,9 @@ const Home = () => {
 					/>
 					<HomeCard
 						style={{ objectPosition: '30%' }}
-						page="t-shirts"
+						page="tees"
 						image={teePic}
-						category="T-Shirts"
+						category="Tees"
 					/>
 					<HomeCard page="hoodies" image={accessoryPic} category="Hoodies" />
 				</Grid>

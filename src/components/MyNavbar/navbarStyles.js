@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
 	navContainer: {
 		display: 'flex',
 		backgroundColor: '#400CCC',
@@ -42,7 +42,11 @@ export default makeStyles(() => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 	},
-	drawerContainer: {
+	drawerContent: {
 		padding: '20px 30px',
+		width: 200,
 	},
+	// drawerContainer: {
+	// 	width: 150,
+	// },
 }));

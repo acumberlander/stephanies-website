@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Typography, Button, Grid } from '@material-ui/core';
+import { Container, Typography, Button, Divider } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 import useStyles from './cartStyles';
@@ -34,7 +34,7 @@ const Cart = () => {
 			<Typography className={classes.title} variant="h6">
 				My Cart
 			</Typography>
-			<hr />
+			<Divider className={classes.divider} />
 			<div>
 				{cart.line_items.map((item) => (
 					<CartItem key={item.id} item={item} />
@@ -61,13 +61,13 @@ const Cart = () => {
 			<Typography className={classes.title} variant="h6">
 				Order Summary
 			</Typography>
-			<hr />
+			<Divider className={classes.divider} />
 			<div className={classes.subtotalContainer}>
 				<Typography>Subtotal</Typography>
 				<Typography>{cart.subtotal.formatted_with_symbol}</Typography>
 			</div>
 			<Typography>Estimate Shipping</Typography>
-			<hr />
+			<Divider className={classes.divider} />
 			<div className={classes.totalContainer}>
 				<Typography>Total</Typography>
 				{/* TODO Need to add logic that accounts for shipping and other costs/discounts (taxes or discount codes) */}

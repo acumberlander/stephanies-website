@@ -6,14 +6,6 @@ import { useSelector } from 'react-redux';
 import { useStyles } from './shopStyles.js';
 import Product from '../Products/Product/Product.jsx';
 
-// TODO need to filter based on routing instead of having multiple components for different product categories
-const paramOptions = {
-	glassware: 'Glassware',
-	hoodies: 'Hoodies',
-	watches: 'Watches',
-	ascots: 'Ascots',
-};
-
 export default function Shop() {
 	const classes = useStyles();
 	const allProducts = useSelector((state) => state.products);
@@ -21,14 +13,8 @@ export default function Shop() {
 
 	let params = useParams();
 
-	const headerName = () => {
-		const key = Object.keys(paramOptions).find((p) => {
-			return p === params.category;
-		});
-		const header = paramOptions[key];
-
-		return header === undefined ? 'All Products' : header;
-	};
+	const headerName =
+		params.category.charAt(0).toUpperCase() + params.category.slice(1);
 
 	useEffect(() => {
 		const data = allProducts.filter((product) => {
@@ -55,7 +41,7 @@ export default function Shop() {
 						className={classes.header}
 						gutterBottom
 					>
-						{headerName()}
+						{headerName}
 					</Typography>
 				</Container>
 			</div>

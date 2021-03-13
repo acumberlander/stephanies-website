@@ -9,7 +9,13 @@ const MyGallery = () => {
 	return (
 		<div className={classes.galleryContainer}>
 			<Typography className={classes.galleryHeader} variant="h3">
-				Follow Us @sexesbystephanie{' '}
+				Follow Us{' '}
+				<a
+					className={classes.instaTag}
+					href="https://www.instagram.com/sexesbystephanie/"
+				>
+					@sexesbystephanie
+				</a>
 			</Typography>
 			<Gallery photos={photos} />
 		</div>
