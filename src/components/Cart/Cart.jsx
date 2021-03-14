@@ -20,7 +20,7 @@ const Cart = () => {
 		<div className={classes.emptyCartContainer}>
 			<Typography variant="subtitle1">
 				You have no items in your shopping cart,{' '}
-				<Link to="/shop" className={classes.link}>
+				<Link to="/shop/all-products" className={classes.link}>
 					start adding some
 				</Link>
 				!
@@ -81,7 +81,6 @@ const Cart = () => {
 					size="large"
 					type="button"
 					variant="contained"
-					color="primary"
 				>
 					Checkout
 				</Button>

@@ -30,9 +30,16 @@ export const useStyles = makeStyles((theme) => ({
 			fontWeight: 'normal',
 			margin: 0,
 		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '8rem',
+			fontWeight: 'normal',
+			margin: 0,
+		},
 	},
 	carouselSubtitle: {
 		fontSize: '1.5rem',
+		marginTop: 0,
+		marginBottom: '90px',
 		[theme.breakpoints.down('md')]: {
 			fontSize: '1.3rem',
 		},
@@ -63,5 +70,47 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	contentWrapper: {
 		padding: '5rem 200px',
+	},
+	preHeader: {
+		marginBottom: 100,
+		fontFamily: 'Philosopher, sans-serif',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: 26,
+		},
+	},
+	discountHeader: {
+		marginBottom: 100,
+		fontFamily: 'Philosopher, sans-serif',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: 40,
+		},
+	},
+	discountContainer: {
+		textAlign: 'center',
+		padding: '150px 0',
+		backgroundColor: '#cc34ab',
+		color: 'white',
+	},
+	inputAndButton: {
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	joinButton: {
+		width: 150,
+		color: 'white',
+		fontFamily: 'Philosopher, sans-serif',
+		fontSize: 20,
+	},
+	emailInput: {
+		width: 500,
+		[theme.breakpoints.down('sm')]: {
+			width: 300,
+		},
+		marginBottom: 35,
+		borderBottom: `2px solid white`,
+		padding: '0 15px',
+		color: 'white',
 	},
 }));

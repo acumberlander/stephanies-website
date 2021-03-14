@@ -46,9 +46,6 @@ const App = () => {
 				<Route exact path="/">
 					<Home />
 				</Route>
-				{/* <Route exact path="/shop">
-					<Shop />
-				</Route> */}
 				<Route exact path="/shop/:category">
 					<Shop />
 				</Route>

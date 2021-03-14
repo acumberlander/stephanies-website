@@ -37,7 +37,7 @@ const MobileView = ({
 
 	return (
 		<Toolbar className={toolbar}>
-			<div>{stephaniesLogo}</div>
+			{stephaniesLogo}
 			<div>
 				<IconButton
 					className={cartButton}
@@ -51,13 +51,11 @@ const MobileView = ({
 					</Badge>
 				</IconButton>
 				<IconButton
-					{...{
-						edge: 'start',
-						color: 'inherit',
-						'aria-label': 'menu',
-						'aria-haspopup': 'true',
-						onClick: handleDrawerOpen,
-					}}
+					edge="start"
+					color="inherit"
+					aria-label="menu"
+					aria-haspopup="true"
+					onClick={handleDrawerOpen}
 				>
 					<MenuIcon className={menuButton} />
 				</IconButton>

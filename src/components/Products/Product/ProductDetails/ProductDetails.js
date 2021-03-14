@@ -39,9 +39,13 @@ const ProductDetails = () => {
 	};
 
 	const handleAddToCart = () => {
-		dispatch(
-			addToCart(product.id, quantity, product.variant_groups[0].options[size])
-		);
+		if (product.variant_groups[0]) {
+			dispatch(
+				addToCart(product.id, quantity, product.variant_groups[0].options[size])
+			);
+		} else {
+			dispatch(addToCart(product.id, quantity));
+		}
 		setQuantity(1);
 	};
 

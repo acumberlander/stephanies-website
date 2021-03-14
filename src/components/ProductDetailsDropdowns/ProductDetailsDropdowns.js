@@ -19,10 +19,12 @@ const ProductDetailsDropdowns = () => {
 					aria-controls="panel1a-content"
 					id="panel1a-header"
 				>
-					<Typography className={classes.heading}>Product Info</Typography>
+					<Typography className={classes.heading} variant="h6">
+						Product Info
+					</Typography>
 				</AccordionSummary>
 				<AccordionDetails>
-					<Typography>
+					<Typography className={classes.text}>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
 						malesuada lacus ex, sit amet blandit leo lobortis eget.
 					</Typography>
@@ -35,12 +37,12 @@ const ProductDetailsDropdowns = () => {
 					aria-controls="panel1a-content"
 					id="panel1a-header"
 				>
-					<Typography className={classes.heading}>
+					<Typography className={classes.heading} variant="h6">
 						Return & Refund Policy
 					</Typography>
 				</AccordionSummary>
 				<AccordionDetails>
-					<Typography>
+					<Typography className={classes.text}>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
 						malesuada lacus ex, sit amet blandit leo lobortis eget.
 					</Typography>
@@ -53,10 +55,12 @@ const ProductDetailsDropdowns = () => {
 					aria-controls="panel1a-content"
 					id="panel1a-header"
 				>
-					<Typography className={classes.heading}>Shipping Info</Typography>
+					<Typography className={classes.heading} variant="h6">
+						Shipping Info
+					</Typography>
 				</AccordionSummary>
 				<AccordionDetails>
-					<Typography>
+					<Typography className={classes.text}>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
 						malesuada lacus ex, sit amet blandit leo lobortis eget.
 					</Typography>

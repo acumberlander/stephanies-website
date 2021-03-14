@@ -31,12 +31,15 @@ export default makeStyles((theme) => ({
 	},
 	emptyButton: {
 		minWidth: '25%',
+		backgroundColor: '#cc34ab',
 		[theme.breakpoints.down('xs')]: {
 			marginBottom: '5px',
 		},
 	},
 	checkoutButton: {
 		width: '100%',
+		backgroundColor: '#cc34ab',
+		color: 'white',
 		[theme.breakpoints.down('md')]: {
 			width: '25%',
 			minWidth: 150,

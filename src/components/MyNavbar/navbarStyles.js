@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 export default makeStyles((theme) => ({
 	navContainer: {
 		display: 'flex',
-		backgroundColor: '#400CCC',
+		backgroundColor: '#cc34ab',
 		paddingRight: '10px',
 		paddingLeft: '118px',
 		border: '1px solid black',

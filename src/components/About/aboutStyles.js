@@ -7,7 +7,7 @@ export const useStyles = makeStyles((theme) => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 		height: 'auto',
-		paddingTop: 100,
+		padding: '100px 50px 0',
 		fontFamily: 'Philosopher, sans-serif',
 	},
 	imageAndTextContainer: {
@@ -31,9 +31,19 @@ export const useStyles = makeStyles((theme) => ({
 		textAlign: 'center',
 		margin: 10,
 	},
+	adamsSlogan: {
+		fontFamily: 'Philosopher, sans-serif',
+		textAlign: 'center',
+		margin: 10,
+		color: '#cc34ab',
+	},
+	aboutHeader: {
+		color: '#cc34ab',
+	},
 	shopLink: {
 		textDecoration: 'none',
 		margin: '90px 0 100px',
+		color: '#cc34ab',
 	},
 	linkText: {
 		margin: 0,

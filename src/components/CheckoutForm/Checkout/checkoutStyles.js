@@ -10,10 +10,12 @@ export default makeStyles((theme) => ({
 		width: 'auto',
 		marginLeft: theme.spacing(2),
 		marginRight: theme.spacing(2),
+		marginBottom: '700px',
 		[theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
 			width: 600,
 			marginLeft: 'auto',
 			marginRight: 'auto',
+			marginBottom: '287px',
 		},
 	},
 	paper: {
