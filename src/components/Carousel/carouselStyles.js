@@ -1,6 +1,10 @@
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
+	heroCarousel: {
+		position: 'relative',
+		zIndex: -1,
+	},
 	carouselImage: {
 		objectFit: 'cover',
 	},

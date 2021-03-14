@@ -6,6 +6,11 @@ import { Link } from 'react-router-dom';
 
 const About = () => {
 	const classes = useStyles();
+
+	if (window.scrollY !== 0) {
+		window.scrollTo(0, 0);
+	}
+
 	return (
 		<div className={classes.aboutContainer}>
 			<div className={classes.imageAndTextContainer}>
@@ -17,7 +22,7 @@ const About = () => {
 						alt="Stephanie Wilbourn"
 					/>
 				</div>
-				<div style={{ border: '6px solid #cc34ab', padding: 30 }}>
+				<div className={classes.textBorder}>
 					<Typography className={classes.aboutText}>
 						Stephanie Wilbourn, a transcendent of a legacy of fashion designers
 						and seamstresses, helms from Jackson, TN. This renowned legacy

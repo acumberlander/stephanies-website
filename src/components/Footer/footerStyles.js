@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import { colors } from '../../CSS/colors';
 
 export const useStyles = makeStyles((theme) => ({
 	footerContainer: {
@@ -44,15 +45,22 @@ export const useStyles = makeStyles((theme) => ({
 		height: 15,
 		width: 15,
 	},
+	hidden: {
+		display: 'none',
+	},
 	backToTop: {
-		backgroundColor: 'white',
-		height: 50,
-		width: 50,
+		backgroundColor: colors.primary,
+		color: 'white',
+		height: 65,
+		width: 65,
 		margin: '10px 10px 15px',
 		borderRadius: '50%',
 		cursor: 'pointer',
+		position: 'fixed',
+		bottom: 100,
+		border: '1px solid white',
 	},
 	arrow: {
-		fontSize: 50,
+		fontSize: 65,
 	},
 }));

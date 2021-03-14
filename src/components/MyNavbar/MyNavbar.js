@@ -1,32 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import {
 	AppBar,
-	Typography,
 	Toolbar,
 	Button,
 	Badge,
 	IconButton,
+	Input,
+	Divider,
+	Typography,
 } from '@material-ui/core';
+import Modal from 'react-modal';
 import { useSelector } from 'react-redux';
 import MobileView from './Views/MobileView';
 import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingCart } from '@material-ui/icons';
-import myLogo from '../../assets/logos/logo-6.jpg';
+import myLogo from '../../assets/logos/logo-white.png';
 import useStyles from './navbarStyles';
 
 const MyNavbar = () => {
 	const {
 		navContainer,
-		logo,
+		modal,
 		logoLink,
-		cartButton,
+		myNavbar,
 		toolbar,
 		cartIcon,
 		navButton,
+		modalOverlay,
+		loginContainer,
+		modalContent,
+		modalHeader,
+		lineBreak,
+		loginButton,
+		signUpText,
+		modalText,
 	} = useStyles();
 	const totalItems = useSelector((state) => state.cart.total_items);
 	const [mobileView, setMobileView] = useState(false);
 	const [drawerOpen, setDrawerOpen] = useState(false);
+	const [modalOpen, setmodalOpen] = useState(false);
 
 	useEffect(() => {
 		const setResponsiveness = () => {
@@ -51,7 +63,29 @@ const MyNavbar = () => {
 
 	return (
 		<div className={navContainer}>
-			<AppBar style={{ backgroundColor: '#cc34ab' }}>
+			<Modal
+				isOpen={modalOpen}
+				onRequestClose={() => setmodalOpen(false)}
+				className={modal}
+				ariaHideApp={false}
+				overlayClassName={modalOverlay}
+				shouldCloseOnOverlayClick={true}
+			>
+				<div className={modalContent}>
+					<h2 className={modalHeader}>Log In</h2>
+					<div className={loginContainer}>
+						<Input placeholder="email" />
+						<Input placeholder="password" />
+					</div>
+					<Button variant="contained" className={loginButton}>
+						Login
+					</Button>
+					<Divider className={lineBreak} />
+					<Typography className={modalText}>Don't have an account?</Typography>
+					<Typography className={signUpText}>Sign up now</Typography>
+				</div>
+			</Modal>
+			<AppBar className={myNavbar}>
 				{mobileView ? (
 					<MobileView
 						stephaniesLogo={stephaniesLogo}
@@ -98,6 +132,7 @@ const MyNavbar = () => {
 								color="inherit"
 								component={RouterLink}
 								className={navButton}
+								onClick={() => setmodalOpen(!modalOpen)}
 							>
 								Log In
 							</Button>

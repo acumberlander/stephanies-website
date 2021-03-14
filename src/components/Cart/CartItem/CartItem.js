@@ -1,6 +1,5 @@
 import React from 'react';
 import { Typography, Button, Container } from '@material-ui/core';
-import hoodie from '../../../assets/sexes-hoodie.jpg';
 import { updateCartQty } from '../../../actions/cart';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';

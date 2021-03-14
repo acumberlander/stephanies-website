@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { colors } from '../../CSS/colors';
 
 export const useStyles = makeStyles((theme) => ({
 	shopContainer: {
@@ -6,7 +7,7 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	header: {
 		fontFamily: 'Philosopher, sans-serif',
-		color: '#cc34ab',
+		color: colors.primary,
 	},
 	icon: {
 		marginRight: theme.spacing(2),

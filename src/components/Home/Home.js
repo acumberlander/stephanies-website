@@ -3,6 +3,7 @@ import Carousel from '../Carousel/Carousel';
 import { Link } from 'react-router-dom';
 import { useStyles } from './homeStyles';
 import { Grid, Fade, Typography, Input, Button } from '@material-ui/core';
+import whiteLogo from '../../assets/logos/logo-white.png';
 import accessoryPic from '../../assets/accessories/leather-necklace.jpg';
 import glasswarePic from '../../assets/glassware/steph-drinking.jpg';
 import teePic from '../../assets/tees/tee-category.png';
@@ -14,14 +15,19 @@ import HomeCard from './HomeCard/HomeCard';
 const Home = () => {
 	const classes = useStyles();
 
+	if (window.scrollY !== 0) {
+		window.scrollTo({ left: 0, top: 0, behavior: 'auto' });
+	}
+
 	return (
 		<div className={classes.container}>
 			<div className={classes.carouselContainer}>
 				<div className={classes.carouselText}>
-					<h1 className={classes.carouselHeader}>SEXES</h1>
+					{/* <h1 className={classes.carouselHeader}>SEXES</h1> */}
+					<img style={{ width: 500, height: 500 }} src={whiteLogo} alt="logo" />
 					<h3 className={classes.carouselSubtitle}>By Stephanie</h3>
 					<div className={classes.linkContainer}>
-						<Link className={classes.shopLink} to={'/shop/all-products'}>
+						<Link className={classes.shopLink} to="/shop/all-products">
 							<h3 className={classes.linkText}>Shop Now</h3>
 						</Link>
 					</div>

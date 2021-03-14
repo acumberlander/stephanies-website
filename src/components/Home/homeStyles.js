@@ -1,8 +1,9 @@
 import { makeStyles } from '@material-ui/core';
+import { colors } from '../../CSS/colors';
 
 export const useStyles = makeStyles((theme) => ({
 	container: {
-		postion: 'relative',
+		// postion: 'relative',
 		minHeight: '100vh',
 		width: '100%',
 	},
@@ -12,12 +13,13 @@ export const useStyles = makeStyles((theme) => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		position: 'relative',
+		zIndex: 1,
 	},
 	carouselText: {
 		textAlign: 'center',
 		position: 'absolute',
 		zIndex: 100,
-		color: 'white',
+		color: colors.white,
 		fontFamily: 'Philosopher, sans-serif',
 		marginBottom: 200,
 	},
@@ -54,6 +56,7 @@ export const useStyles = makeStyles((theme) => ({
 	shopLink: {
 		fontSize: '1.5rem',
 		color: 'white',
+		cursor: 'pointer',
 		[theme.breakpoints.down('md')]: {
 			fontSize: '1.3rem',
 		},
@@ -88,8 +91,8 @@ export const useStyles = makeStyles((theme) => ({
 	discountContainer: {
 		textAlign: 'center',
 		padding: '150px 0',
-		backgroundColor: '#cc34ab',
-		color: 'white',
+		backgroundColor: colors.primary,
+		color: colors.white,
 	},
 	inputAndButton: {
 		display: 'flex',
@@ -109,7 +112,7 @@ export const useStyles = makeStyles((theme) => ({
 			width: 300,
 		},
 		marginBottom: 35,
-		borderBottom: `2px solid white`,
+		borderBottom: `2px solid ${colors.white}`,
 		padding: '0 15px',
 		color: 'white',
 	},
