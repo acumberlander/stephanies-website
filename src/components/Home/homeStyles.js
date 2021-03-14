@@ -88,7 +88,7 @@ export const useStyles = makeStyles((theme) => ({
 	discountContainer: {
 		textAlign: 'center',
 		padding: '150px 0',
-		backgroundColor: '#3f51b5',
+		backgroundColor: '#cc34ab',
 		color: 'white',
 	},
 	inputAndButton: {

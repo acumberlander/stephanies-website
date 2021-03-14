@@ -81,7 +81,6 @@ const Cart = () => {
 					size="large"
 					type="button"
 					variant="contained"
-					color="primary"
 				>
 					Checkout
 				</Button>

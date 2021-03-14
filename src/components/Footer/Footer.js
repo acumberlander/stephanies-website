@@ -1,7 +1,9 @@
 import React from 'react';
-import instaIcon from '../../assets/instagram.png';
-import facebookIcon from '../../assets/facebook.png';
-import { Typography } from '@material-ui/core';
+import instaIcon from '../../assets/instagram-5-256.png';
+import facebookIcon from '../../assets/facebook-4-256.png';
+import trademark from '../../assets/icons8-trademark-52.png';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import logo from '../../assets/logos/logo-2.png';
 import { useStyles } from './footerStyles';
 
 const Footer = () => {
@@ -9,6 +11,10 @@ const Footer = () => {
 
 	return (
 		<footer className={classes.footerContainer}>
+			<div>
+				<img className={classes.logo} src={logo} alt="logo" />
+				<img className={classes.trademark} src={trademark} alt="trademark" />
+			</div>
 			<div className={classes.socialMedia}>
 				<a
 					className={classes.footerLink}
@@ -30,6 +36,9 @@ const Footer = () => {
 				>
 					<img className={classes.socialIcon} src={instaIcon} alt="instagram" />
 				</a>
+				<div className={classes.backToTop}>
+					<ExpandLessIcon className={classes.arrow} />
+				</div>
 			</div>
 		</footer>
 	);

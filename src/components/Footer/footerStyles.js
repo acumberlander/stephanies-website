@@ -4,20 +4,21 @@ export const useStyles = makeStyles((theme) => ({
 	footerContainer: {
 		textDecoration: 'none',
 		width: 'auto',
-		backgroundColor: 'lightgray',
+		backgroundColor: 'black',
 		padding: '40px 40px 20px',
 		display: 'flex',
+		justifyContent: 'center',
 		flexWrap: 'wrap',
 		'@media (max-width: 992px)': {
 			width: 'auto',
 		},
 	},
-
 	socialMedia: {
 		display: 'flex',
 		width: '100%',
 		justifyContent: 'flex-end',
 		alignSelf: 'flex-end',
+		alignItems: 'center',
 	},
 	socialIcon: {
 		width: '50px',
@@ -33,5 +34,25 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	footerLink: {
 		textDecoration: 'none',
+	},
+	logo: {
+		marginTop: '40px',
+		height: 400,
+		width: 400,
+	},
+	trademark: {
+		height: 15,
+		width: 15,
+	},
+	backToTop: {
+		backgroundColor: 'white',
+		height: 50,
+		width: 50,
+		margin: '10px 10px 15px',
+		borderRadius: '50%',
+		cursor: 'pointer',
+	},
+	arrow: {
+		fontSize: 50,
 	},
 }));

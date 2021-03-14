@@ -6,6 +6,7 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	header: {
 		fontFamily: 'Philosopher, sans-serif',
+		color: '#cc34ab',
 	},
 	icon: {
 		marginRight: theme.spacing(2),

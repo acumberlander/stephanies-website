@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import MobileView from './Views/MobileView';
 import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingCart } from '@material-ui/icons';
+import myLogo from '../../assets/logos/logo-6.jpg';
 import useStyles from './navbarStyles';
 
 const MyNavbar = () => {
@@ -41,15 +42,16 @@ const MyNavbar = () => {
 
 	const stephaniesLogo = (
 		<RouterLink className={logoLink} to="/">
-			<Typography variant="h6" component="h1" className={logo}>
+			{/* <Typography variant="h6" component="h1" className={logo}>
 				Sexes
-			</Typography>
+			</Typography> */}
+			<img style={{ height: 50, width: 50 }} src={myLogo} alt="logo" />
 		</RouterLink>
 	);
 
 	return (
 		<div className={navContainer}>
-			<AppBar>
+			<AppBar style={{ backgroundColor: '#cc34ab' }}>
 				{mobileView ? (
 					<MobileView
 						stephaniesLogo={stephaniesLogo}

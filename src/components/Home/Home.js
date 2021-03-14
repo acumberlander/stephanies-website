@@ -6,7 +6,7 @@ import { Grid, Fade, Typography, Input, Button } from '@material-ui/core';
 import accessoryPic from '../../assets/accessories/leather-necklace.jpg';
 import glasswarePic from '../../assets/glassware/steph-drinking.jpg';
 import teePic from '../../assets/tees/tee-category.png';
-import steph1 from '../../assets/steph-laid.jpg';
+import steph1 from '../../assets/steph-1.jpg';
 
 import MyGallery from '../MyGallery/MyGallery';
 import HomeCard from './HomeCard/HomeCard';
@@ -47,7 +47,6 @@ const Home = () => {
 						category="Tees"
 					/>
 					<HomeCard
-						style={{ objectPosition: '10%' }}
 						page="adams-apple-ascots"
 						image={steph1}
 						topText="Adam's Apple"
@@ -61,7 +60,7 @@ const Home = () => {
 					Become a member and receive
 				</Typography>
 				<Typography className={classes.discountHeader} variant="h1">
-					15% OFF YOUR FIRST ORDER
+					10% OFF YOUR FIRST ORDER
 				</Typography>
 				<div className={classes.inputAndButton}>
 					<Input

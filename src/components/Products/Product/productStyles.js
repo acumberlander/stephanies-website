@@ -10,13 +10,13 @@ export default makeStyles((theme) => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		textDecoration: 'none',
-		color: 'black',
+		color: '#cc34ab',
 	},
 	cardContent: {
 		maxTop: '20px',
 		textAlign: 'center',
 		textDecoration: 'none',
-		color: 'black',
+		color: '#cc34ab',
 	},
 	productName: {
 		fontFamily: 'Philosopher, sans-serif',
