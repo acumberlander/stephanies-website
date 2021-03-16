@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import commerce from './lib/commerce';
 import { useDispatch, useSelector } from 'react-redux';
-import MyNavbar from './components/MyNavbar/MyNavbar';
-import Cart from './components/Cart/Cart';
-import Checkout from './components/CheckoutForm/Checkout/Checkout';
-import About from './components/About/About';
+import MyNavbar from './components/AppComponents/MyNavbar/MyNavbar';
+import Cart from './components/Pages/Cart/Cart';
+import Checkout from './components/Pages/Checkout/Checkout';
+import About from './components/Pages/About/About';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { fetchProducts } from './actions/products';
 import { fetchCart, refreshCart } from './actions/cart';
-import Home from './components/Home/Home';
-import Shop from './components/Shop/Shop';
-import Footer from './components/Footer/Footer';
-import ProductDetails from './components/Product/ProductDetails/ProductDetails';
+import Home from './components/Pages/Home/Home';
+import Shop from './components/Pages/Shop/Shop';
+import Footer from './components/AppComponents/Footer/Footer';
+import ProductDetails from './components/Pages/ProductDetails/ProductDetails';
 
 const App = () => {
 	const cart = useSelector((state) => state.cart);
