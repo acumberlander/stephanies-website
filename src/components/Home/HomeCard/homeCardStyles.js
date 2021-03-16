@@ -13,6 +13,7 @@ export const useStyles = makeStyles((theme) => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		color: 'white',
+		borderRadius: '0.3rem',
 	},
 	optionHeader: {
 		position: 'absolute',
@@ -23,6 +24,7 @@ export const useStyles = makeStyles((theme) => ({
 		width: '300px',
 		height: '600px',
 		objectFit: 'cover',
+		borderRadius: '0.3rem',
 		'@media (max-width: 600px)': {
 			width: '100%',
 			height: '600px',
@@ -34,6 +36,7 @@ export const useStyles = makeStyles((theme) => ({
 		height: '600px',
 		position: 'absolute',
 		opacity: '0.2',
+		borderRadius: '0.3rem',
 		'@media (max-width: 600px)': {
 			width: '100%',
 			height: '600px',

@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { colors } from '../../CSS/colors';
 
 export default makeStyles((theme) => ({
 	toolbar: theme.mixins.toolbar,
@@ -15,6 +16,9 @@ export default makeStyles((theme) => ({
 	emptyCartContainer: {
 		marginTop: 200,
 		marginBottom: 36,
+		display: 'flex',
+		justifyContent: 'center',
+		width: '100%',
 	},
 	cartItemsContainer: {
 		width: '75%',
@@ -31,15 +35,25 @@ export default makeStyles((theme) => ({
 	},
 	emptyButton: {
 		minWidth: '25%',
-		backgroundColor: '#cc34ab',
+		backgroundColor: colors.primary,
+		'&:hover': {
+			backgroundColor: 'red',
+		},
 		[theme.breakpoints.down('xs')]: {
 			marginBottom: '5px',
 		},
 	},
+	emptyText: {
+		fontFamily: 'Philosopher, sans-serif',
+		fontSize: 30,
+	},
 	checkoutButton: {
 		width: '100%',
-		backgroundColor: '#cc34ab',
+		backgroundColor: colors.primary,
 		color: 'white',
+		'&:hover': {
+			backgroundColor: colors.primaryHover,
+		},
 		[theme.breakpoints.down('md')]: {
 			width: '25%',
 			minWidth: 150,

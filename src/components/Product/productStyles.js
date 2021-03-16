@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { colors } from '../../CSS/colors';
 
 export default makeStyles((theme) => ({
 	root: {
@@ -10,13 +11,14 @@ export default makeStyles((theme) => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		textDecoration: 'none',
-		color: '#cc34ab',
+		color: colors.primary,
+		borderRadius: '0.3rem',
 	},
 	cardContent: {
 		maxTop: '20px',
 		textAlign: 'center',
 		textDecoration: 'none',
-		color: '#cc34ab',
+		color: colors.primary,
 	},
 	productName: {
 		fontFamily: 'Philosopher, sans-serif',
@@ -30,6 +32,7 @@ export default makeStyles((theme) => ({
 		position: 'absolute',
 		transition: 'opacity 0.25s',
 		cursor: 'pointer',
+		borderRadius: '0.3rem',
 		'&:hover': {
 			opacity: 0,
 			transitionTimingFunction: 'ease-in',
@@ -49,6 +52,7 @@ export default makeStyles((theme) => ({
 		height: '450px',
 		transition: 'opacity 0.25s',
 		cursor: 'pointer',
+		borderRadius: '0.3rem',
 		[theme.breakpoints.down('sm')]: {
 			width: '250px',
 			height: '400px',
@@ -59,6 +63,7 @@ export default makeStyles((theme) => ({
 		width: '300px',
 		height: '450px',
 		cursor: 'pointer',
+		borderRadius: '0.3rem',
 		'&:hover': {
 			width: '300px',
 			height: '450px',
@@ -93,5 +98,16 @@ export default makeStyles((theme) => ({
 	lineBreak: {
 		width: '100px',
 		border: '1px solid',
+	},
+	loadingSpinnerContainer: {
+		opacity: 1,
+		width: '300px',
+		height: '450px',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	hidden: {
+		display: 'none',
 	},
 }));

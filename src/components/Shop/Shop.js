@@ -4,12 +4,16 @@ import { useParams } from 'react-router-dom';
 import { Container, Typography, Fade } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { useStyles } from './shopStyles.js';
-import Product from '../Products/Product/Product.jsx';
+import Product from '../Product/Product.js';
 
 export default function Shop() {
 	const classes = useStyles();
 	const allProducts = useSelector((state) => state.products);
 	const [products, setProducts] = useState([]);
+
+	if (window.scrollY !== 0) {
+		window.scrollTo(0, 0);
+	}
 
 	let params = useParams();
 

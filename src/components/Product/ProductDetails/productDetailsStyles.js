@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import { colors } from '../../../CSS/colors';
 
 export const useStyles = makeStyles((theme) => ({
 	container: {
@@ -41,6 +42,7 @@ export const useStyles = makeStyles((theme) => ({
 	productImage: {
 		maxWidth: '450px',
 		height: '600px',
+		borderRadisu: '0.3rem',
 		[theme.breakpoints.down('sm')]: {
 			maxWidth: '350px',
 			height: '500px',
@@ -67,7 +69,11 @@ export const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(2, 6),
 	},
 	button: {
-		backgroundColor: theme.palette.primary,
+		backgroundColor: colors.primary,
+		color: colors.white,
+		'&:hover': {
+			backgroundColor: colors.primaryHover,
+		},
 	},
 	quantityHeader: {
 		marginTop: 20,

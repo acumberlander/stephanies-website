@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useStyles } from './productDetailsStyles';
-import commerce from '../../../../lib/commerce';
+import commerce from '../../../lib/commerce';
 import {
 	Container,
 	Select,
 	Typography,
 	MenuItem,
-	Input,
 	Button,
 	CircularProgress,
 	Fade,
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../../../actions/cart';
-// import { fetchProductById } from '../../../../actions/products';
+import { addToCart } from '../../../actions/cart';
 import PinterestIcon from '@material-ui/icons/Pinterest';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import productModel from '../../../Models/Product';
-import ProductDetailsDropdowns from '../../../ProductDetailsDropdowns/ProductDetailsDropdowns';
+import productModel from '../../Models/Product';
+import ProductDetailsDropdowns from '../../ProductDetailsDropdowns/ProductDetailsDropdowns';
 
 const ProductDetails = () => {
 	const [size, setSize] = useState('Medium');
@@ -28,6 +26,10 @@ const ProductDetails = () => {
 	const [displayedProduct, setDisplayedProduct] = useState('');
 	const dispatch = useDispatch();
 	const classes = useStyles();
+
+	if (window.scrollY !== 0) {
+		window.scrollTo(0, 0);
+	}
 
 	let params = useParams();
 
@@ -156,7 +158,6 @@ const ProductDetails = () => {
 						<Button
 							variant="contained"
 							className={classes.button}
-							color="primary"
 							onClick={handleAddToCart}
 						>
 							Add To Cart

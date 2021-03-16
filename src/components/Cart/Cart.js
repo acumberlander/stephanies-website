@@ -12,13 +12,17 @@ const Cart = () => {
 	const cart = useSelector((state) => state.cart);
 	const classes = useStyles();
 
+	if (window.scrollY !== 0) {
+		window.scrollTo(0, 0);
+	}
+
 	const handleEmptyCart = () => {
 		dispatch(emptyCart());
 	};
 
 	const EmptyCart = () => (
 		<div className={classes.emptyCartContainer}>
-			<Typography variant="subtitle1">
+			<Typography className={classes.emptyText}>
 				You have no items in your shopping cart,{' '}
 				<Link to="/shop/all-products" className={classes.link}>
 					start adding some

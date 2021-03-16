@@ -1,10 +1,11 @@
 import { makeStyles } from '@material-ui/core';
+import { colors } from '../../CSS/colors';
 
 export const useStyles = makeStyles((theme) => ({
 	galleryContainer: {},
 	instaTag: {
 		textDecoration: 'none',
-		color: 'black',
+		color: colors.primary,
 	},
 	galleryHeader: {
 		fontFamily: 'Philosopher, sans-serif',

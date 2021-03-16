@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import { colors } from '../../CSS/colors';
 
 export const useStyles = makeStyles((theme) => ({
 	aboutContainer: {
@@ -35,17 +36,21 @@ export const useStyles = makeStyles((theme) => ({
 		fontFamily: 'Philosopher, sans-serif',
 		textAlign: 'center',
 		margin: 10,
-		color: '#cc34ab',
+		color: colors.primary,
 	},
 	aboutHeader: {
-		color: '#cc34ab',
+		color: colors.primary,
 	},
 	shopLink: {
 		textDecoration: 'none',
 		margin: '90px 0 100px',
-		color: '#cc34ab',
+		color: colors.primary,
 	},
 	linkText: {
 		margin: 0,
+	},
+	textBorder: {
+		border: `6px solid ${colors.primary}`,
+		padding: 30,
 	},
 }));
