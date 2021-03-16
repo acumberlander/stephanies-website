@@ -1,16 +1,16 @@
 import React from 'react';
-import Carousel from '../Carousel/Carousel';
+import Carousel from '../../Carousel/Carousel';
 import { Link } from 'react-router-dom';
 import { useStyles } from './homeStyles';
 import { Grid, Fade, Typography, Input, Button } from '@material-ui/core';
-import whiteLogo from '../../assets/logos/logo-white.png';
-import accessoryPic from '../../assets/accessories/leather-necklace.jpg';
-import glasswarePic from '../../assets/glassware/steph-drinking.jpg';
-import teePic from '../../assets/tees/tee-category.png';
-import steph1 from '../../assets/steph-1.jpg';
+import whiteLogo from '../../../assets/logos/logo-white.png';
+import accessoryPic from '../../../assets/accessories/leather-necklace.jpg';
+import glasswarePic from '../../../assets/glassware/steph-drinking.jpg';
+import teePic from '../../../assets/tees/tee-category.png';
+import steph1 from '../../../assets/steph-1.jpg';
 
-import MyGallery from '../MyGallery/MyGallery';
-import HomeCard from './HomeCard/HomeCard';
+import MyGallery from '../../MyGallery/MyGallery';
+import HomeCard from '../../HomeCard/HomeCard';
 
 const Home = () => {
 	const classes = useStyles();
@@ -24,7 +24,7 @@ const Home = () => {
 			<div className={classes.carouselContainer}>
 				<div className={classes.carouselText}>
 					{/* <h1 className={classes.carouselHeader}>SEXES</h1> */}
-					<img style={{ width: 500, height: 500 }} src={whiteLogo} alt="logo" />
+					<img className={classes.homeLogo} src={whiteLogo} alt="logo" />
 					<h3 className={classes.carouselSubtitle}>By Stephanie</h3>
 					<div className={classes.linkContainer}>
 						<Link className={classes.shopLink} to="/shop/all-products">

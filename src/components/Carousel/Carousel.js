@@ -21,25 +21,18 @@ const Carousel = () => {
 			/>
 			<img
 				className={classes.carouselImage}
-				src={demo}
+				src={stephWithGlass}
 				alt="sexes pic"
 				width="100%"
 				height="100%"
 			/>
 			<img
 				className={classes.carouselImage}
-				src={stephWithGlass}
-				alt="sexes pic"
-				width="100%"
-				height="100%"
-			/>
-			{/* <img
-				className={classes.carouselImage}
 				src={stephLaid}
 				alt="sexes pic"
 				width="100%"
 				height="100%"
-			/> */}
+			/>
 			<img
 				className={classes.stephWithSmoke}
 				src={stephWithSmoke}

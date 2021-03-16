@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStyles } from './aboutStyles';
-import steph from '../../assets/tutu-1.jpeg';
+import steph from '../../../assets/tutu-1.jpeg';
 import { Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 

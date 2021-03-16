@@ -1,11 +1,23 @@
 import { makeStyles } from '@material-ui/core';
-import { colors } from '../../CSS/colors';
+import { colors } from '../../../CSS/colors';
 
 export const useStyles = makeStyles((theme) => ({
 	container: {
-		// postion: 'relative',
 		minHeight: '100vh',
 		width: '100%',
+	},
+	homeLogo: {
+		marginTop: 100,
+		width: 500,
+		height: 500,
+		[theme.breakpoints.down('lg')]: {
+			width: 450,
+			height: 450,
+		},
+		[theme.breakpoints.down('lg')]: {
+			width: 400,
+			height: 400,
+		},
 	},
 	carouselContainer: {
 		display: 'flex',

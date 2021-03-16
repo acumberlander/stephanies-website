@@ -16,7 +16,7 @@ import { addToCart } from '../../../actions/cart';
 import PinterestIcon from '@material-ui/icons/Pinterest';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import productModel from '../../Models/Product';
+import productModel from '../../../Models/Product';
 import ProductDetailsDropdowns from '../../ProductDetailsDropdowns/ProductDetailsDropdowns';
 
 const ProductDetails = () => {

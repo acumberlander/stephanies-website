@@ -13,8 +13,8 @@ import {
 import { Link, useHistory } from 'react-router-dom';
 
 import commerce from '../../../lib/commerce';
-import AddressForm from '../AddressForm';
-import PaymentForm from '../PaymentForm';
+import AddressForm from '../../CheckoutComponents/AddressForm';
+import PaymentForm from '../../CheckoutComponents/PaymentForm';
 import useStyles from './checkoutStyles';
 
 const steps = ['Shipping address', 'Payment details'];
