@@ -17,7 +17,7 @@ import PinterestIcon from '@material-ui/icons/Pinterest';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import productModel from '../../../Models/Product';
-import ProductDetailsDropdowns from '../../ProductDetailsDropdowns/ProductDetailsDropdowns';
+import ProductDetailsDropdowns from '../../ProductComponents/ProductDetailsDropdowns/ProductDetailsDropdowns';
 
 const ProductDetails = () => {
 	const [size, setSize] = useState('Medium');

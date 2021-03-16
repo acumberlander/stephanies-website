@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import MobileView from './Views/MobileView';
 import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingCart } from '@material-ui/icons';
-import myLogo from '../../assets/logos/logo-white.png';
+import myLogo from '../../../assets/logos/logo-white.png';
 import useStyles from './navbarStyles';
 
 const MyNavbar = () => {

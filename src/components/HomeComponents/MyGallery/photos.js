@@ -1,14 +1,14 @@
-import tee1 from '../../assets/tees/tee-1.jpg';
-import glassware1 from '../../assets/glassware/glassware-1.jpg';
-import stephAndGlass from '../../assets/glassware/steph-and-glassware.jpg';
-import accessory1 from '../../assets/accessories/accessory-1.jpg';
-import steph1 from '../../assets/steph-1.jpg';
-import steph2 from '../../assets/steph-2.jpg';
-import steph3 from '../../assets/steph-3.jpg';
-import steph4 from '../../assets/steph-pool.jpg';
-import steph5 from '../../assets/steph-laid.jpg';
-import steph6 from '../../assets/steph-smoke.jpg';
-import steph7 from '../../assets/steph-smile.jpg';
+import tee1 from '../../../assets/tees/tee-1.jpg';
+import glassware1 from '../../../assets/glassware/glassware-1.jpg';
+import stephAndGlass from '../../../assets/glassware/steph-and-glassware.jpg';
+import accessory1 from '../../../assets/accessories/accessory-1.jpg';
+import steph1 from '../../../assets/steph-1.jpg';
+import steph2 from '../../../assets/steph-2.jpg';
+import steph3 from '../../../assets/steph-3.jpg';
+import steph4 from '../../../assets/steph-pool.jpg';
+import steph5 from '../../../assets/steph-laid.jpg';
+import steph6 from '../../../assets/steph-smoke.jpg';
+import steph7 from '../../../assets/steph-smile.jpg';
 
 export const photos = [
 	{

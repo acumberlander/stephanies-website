@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import { colors } from '../../CSS/colors';
+import { colors } from '../../../CSS/colors';
 
 export const useStyles = makeStyles((theme) => ({
 	galleryContainer: {},

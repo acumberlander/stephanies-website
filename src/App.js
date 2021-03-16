@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import commerce from './lib/commerce';
 import { useDispatch, useSelector } from 'react-redux';
-import MyNavbar from './components/MyNavbar/MyNavbar';
+import MyNavbar from './components/AppComponents/MyNavbar/MyNavbar';
 import Cart from './components/Pages/Cart/Cart';
 import Checkout from './components/Pages/Checkout/Checkout';
 import About from './components/Pages/About/About';
@@ -10,7 +10,7 @@ import { fetchProducts } from './actions/products';
 import { fetchCart, refreshCart } from './actions/cart';
 import Home from './components/Pages/Home/Home';
 import Shop from './components/Pages/Shop/Shop';
-import Footer from './components/Footer/Footer';
+import Footer from './components/AppComponents/Footer/Footer';
 import ProductDetails from './components/Pages/ProductDetails/ProductDetails';
 
 const App = () => {

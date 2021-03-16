@@ -1,10 +1,9 @@
 import React from 'react';
 import HeroCarousel from 'react-hero-carousel';
-import stephWithSmoke from '../../assets/steph-smoke.jpg';
-import stephLaid from '../../assets/steph-laid.jpg';
-import stephWithGlass from '../../assets/glassware/steph-and-glassware.jpg';
-import steph2 from '../../assets/steph-smile.jpg';
-import demo from '../../assets/demo-1.jpg';
+import stephWithSmoke from '../../../assets/steph-smoke.jpg';
+import stephLaid from '../../../assets/steph-laid.jpg';
+import stephWithGlass from '../../../assets/glassware/steph-and-glassware.jpg';
+import steph2 from '../../../assets/steph-smile.jpg';
 import useStyles from './carouselStyles';
 
 const Carousel = () => {

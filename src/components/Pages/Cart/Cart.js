@@ -3,7 +3,7 @@ import { Container, Typography, Button, Divider } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 import useStyles from './cartStyles';
-import CartItem from '../../CartItem/CartItem';
+import CartItem from '../../CartComponents/CartItem/CartItem';
 import { emptyCart } from '../../../actions/cart';
 import { useSelector, useDispatch } from 'react-redux';
 

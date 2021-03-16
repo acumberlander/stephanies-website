@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Container, Typography, Fade } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { useStyles } from './shopStyles.js';
-import Product from '../../Product/Product.js';
+import Product from '../../ProductComponents/Product/Product.js';
 
 export default function Shop() {
 	const classes = useStyles();
