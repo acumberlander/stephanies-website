@@ -6,6 +6,8 @@ import {
 	ElementsConsumer,
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { captureCheckout } from '../../actions/cart';
+import { useDispatch } from 'react-redux';
 
 import Review from './Review';
 
@@ -16,9 +18,9 @@ const PaymentForm = ({
 	nextStep,
 	backStep,
 	shippingData,
-	onCaptureCheckout,
 	timeout,
 }) => {
+	const dispatch = useDispatch();
 	const handleSubmit = async (event, elements, stripe) => {
 		event.preventDefault();
 
@@ -58,7 +60,7 @@ const PaymentForm = ({
 				},
 			};
 
-			onCaptureCheckout(checkoutToken.id, orderData);
+			dispatch(captureCheckout(checkoutToken.id, orderData));
 
 			timeout();
 
