@@ -19,7 +19,7 @@ import useStyles from './checkoutStyles';
 
 const steps = ['Shipping address', 'Payment details'];
 
-const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
+const Checkout = ({ cart, order, error }) => {
 	const [checkoutToken, setCheckoutToken] = useState(null);
 	const [activeStep, setActiveStep] = useState(0);
 	const [shippingData, setShippingData] = useState({});
@@ -119,7 +119,6 @@ const Checkout = ({ cart, onCaptureCheckout, order, error }) => {
 				nextStep={nextStep}
 				backStep={backStep}
 				shippingData={shippingData}
-				onCaptureCheckout={onCaptureCheckout}
 				timeout={timeout}
 			/>
 		);

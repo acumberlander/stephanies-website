@@ -80,7 +80,6 @@ export const captureCheckout = (checkoutTokenId, newOrder) => async (
 
 		refreshCart();
 	} catch (error) {
-		debugger;
 		console.log(error);
 	}
 };
