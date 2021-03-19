@@ -6,78 +6,9 @@ export const useStyles = makeStyles((theme) => ({
 		minHeight: '100vh',
 		width: '100%',
 	},
-	homeLogo: {
-		marginTop: 100,
-		width: 500,
-		height: 500,
-		[theme.breakpoints.down('lg')]: {
-			width: 450,
-			height: 450,
-		},
-		[theme.breakpoints.down('lg')]: {
-			width: 400,
-			height: 400,
-		},
-	},
-	carouselContainer: {
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		position: 'relative',
-		zIndex: 1,
-	},
-	carouselText: {
-		textAlign: 'center',
-		position: 'absolute',
-		zIndex: 100,
-		color: colors.white,
-		fontFamily: 'Philosopher, sans-serif',
-		marginBottom: 200,
-	},
-	carouselHeader: {
-		fontSize: '15rem',
-		fontWeight: '15rem',
-		margin: 0,
-		[theme.breakpoints.down('md')]: {
-			fontSize: '10rem',
-			fontWeight: 'normal',
-			margin: 0,
-		},
-		[theme.breakpoints.down('sm')]: {
-			fontSize: '8rem',
-			fontWeight: 'normal',
-			margin: 0,
-		},
-	},
-	carouselSubtitle: {
-		fontSize: '1.5rem',
-		marginTop: 0,
-		marginBottom: '90px',
-		[theme.breakpoints.down('md')]: {
-			fontSize: '1.3rem',
-		},
-		[theme.breakpoints.down('xs')]: {
-			fontSize: '1.1rem',
-		},
-	},
 	linkContainer: {
 		display: 'flex',
 		justifyContent: 'center',
-	},
-	shopLink: {
-		fontSize: '1.5rem',
-		color: 'white',
-		cursor: 'pointer',
-		[theme.breakpoints.down('md')]: {
-			fontSize: '1.3rem',
-		},
-		[theme.breakpoints.down('xs')]: {
-			fontSize: '1.1rem',
-		},
-	},
-	linkText: {
-		margin: 0,
 	},
 	options: {
 		flexGrow: 1,

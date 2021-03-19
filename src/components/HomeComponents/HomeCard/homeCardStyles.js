@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
+	container: {
+		width: '100%',
+	},
 	gridContainer: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -26,8 +29,8 @@ export const useStyles = makeStyles((theme) => ({
 		objectFit: 'cover',
 		borderRadius: '0.3rem',
 		'@media (max-width: 600px)': {
-			width: '100%',
-			height: '600px',
+			width: '350px',
+			height: '400px',
 		},
 	},
 	overlay: {
@@ -38,8 +41,8 @@ export const useStyles = makeStyles((theme) => ({
 		opacity: '0.2',
 		borderRadius: '0.3rem',
 		'@media (max-width: 600px)': {
-			width: '100%',
-			height: '600px',
+			width: '350px',
+			height: '400px',
 		},
 	},
 }));

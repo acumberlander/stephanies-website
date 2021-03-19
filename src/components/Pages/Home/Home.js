@@ -1,9 +1,7 @@
 import React from 'react';
 import Carousel from '../../HomeComponents/Carousel/Carousel';
-import { Link } from 'react-router-dom';
 import { useStyles } from './homeStyles';
 import { Grid, Fade, Typography, Input, Button } from '@material-ui/core';
-import whiteLogo from '../../../assets/logos/logo-white.png';
 import accessoryPic from '../../../assets/accessories/leather-necklace.jpg';
 import glasswarePic from '../../../assets/glassware/steph-drinking.jpg';
 import teePic from '../../../assets/tees/tee-category.png';
@@ -21,19 +19,7 @@ const Home = () => {
 
 	return (
 		<div className={classes.container}>
-			<div className={classes.carouselContainer}>
-				<div className={classes.carouselText}>
-					{/* <h1 className={classes.carouselHeader}>SEXES</h1> */}
-					<img className={classes.homeLogo} src={whiteLogo} alt="logo" />
-					<h3 className={classes.carouselSubtitle}>By Stephanie</h3>
-					<div className={classes.linkContainer}>
-						<Link className={classes.shopLink} to="/shop/all-products">
-							<h3 className={classes.linkText}>Shop Now</h3>
-						</Link>
-					</div>
-				</div>
-				<Carousel />
-			</div>
+			<Carousel />
 			<Fade in={true} timeout={1000}>
 				<Grid container className={classes.options}>
 					<HomeCard
