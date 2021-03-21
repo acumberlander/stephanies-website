@@ -47,10 +47,20 @@ const AddressForm = ({ setShippingData, checkoutToken, test }) => {
 		country,
 		stateProvince = null
 	) => {
-		const options = await commerce.checkout.getShippingOptions(
+		console.log(
+			'token: ',
 			checkoutTokenId,
-			{ country, region: stateProvince }
+			'country: ',
+			country,
+			'state: ',
+			stateProvince
 		);
+		const options = await commerce.checkout
+			.getShippingOptions(checkoutTokenId, { country, region: stateProvince })
+			.catch((err) => {
+				debugger;
+				console.log(err);
+			});
 
 		setShippingOptions(options);
 		console.log(options);
@@ -72,7 +82,7 @@ const AddressForm = ({ setShippingData, checkoutToken, test }) => {
 				shippingCountry,
 				shippingSubdivision
 			);
-	}, [shippingSubdivision]);
+	}, [shippingSubdivision, shippingCountry, checkoutToken.id]);
 
 	return (
 		<>
@@ -114,7 +124,7 @@ const AddressForm = ({ setShippingData, checkoutToken, test }) => {
 							</Select>
 						</Grid>
 						<Grid item xs={12} sm={6}>
-							<InputLabel>Shipping Subdivision</InputLabel>
+							<InputLabel>States</InputLabel>
 							<Select
 								value={shippingSubdivision}
 								fullWidth

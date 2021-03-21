@@ -46,25 +46,21 @@ const Carousel = () => {
 			</OverlayContainer>
 
 			<Slide
-				className={classes.stephWithSmoke}
 				background={{
 					backgroundImage: stephWithSmoke,
 					backgroundPosition: '50% 40%',
 				}}
 			/>
 			<Slide
-				className={classes.stephWithGlass}
 				background={{
 					backgroundImage: stephWithGlass,
 					backgroundPosition: '53% 40%',
 				}}
 			/>
 			<Slide
-				className={classes.stephSmile}
 				background={{ backgroundImage: steph2, backgroundPosition: '60% 70%' }}
 			/>
 			<Slide
-				className={classes.stephLaid}
 				background={{
 					backgroundImage: stephLaid,
 					backgroundPosition: '10% 50%',

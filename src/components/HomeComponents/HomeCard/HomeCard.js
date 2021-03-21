@@ -14,8 +14,8 @@ const HomeCard = ({ image, category, style, page, topText, bottomText }) => {
 			xs={12}
 			sm={12}
 			md={6}
-			lg={3}
-			xl={3}
+			lg={4}
+			xl={4}
 		>
 			<Link className={classes.optionImageContainer} to={`/shop/${page}`}>
 				<div className={classes.overlay} />
