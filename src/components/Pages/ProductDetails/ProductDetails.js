@@ -101,6 +101,7 @@ const ProductDetails = () => {
 											width: '40px',
 											margin: '10px',
 											cursor: 'pointer',
+											borderRadius: '0.2rem',
 										}}
 										src={imageObj.url}
 										alt="hoodie"

@@ -17,8 +17,10 @@ export default function Shop() {
 
 	let params = useParams();
 
-	const headerName =
-		params.category.charAt(0).toUpperCase() + params.category.slice(1);
+	const headerName = params.category
+		.split('-')
+		.map((str) => str.charAt(0).toUpperCase() + str.slice(1))
+		.join(' ');
 
 	useEffect(() => {
 		const data = allProducts.filter((product) => {
@@ -35,7 +37,6 @@ export default function Shop() {
 
 	return (
 		<div className={classes.shopContainer}>
-			{/* Header unit */}
 			<div className={classes.shopHeader}>
 				<Container maxWidth="sm">
 					<Typography
@@ -49,7 +50,7 @@ export default function Shop() {
 					</Typography>
 				</Container>
 			</div>
-			{/* End header unit */}
+
 			<Container className={classes.cardGrid} maxWidth="xl">
 				<Grid container spacing={6}>
 					{products.map((product) => (

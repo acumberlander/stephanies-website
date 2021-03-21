@@ -42,7 +42,7 @@ export const useStyles = makeStyles((theme) => ({
 	productImage: {
 		maxWidth: '450px',
 		height: '600px',
-		borderRadisu: '0.3rem',
+		borderRadius: '0.3rem !important',
 		[theme.breakpoints.down('sm')]: {
 			maxWidth: '350px',
 			height: '500px',
@@ -50,7 +50,7 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	thumbnailContainer: {
 		'&:hover': {
-			border: '1px solid lightblue',
+			border: '2px solid lightblue',
 		},
 	},
 	productDetailsText: {

@@ -24,9 +24,10 @@ export const useStyles = makeStyles((theme) => ({
 		fontFamily: 'Philosopher, sans-serif',
 	},
 	optionImages: {
-		width: '300px',
+		width: '350px',
 		height: '600px',
 		objectFit: 'cover',
+		objectPosition: '50% 5%',
 		borderRadius: '0.3rem',
 		'@media (max-width: 600px)': {
 			width: '350px',
@@ -35,7 +36,7 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	overlay: {
 		backgroundColor: 'black',
-		width: '300px',
+		width: '350px',
 		height: '600px',
 		position: 'absolute',
 		opacity: '0.2',
