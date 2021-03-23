@@ -7,6 +7,9 @@ const Review = ({ checkoutToken }) => {
 			<Typography variant="h6" gutterBottom>
 				Order summary
 			</Typography>
+			<Typography style={{ color: 'red' }}>
+				Use 4242 4242 4242 4242 as your fake card number.
+			</Typography>
 			<List disablePadding>
 				{checkoutToken.live.line_items.map((product) => (
 					<ListItem style={{ padding: '10px 0' }} key={product.name}>
