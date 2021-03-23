@@ -4,7 +4,7 @@
 
 This is an e-commerce I'm currently building for a client who runs her own clothing line called Sexes. I'm still in the process of building the site out, but most of the shopping features are complete. The site will also act as a promo for her other offered services.
 
-[View Demo ](sexesbystephanie.netlify.app)
+[View Demo ](https://sexesbystephanie.netlify.app/)
 
 ## Tech Stack
 
