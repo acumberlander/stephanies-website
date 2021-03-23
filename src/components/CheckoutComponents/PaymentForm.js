@@ -6,7 +6,7 @@ import {
 	ElementsConsumer,
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { captureCheckout } from '../../actions/cart';
+import { captureCheckout, refreshCart } from '../../actions/cart';
 import { useDispatch } from 'react-redux';
 
 import Review from './Review';
@@ -65,6 +65,7 @@ const PaymentForm = ({
 			timeout();
 
 			nextStep();
+			dispatch(refreshCart());
 		}
 	};
 

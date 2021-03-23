@@ -7,3 +7,4 @@ export const EMPTY_CART = 'EMPTY_CART';
 export const REFRESH_CART = 'REFRESH_CART';
 export const UPDATE_QUANTITY = 'UPDATE_QUANTITY';
 export const CAPTURE_CHECKOUT = 'CAPTURE_CHECKOUT';
+export const LOGIN = 'LOGIN';

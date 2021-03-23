@@ -9,7 +9,6 @@ export const fetchProducts = () => async (dispatch) => {
 		const { data } = await commerce.products.list();
 
 		dispatch({ type: FETCH_ALL_PRODUCTS, payload: data });
-		console.log(data);
 	} catch (error) {
 		console.log(error);
 	}
@@ -20,7 +19,6 @@ export const fetchProductById = (id) => async (dispatch) => {
 		const data = await commerce.products.retrieve(id);
 
 		dispatch({ type: FETCH_PRODUCT_BY_ID, payload: data });
-		console.log(data);
 	} catch (error) {
 		console.log(error);
 	}
