@@ -71,7 +71,7 @@ const MyNavbar = () => {
 				overlayClassName={modalOverlay}
 				shouldCloseOnOverlayClick={true}
 			>
-				<div className={modalContent}>
+				{/* <div className={modalContent}>
 					<h2 className={modalHeader}>Log In</h2>
 					<div className={loginContainer}>
 						<Input placeholder="email" />
@@ -83,7 +83,7 @@ const MyNavbar = () => {
 					<Divider className={lineBreak} />
 					<Typography className={modalText}>Don't have an account?</Typography>
 					<Typography className={signUpText}>Sign up now</Typography>
-				</div>
+				</div> */}
 			</Modal>
 			<AppBar className={myNavbar}>
 				{mobileView ? (
@@ -106,15 +106,7 @@ const MyNavbar = () => {
 							>
 								Home
 							</Button>
-							<Button
-								key="Shop"
-								color="inherit"
-								to="/shop/all-products"
-								component={RouterLink}
-								className={navButton}
-							>
-								Shop
-							</Button>
+
 							<Button
 								key="About"
 								color="inherit"
@@ -124,18 +116,29 @@ const MyNavbar = () => {
 							>
 								About
 							</Button>
+
+							<Button
+								key="Shop"
+								color="inherit"
+								to="/shop/all-products"
+								component={RouterLink}
+								className={navButton}
+							>
+								Shop
+							</Button>
+
+							<Button
+								key="Services"
+								color="inherit"
+								to="/services"
+								component={RouterLink}
+								className={navButton}
+							>
+								Services
+							</Button>
 						</span>
 
 						<span>
-							<Button
-								key="About"
-								color="inherit"
-								component={RouterLink}
-								className={navButton}
-								onClick={() => setmodalOpen(!modalOpen)}
-							>
-								Log In
-							</Button>
 							<IconButton
 								component={RouterLink}
 								to="/cart"

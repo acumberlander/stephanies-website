@@ -14,7 +14,9 @@ const About = () => {
 	return (
 		<div className={classes.aboutContainer}>
 			<div className={classes.imageAndTextContainer}>
-				<h1 className={classes.aboutHeader}>About Us</h1>
+				<Typography variant="h2" className={classes.aboutHeader}>
+					About Us
+				</Typography>
 				<div className={classes.imageContainer}>
 					<img
 						className={classes.ownerImage}

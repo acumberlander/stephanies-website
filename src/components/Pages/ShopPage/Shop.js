@@ -40,7 +40,7 @@ export default function Shop() {
 			<div className={classes.shopHeader}>
 				<Container maxWidth="sm">
 					<Typography
-						variant="h3"
+						variant="h2"
 						align="center"
 						color="textPrimary"
 						className={classes.header}

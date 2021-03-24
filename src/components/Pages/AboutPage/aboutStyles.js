@@ -40,6 +40,7 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	aboutHeader: {
 		color: colors.primary,
+		fontFamily: 'Philosopher, sans-serif',
 	},
 	shopLink: {
 		textDecoration: 'none',
