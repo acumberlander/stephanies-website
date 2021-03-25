@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MyNavbar from './components/AppComponents/MyNavbar/MyNavbar';
-import Cart from './components/Pages/Cart/Cart';
-import Checkout from './components/Pages/Checkout/Checkout';
-import About from './components/Pages/About/About';
+import Cart from './components/Pages/CartPage/Cart';
+import Checkout from './components/Pages/CheckoutPage/Checkout';
+import About from './components/Pages/AboutPage/About';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { fetchProducts } from './actions/products';
 import { fetchCart } from './actions/cart';
-import Home from './components/Pages/Home/Home';
-import Shop from './components/Pages/Shop/Shop';
+import Home from './components/Pages/HomePage/Home';
+import Shop from './components/Pages/ShopPage/Shop';
 import Footer from './components/AppComponents/Footer/Footer';
-import ProductDetails from './components/Pages/ProductDetails/ProductDetails';
+import ProductDetails from './components/Pages/ProductDetailsPage/ProductDetails';
+import Services from './components/Pages/ServicesPage/Services';
 
 const App = () => {
 	const cart = useSelector((state) => state.cart);
@@ -30,11 +31,14 @@ const App = () => {
 				<Route exact path="/">
 					<Home />
 				</Route>
+				<Route exact path="/about">
+					<About />
+				</Route>
 				<Route exact path="/shop/:category">
 					<Shop />
 				</Route>
-				<Route exact path="/about">
-					<About />
+				<Route exact path="/services">
+					<Services />
 				</Route>
 				<Route exact path="/cart">
 					<Cart />
