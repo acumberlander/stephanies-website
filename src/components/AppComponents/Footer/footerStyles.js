@@ -60,8 +60,8 @@ export const useStyles = makeStyles((theme) => ({
 	backToTop: {
 		backgroundColor: colors.primary,
 		color: 'white',
-		height: 65,
-		width: 65,
+		height: 50,
+		width: 50,
 		margin: '10px 10px 15px',
 		borderRadius: '50%',
 		cursor: 'pointer',
@@ -73,6 +73,6 @@ export const useStyles = makeStyles((theme) => ({
 		},
 	},
 	arrow: {
-		fontSize: 65,
+		fontSize: 50,
 	},
 }));
