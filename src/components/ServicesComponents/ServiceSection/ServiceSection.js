@@ -12,6 +12,7 @@ const ServiceSection = ({
 	paragraph2,
 	paragraph3,
 	gallery,
+	serviceImageStyle,
 	picFirst = true,
 }) => {
 	const classes = useStyles();
@@ -23,14 +24,14 @@ const ServiceSection = ({
 
 	const imageSecondClass =
 		picFirst === true
-			? classes.serviceImageHidden
+			? classes.serviceImageHidden2
 			: classes.serviceImageContainerLeft;
 
 	return (
 		<div className={classes.sectionContainer}>
 			<div className={classes.imageAndText}>
 				<div className={imageFirstClass}>
-					<img className={classes.serviceImage} src={serviceImage} alt="" />
+					<img className={serviceImageStyle} src={serviceImage} alt="" />
 				</div>
 				<div className={classes.serviceTextContainer}>
 					<Typography className={classes.serviceHeader} variant="h3">
@@ -77,7 +78,7 @@ const ServiceSection = ({
 					</span>
 				</div>
 				<div className={imageSecondClass}>
-					<img className={classes.serviceImage} src={serviceImage} alt="" />
+					<img className={serviceImageStyle} src={serviceImage} alt="" />
 				</div>
 			</div>
 			<Carousel

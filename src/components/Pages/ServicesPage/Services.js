@@ -40,11 +40,7 @@ const Services = () => {
 				paragraph1={eventsTextObject.paragraph1}
 				paragraph2={eventsTextObject.paragraph2}
 				paragraph3={eventsTextObject.paragraph3}
-				serviceImageStyle={{
-					width: '660px',
-					position: 'relative',
-					right: '40%',
-				}}
+				serviceImageStyle={classes.hairAndEventsStyle}
 				gallery={eventsGallery}
 				picFirst={false}
 			/>
@@ -54,11 +50,7 @@ const Services = () => {
 				paragraph1={ascotsTextObject.paragraph1}
 				paragraph2={ascotsTextObject.paragraph2}
 				paragraph3={ascotsTextObject.paragraph3}
-				serviceImageStyle={{
-					width: '660px',
-					position: 'relative',
-					right: '40%',
-				}}
+				serviceImageStyle={classes.hairAndEventsStyle}
 				gallery={hairAndMakeupGallery}
 			/>
 		</div>

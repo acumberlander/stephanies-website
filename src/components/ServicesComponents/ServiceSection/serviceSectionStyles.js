@@ -22,30 +22,48 @@ export const useStyles = makeStyles((theme) => ({
 	serviceImageContainer: {
 		height: 450,
 		width: 450,
-		marginRight: 60,
 		overflow: 'hidden',
 		borderRadius: '1rem',
 		boxShadow: '3px 4px 9px 0px',
+		[theme.breakpoints.down('sm')]: {
+			height: 300,
+			width: 300,
+		},
 	},
 	serviceImageContainerLeft: {
 		height: 450,
 		width: 450,
-		marginLeft: 60,
 		overflow: 'hidden',
 		borderRadius: '1rem',
 		boxShadow: '3px 4px 9px 0px',
+		[theme.breakpoints.down('md')]: {
+			display: 'none',
+		},
 	},
 	serviceImageHidden: {
 		display: 'none',
+		[theme.breakpoints.down('md')]: {
+			display: 'block',
+			height: 450,
+			width: 450,
+			overflow: 'hidden',
+			borderRadius: '1rem',
+			boxShadow: '3px 4px 9px 0px',
+			[theme.breakpoints.down('sm')]: {
+				height: 300,
+				width: 300,
+			},
+		},
 	},
-	serviceImage: {
-		width: '665px',
-		position: 'relative',
-		right: '40%',
+	serviceImageHidden2: {
+		display: 'none',
 	},
-
 	serviceTextContainer: {
 		maxWidth: 700,
+		padding: '0 60px',
+		[theme.breakpoints.down('md')]: {
+			marginTop: 60,
+		},
 	},
 
 	pageHeader: {
@@ -82,6 +100,10 @@ export const useStyles = makeStyles((theme) => ({
 	socialIcon: {
 		width: 50,
 		height: 50,
+		[theme.breakpoints.down('sm')]: {
+			width: 40,
+			height: 40,
+		},
 	},
 	carouselContainer: {
 		width: 1200,
@@ -96,11 +118,13 @@ export const useStyles = makeStyles((theme) => ({
 		},
 	},
 	galleryItem: {
-		[theme.breakpoints.down('lg')]: {
-			height: 175,
-			width: 175,
-		},
+		height: 175,
+		width: 175,
 		[theme.breakpoints.down('md')]: {
+			height: 125,
+			width: 125,
+		},
+		[theme.breakpoints.down('sm')]: {
 			height: 150,
 			width: 150,
 		},
