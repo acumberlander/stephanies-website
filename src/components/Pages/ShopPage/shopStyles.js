@@ -9,9 +9,6 @@ export const useStyles = makeStyles((theme) => ({
 		fontFamily: 'Philosopher, sans-serif',
 		color: colors.primary,
 	},
-	icon: {
-		marginRight: theme.spacing(2),
-	},
 	shopHeader: {
 		backgroundColor: theme.palette.background.paper,
 		padding: theme.spacing(8, 3, 0),

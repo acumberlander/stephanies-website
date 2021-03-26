@@ -52,7 +52,7 @@ export default function Shop() {
 			</div>
 
 			<Container className={classes.cardGrid} maxWidth="xl">
-				<Grid container spacing={6}>
+				<Grid container spacing={4}>
 					{products.map((product) => (
 						<>
 							<Fade

@@ -11,5 +11,8 @@ export const useStyles = makeStyles((theme) => ({
 		fontFamily: 'Philosopher, sans-serif',
 		textAlign: 'center',
 		marginBottom: 50,
+		[theme.breakpoints.down('sm')]: {
+			fontSize: 36,
+		},
 	},
 }));
