@@ -33,7 +33,7 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	discountContainer: {
 		textAlign: 'center',
-		padding: '150px 0',
+		padding: '150px 20px',
 		backgroundColor: colors.primary,
 		color: colors.white,
 	},

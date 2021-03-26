@@ -40,6 +40,15 @@ export const useStyles = makeStyles((theme) => ({
 		marginTop: '40px',
 		height: 400,
 		width: 400,
+		[theme.breakpoints.down('sm')]: {
+			height: 400,
+			width: 400,
+		},
+		[theme.breakpoints.down('xs')]: {
+			height: 250,
+			width: 250,
+			margin: '20px 0',
+		},
 	},
 	trademark: {
 		height: 15,
@@ -59,6 +68,9 @@ export const useStyles = makeStyles((theme) => ({
 		position: 'fixed',
 		bottom: 100,
 		border: '1px solid white',
+		[theme.breakpoints.down('sm')]: {
+			display: 'none',
+		},
 	},
 	arrow: {
 		fontSize: 65,

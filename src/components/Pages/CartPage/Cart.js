@@ -11,6 +11,7 @@ const Cart = () => {
 	const dispatch = useDispatch();
 	const cart = useSelector((state) => state.cart);
 	const classes = useStyles();
+	console.log(cart);
 
 	if (window.scrollY !== 0) {
 		window.scrollTo(0, 0);

@@ -18,6 +18,11 @@ const useStyles = makeStyles((theme) => ({
 			width: 400,
 			height: 400,
 		},
+		[theme.breakpoints.down('sm')]: {
+			marginTop: 200,
+			width: 275,
+			height: 275,
+		},
 	},
 	carouselContainer: {
 		display: 'flex',
