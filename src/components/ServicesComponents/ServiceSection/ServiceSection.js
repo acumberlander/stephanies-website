@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStyles, responsive } from './serviceSectionStyles';
-import { Typography } from '@material-ui/core';
+import { Fade, Typography } from '@material-ui/core';
 import facebookIcon from '../../../assets/facebook.png';
 import instaIcon from '../../../assets/instagram.png';
 import Carousel from 'react-multi-carousel';
@@ -30,9 +30,11 @@ const ServiceSection = ({
 	return (
 		<div className={classes.sectionContainer}>
 			<div className={classes.imageAndText}>
-				<div className={imageFirstClass}>
-					<img className={serviceImageStyle} src={serviceImage} alt="" />
-				</div>
+				<Fade in={true} timeout={1000}>
+					<div className={imageFirstClass}>
+						<img className={serviceImageStyle} src={serviceImage} alt="" />
+					</div>
+				</Fade>
 				<div className={classes.serviceTextContainer}>
 					<Typography className={classes.serviceHeader} variant="h3">
 						{serviceHeader}
@@ -96,10 +98,16 @@ const ServiceSection = ({
 				dotListClass="custom-dot-list-style"
 				itemClass="carousel-item-padding-40-px"
 			>
-				{gallery.map((image) => (
-					<div className={classes.galleryItem}>
-						<img className={classes.galleryItem} src={image} alt="facebook" />
-					</div>
+				{gallery.map((item) => (
+					<Fade in={true} timeout={1000}>
+						<div key={item.id} className={classes.galleryItem}>
+							<img
+								className={classes.galleryItem}
+								src={item.image}
+								alt="gallery item"
+							/>
+						</div>
+					</Fade>
 				))}
 			</Carousel>
 		</div>

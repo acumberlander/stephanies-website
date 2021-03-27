@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStyles } from './servicesStyles';
 import ServiceSection from '../../ServicesComponents/ServiceSection/ServiceSection';
 import { Typography } from '@material-ui/core';
@@ -9,6 +9,7 @@ import {
 	makeupTextObject,
 } from '../../ServicesComponents/serviceImages/serviceImages';
 import 'react-multi-carousel/lib/styles.css';
+// import { storageRef } from '../../../photoData/firebaseConfig';
 
 const {
 	ascotsImage,
@@ -20,6 +21,21 @@ const {
 } = serviceImagesObject;
 
 const Services = () => {
+	// const [ascotPics, setAscotPics] = useState([]);
+	// const [makeupPics, setMakeupPics] = useState([]);
+	// const [eventPics, setEventPics] = useState([]);
+
+	// storageRef
+	// 	.child('hair-and-makeup')
+	// 	.listAll()
+	// 	.then((res) => {
+	// 		res.items.forEach((item) => {
+	// 			item.getDownloadURL().then((res) => {
+	// 				console.log(res);
+	// 			});
+	// 		});
+	// 	});
+
 	const classes = useStyles();
 	return (
 		<div className={classes.container}>
@@ -32,7 +48,8 @@ const Services = () => {
 				paragraph1={ascotsTextObject.paragraph1}
 				paragraph2={ascotsTextObject.paragraph2}
 				paragraph3={ascotsTextObject.paragraph3}
-				gallery={eventsGallery}
+				serviceImageStyle={classes.ascotsStyle}
+				gallery={ascotsGallery}
 			/>
 			<ServiceSection
 				serviceImage={eventsImage}
@@ -47,9 +64,9 @@ const Services = () => {
 			<ServiceSection
 				serviceImage={hairAndMakeupImage}
 				serviceHeader="Hair and Makeup"
-				paragraph1={ascotsTextObject.paragraph1}
-				paragraph2={ascotsTextObject.paragraph2}
-				paragraph3={ascotsTextObject.paragraph3}
+				paragraph1={makeupTextObject.paragraph1}
+				paragraph2={makeupTextObject.paragraph2}
+				paragraph3={makeupTextObject.paragraph3}
 				serviceImageStyle={classes.hairAndEventsStyle}
 				gallery={hairAndMakeupGallery}
 			/>

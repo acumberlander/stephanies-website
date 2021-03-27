@@ -82,7 +82,7 @@ const ProductDetails = () => {
 									<img
 										className={classes.productImage}
 										src={displayedProduct}
-										alt="hoodie"
+										alt={product.name}
 									/>
 								</Fade>
 							)}

@@ -1,14 +1,15 @@
-import ascotPic from '../../../assets/ascot-placeholder.png';
+import ascotPic from '../../../assets/ascot-1.png';
 import eventPic from '../../../assets/event-rental.jpg';
 import hairAndMakeupPic from '../../../assets/hair-and-makeup.jpg';
-import { makeupImportedPics } from '../makeupImportedPics';
+import { ascotImportedPics } from '../ascotImportedPics';
 import { eventsImportedPics } from '../eventsImportedPics';
+import { makeupImportedPics } from '../makeupImportedPics';
 
 export const serviceImagesObject = {
 	ascotsImage: ascotPic,
 	eventsImage: eventPic,
 	hairAndMakeupImage: hairAndMakeupPic,
-	ascotsGallery: [],
+	ascotsGallery: [...ascotImportedPics.slice(0, 10)],
 	eventsGallery: [...eventsImportedPics.slice(0, 10)],
 	hairAndMakeupGallery: [...makeupImportedPics.slice(0, 10)],
 };
@@ -23,7 +24,7 @@ export const ascotsTextObject = {
 
 export const eventsTextObject = {
 	paragraph1:
-		'Our SexesByStephanie Vision Production Team is ouur Rental Division of Company. We have a very nice variety to rentals for any special occasion from table cloths, chair covers, hanging flower boxes, candy cart(with varitey selection of canopy toppers & vinyl lettering for your theme), sashes & chair bands, custom center pieces, balloon arches, draping, etc. A lot of our rentals are custom made to fit your event specifically for you. We don’t just rent we create rentals. No matter what your occasion is, if we don’t have it we create it. Our lead designer has a passion for making a person’s fantasy come to fruition. She has 25 years of experience in the Fashion and Interior Design, Hair & Art Industry which creates our one stop shop. Our team is very talented and creative and loves to be challenged on creativity.',
+		'Our SexesByStephanie Vision Production Team is our Rental Division of Company. We have a very nice variety to rentals for any special occasion from table cloths, chair covers, hanging flower boxes, candy cart(with varitey selection of canopy toppers & vinyl lettering for your theme), sashes & chair bands, custom center pieces, balloon arches, draping, etc. A lot of our rentals are custom made to fit your event specifically for you. We don’t just rent we create rentals. No matter what your occasion is, if we don’t have it we create it. Our lead designer has a passion for making a person’s fantasy come to fruition. She has 25 years of experience in the Fashion and Interior Design, Hair & Art Industry which creates our one stop shop. Our team is very talented and creative and loves to be challenged on creativity.',
 	paragraph2: 'If You Can Envision It, We Can Manifest IT',
 	paragraph3: 'Rent Your Vision...',
 };

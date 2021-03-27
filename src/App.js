@@ -12,6 +12,7 @@ import Shop from './components/Pages/ShopPage/Shop';
 import Footer from './components/AppComponents/Footer/Footer';
 import ProductDetails from './components/Pages/ProductDetailsPage/ProductDetails';
 import Services from './components/Pages/ServicesPage/Services';
+// import { storageRef } from './photoData/firebaseConfig';
 
 const App = () => {
 	const cart = useSelector((state) => state.cart);
@@ -20,6 +21,16 @@ const App = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		// storageRef
+		// 	.child('hair-and-makeup')
+		// 	.listAll()
+		// 	.then((res) => {
+		// 		res.items.forEach((item) => {
+		// 			item.getDownloadURL().then((res) => {
+		// 				console.log(res);
+		// 			});
+		// 		});
+		// 	});
 		dispatch(fetchProducts());
 		dispatch(fetchCart());
 	}, [dispatch]);
