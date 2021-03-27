@@ -6,7 +6,6 @@ import {
 	Drawer,
 	Link,
 	MenuItem,
-	Divider,
 } from '@material-ui/core';
 import { ShoppingCart } from '@material-ui/icons';
 import MenuIcon from '@material-ui/icons/Menu';
