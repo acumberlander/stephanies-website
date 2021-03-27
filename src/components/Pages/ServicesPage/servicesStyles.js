@@ -16,6 +16,17 @@ export const useStyles = makeStyles((theme) => ({
 			right: '40%',
 		},
 	},
+	ascotsStyle: {
+		width: '490px',
+		position: 'relative',
+		bottom: '15%',
+		[theme.breakpoints.down('sm')]: {
+			width: '370px',
+			position: 'relative',
+			bottom: '15%',
+			right: '4%',
+		},
+	},
 	pageHeader: {
 		color: colors.primary,
 		fontFamily: 'Philosopher, sans-serif',
