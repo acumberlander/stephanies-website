@@ -23,7 +23,7 @@ npm install
 - Then execute the command
 
 ```
-npm run
+npm start
 ```
 
 - This should make the program begin to render in your default browser
