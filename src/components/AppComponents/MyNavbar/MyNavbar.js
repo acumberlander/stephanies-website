@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-	AppBar,
-	Toolbar,
-	Button,
-	Badge,
-	IconButton,
-	Input,
-	Divider,
-	Typography,
-} from '@material-ui/core';
-import Modal from 'react-modal';
+import { AppBar, Toolbar, Button, Badge, IconButton } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import MobileView from './Views/MobileView';
 import { Link as RouterLink } from 'react-router-dom';
