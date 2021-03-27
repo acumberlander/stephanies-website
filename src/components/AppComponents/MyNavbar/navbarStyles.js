@@ -50,45 +50,13 @@ export default makeStyles((theme) => ({
 	myNavbar: {
 		backgroundColor: colors.primary,
 	},
-	modal: {
-		backgroundColor: colors.white,
-		height: 400,
-		width: 450,
-		zIndex: 1000,
+	menuItem: {
+		backgroundColor: colors.primary,
 		borderRadius: '0.3rem',
-	},
-	modalHeader: {
-		color: colors.primary,
-		fontFamily: 'Philosopher, sans-serif',
-	},
-	modalOverlay: {
-		position: 'fixed',
-		inset: '0px',
+		marginTop: 10,
+		color: colors.white,
 		display: 'flex',
 		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: colors.primaryFaded,
-	},
-	modalContent: {
-		display: 'flex',
-		justifyContent: 'center',
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-	modalText: {
-		fontFamily: 'Philosopher, sans-serif',
-	},
-	signUpText: {
-		color: colors.primary,
-		cursor: 'pointer',
-		fontFamily: 'Philosopher, sans-serif',
-	},
-	loginContainer: {
-		height: 75,
-		width: 300,
-		display: 'flex',
-		justifyContent: 'space-between',
-		flexDirection: 'column',
 	},
 	lineBreak: {
 		backgroundColor: colors.primary,

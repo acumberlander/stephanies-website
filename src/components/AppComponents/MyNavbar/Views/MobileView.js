@@ -33,6 +33,7 @@ const MobileView = ({
 		drawerContainer,
 		cartButton,
 		drawerContent,
+		menuItem,
 	} = useStyles();
 
 	return (
@@ -68,8 +69,6 @@ const MobileView = ({
 				onClose={handleDrawerClose}
 			>
 				<div className={drawerContent}>
-					<MenuItem onClick={toggleDrawer}>Log In</MenuItem>
-					<Divider></Divider>
 					<Link
 						component={RouterLink}
 						onClick={toggleDrawer}
@@ -78,7 +77,7 @@ const MobileView = ({
 						style={{ textDecoration: 'none' }}
 						key="Home"
 					>
-						<MenuItem>Home</MenuItem>
+						<MenuItem className={menuItem}>Home</MenuItem>
 					</Link>
 					<Link
 						component={RouterLink}
@@ -88,7 +87,7 @@ const MobileView = ({
 						style={{ textDecoration: 'none' }}
 						key="Shop"
 					>
-						<MenuItem>Shop</MenuItem>
+						<MenuItem className={menuItem}>Shop</MenuItem>
 					</Link>
 					<Link
 						component={RouterLink}
@@ -98,7 +97,17 @@ const MobileView = ({
 						style={{ textDecoration: 'none' }}
 						key="About"
 					>
-						<MenuItem>About</MenuItem>
+						<MenuItem className={menuItem}>About</MenuItem>
+					</Link>
+					<Link
+						component={RouterLink}
+						onClick={toggleDrawer}
+						to="/services"
+						color="inherit"
+						style={{ textDecoration: 'none' }}
+						key="Services"
+					>
+						<MenuItem className={menuItem}>Services</MenuItem>
 					</Link>
 				</div>
 			</Drawer>
