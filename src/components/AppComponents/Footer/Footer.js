@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import instaIcon from '../../../assets/instagram-5-256.png';
-import facebookIcon from '../../../assets/facebook-4-256.png';
+import instaIcon from '../../../assets/socialMedia/instagram-5-256.png';
+import facebookIcon from '../../../assets/socialMedia/facebook-4-256.png';
 import trademark from '../../../assets/icons8-trademark-52.png';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import logo from '../../../assets/logos/logo-2.png';

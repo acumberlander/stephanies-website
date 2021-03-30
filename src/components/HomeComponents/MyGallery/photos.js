@@ -1,10 +1,10 @@
 import steph1 from '../../../assets/denim/denim-1.jpg';
-import steph2 from '../../../assets/steph-2.jpg';
-import steph3 from '../../../assets/steph-3.jpg';
-import steph4 from '../../../assets/steph-pool.jpg';
-import steph5 from '../../../assets/steph-standing-pool.png';
-import steph7 from '../../../assets/black-red-steph.jpg';
-import steph8 from '../../../assets/steph-black-dress.png';
+import steph2 from '../../../assets/steph/steph-2.jpg';
+import steph3 from '../../../assets/steph/steph-3.jpg';
+import steph4 from '../../../assets/steph/steph-pool.jpg';
+import steph5 from '../../../assets/steph/steph-standing-pool.png';
+import steph7 from '../../../assets/steph/black-red-steph.jpg';
+import steph8 from '../../../assets/steph/steph-black-dress.png';
 
 export const photos = [
 	{
