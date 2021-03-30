@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useStyles, responsive } from './serviceSectionStyles';
-import { CircularProgress, Fade, Typography } from '@material-ui/core';
+import { Fade, Typography } from '@material-ui/core';
 import facebookIcon from '../../../assets/socialMedia/facebook.png';
 import instaIcon from '../../../assets/socialMedia/instagram.png';
 import Carousel from 'react-multi-carousel';
 import { storageRef } from '../../../photoData/firebaseConfig';
-
-const blankImage = { id: '', image: '' };
 
 const ServiceSection = ({
 	serviceImage,
@@ -18,12 +16,12 @@ const ServiceSection = ({
 	serviceImageStyle,
 	picFirst = true,
 }) => {
-	const [gallery, setGallery] = useState([blankImage]);
+	const [gallery, setGallery] = useState([]);
 
 	useEffect(() => {
 		storageRef
 			.child(galleryType)
-			.listAll()
+			.list({ maxResults: 15 })
 			.then((res) => {
 				res.items.forEach((item, index) => {
 					item.getDownloadURL().then((res) => {
@@ -106,7 +104,7 @@ const ServiceSection = ({
 				draggable={true}
 				showDots={true}
 				responsive={responsive}
-				infinite={true}
+				infinite={false}
 				centerMode={true}
 				keyBoardControl={true}
 				transitionDuration={1000}
@@ -116,21 +114,17 @@ const ServiceSection = ({
 				dotListClass="custom-dot-list-style"
 				itemClass="carousel-item-padding-40-px"
 			>
-				{!gallery.length > 1 ? (
-					<CircularProgress size={50} />
-				) : (
-					gallery.map((item) => (
-						<Fade in={true} timeout={1000}>
-							<div key={item.id} className={classes.galleryItem}>
-								<img
-									className={classes.galleryItem}
-									src={item.image}
-									alt="gallery item"
-								/>
-							</div>
-						</Fade>
-					))
-				)}
+				{gallery.map((item) => (
+					<Fade in={true} timeout={1000}>
+						<div key={item.id} className={classes.galleryItem}>
+							<img
+								className={classes.galleryItem}
+								src={item.image}
+								alt="gallery item"
+							/>
+						</div>
+					</Fade>
+				))}
 			</Carousel>
 		</div>
 	);
