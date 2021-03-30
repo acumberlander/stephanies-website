@@ -57,6 +57,9 @@ export default makeStyles((theme) => ({
 		color: colors.white,
 		display: 'flex',
 		justifyContent: 'center',
+		'&:hover': {
+			backgroundColor: colors.primaryHover,
+		},
 	},
 	lineBreak: {
 		backgroundColor: colors.primary,

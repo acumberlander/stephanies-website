@@ -5,7 +5,7 @@ import { Grid, Fade, Typography, Input, Button } from '@material-ui/core';
 import accessoryPic from '../../../assets/accessories/leather-necklace.jpg';
 import glasswarePic from '../../../assets/glassware/steph-drinking.jpg';
 import teePic from '../../../assets/tees/tee-category.png';
-import steph1 from '../../../assets/steph-1.jpg';
+import steph1 from '../../../assets/steph/steph-1.jpg';
 import steph2 from '../../../assets/denim/denim-one-shot.jpg';
 import tribalPic from '../../../assets/tribal-pic.png';
 

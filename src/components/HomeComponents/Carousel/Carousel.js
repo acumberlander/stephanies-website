@@ -4,10 +4,10 @@ import whiteLogo from '../../../assets/logos/logo-white.png';
 
 import HeroSlider, { Slide, Nav, OverlayContainer } from 'hero-slider';
 
-import stephWithSmoke from '../../../assets/steph-smoke.jpg';
-import stephLaid from '../../../assets/steph-laid.jpg';
+import stephWithSmoke from '../../../assets/steph/steph-smoke.jpg';
+import stephLaid from '../../../assets/steph/steph-laid.jpg';
 import stephWithGlass from '../../../assets/glassware/steph-and-glassware.jpg';
-import steph2 from '../../../assets/steph-smile.jpg';
+import steph2 from '../../../assets/steph/steph-smile.jpg';
 import useStyles from './carouselStyles';
 
 const Carousel = () => {

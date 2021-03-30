@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStyles, responsive } from './serviceSectionStyles';
-import { Fade, Typography } from '@material-ui/core';
-import facebookIcon from '../../../assets/facebook.png';
-import instaIcon from '../../../assets/instagram.png';
+import { CircularProgress, Fade, Typography } from '@material-ui/core';
+import facebookIcon from '../../../assets/socialMedia/facebook.png';
+import instaIcon from '../../../assets/socialMedia/instagram.png';
 import Carousel from 'react-multi-carousel';
+import { storageRef } from '../../../photoData/firebaseConfig';
+
+const blankImage = { id: '', image: '' };
 
 const ServiceSection = ({
 	serviceImage,
@@ -11,10 +14,25 @@ const ServiceSection = ({
 	paragraph1,
 	paragraph2,
 	paragraph3,
-	gallery,
+	galleryType,
 	serviceImageStyle,
 	picFirst = true,
 }) => {
+	const [gallery, setGallery] = useState([blankImage]);
+
+	useEffect(() => {
+		storageRef
+			.child(galleryType)
+			.listAll()
+			.then((res) => {
+				res.items.forEach((item, index) => {
+					item.getDownloadURL().then((res) => {
+						setGallery((prev) => [...prev, { id: index, image: res }]);
+					});
+				});
+			});
+	}, [galleryType]);
+
 	const classes = useStyles();
 
 	const imageFirstClass =
@@ -98,17 +116,21 @@ const ServiceSection = ({
 				dotListClass="custom-dot-list-style"
 				itemClass="carousel-item-padding-40-px"
 			>
-				{gallery.map((item) => (
-					<Fade in={true} timeout={1000}>
-						<div key={item.id} className={classes.galleryItem}>
-							<img
-								className={classes.galleryItem}
-								src={item.image}
-								alt="gallery item"
-							/>
-						</div>
-					</Fade>
-				))}
+				{!gallery.length > 1 ? (
+					<CircularProgress size={50} />
+				) : (
+					gallery.map((item) => (
+						<Fade in={true} timeout={1000}>
+							<div key={item.id} className={classes.galleryItem}>
+								<img
+									className={classes.galleryItem}
+									src={item.image}
+									alt="gallery item"
+								/>
+							</div>
+						</Fade>
+					))
+				)}
 			</Carousel>
 		</div>
 	);

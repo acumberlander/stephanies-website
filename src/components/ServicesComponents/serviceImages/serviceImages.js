@@ -1,17 +1,11 @@
 import ascotPic from '../../../assets/ascot-1.png';
 import eventPic from '../../../assets/event-rental.jpg';
 import hairAndMakeupPic from '../../../assets/hair-and-makeup.jpg';
-import { ascotImportedPics } from '../ascotImportedPics';
-import { eventsImportedPics } from '../eventsImportedPics';
-import { makeupImportedPics } from '../makeupImportedPics';
 
 export const serviceImagesObject = {
 	ascotsImage: ascotPic,
 	eventsImage: eventPic,
 	hairAndMakeupImage: hairAndMakeupPic,
-	ascotsGallery: [...ascotImportedPics.slice(0, 10)],
-	eventsGallery: [...eventsImportedPics.slice(0, 10)],
-	hairAndMakeupGallery: [...makeupImportedPics.slice(0, 10)],
 };
 
 export const ascotsTextObject = {
