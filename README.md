@@ -43,3 +43,5 @@ npm start
 - Services page was recently added. There are some responsiveness bugs that need to be fixed. (3/24/21)
 - **UPDATE** Will be updating the project to utilize firebase storage for all the photos used in the multiple photo galleries. Having them stored locally is making the build folder too large to deploy. (3/26/21)
 - **UPDATE** Dumped majority of the photos for the services carousels into firebase storage. Doing this optimized the overall project size allowing me to deploy the latest changes. (3/27/21)
+- **UPDATE** Gallery images for each service section is now being dynamically set to state when the data is retrieved as opposed to pulling from a list of hard-coded sources. (3/29/21)
+- **UPDATE** Updated website screen shot image and limited the number of images displayed in each service section photo gallery to cut down on the number of requests made to firebase. (3/30/21)
