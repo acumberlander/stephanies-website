@@ -7,6 +7,8 @@ import {
 	Select,
 	Typography,
 	MenuItem,
+	FormControl,
+	FormHelperText,
 	Button,
 	CircularProgress,
 	Fade,
@@ -20,16 +22,13 @@ import productModel from '../../../Models/Product';
 import ProductDetailsDropdowns from '../../ProductComponents/ProductDetailsDropdowns/ProductDetailsDropdowns';
 
 const ProductDetails = () => {
-	const [size, setSize] = useState('Medium');
+	const [size, setSize] = useState('Choose a size');
+	const [hasError, setHasError] = useState(false);
 	const [product, setProduct] = useState(productModel);
 	const [quantity, setQuantity] = useState(1);
 	const [displayedProduct, setDisplayedProduct] = useState('');
 	const dispatch = useDispatch();
 	const classes = useStyles();
-
-	if (window.scrollY !== 0) {
-		window.scrollTo(0, 0);
-	}
 
 	let params = useParams();
 
@@ -42,23 +41,39 @@ const ProductDetails = () => {
 
 	const handleAddToCart = () => {
 		if (product.variant_groups[0]) {
-			dispatch(
-				addToCart(product.id, quantity, product.variant_groups[0].options[size])
-			);
+			if (size === 'Choose a size') {
+				setHasError(true);
+				return;
+			}
+			const { id } = product.variant_groups[0];
+			dispatch(addToCart(product.id, quantity, { [id]: size.id }));
+			setHasError(false);
 		} else {
 			dispatch(addToCart(product.id, quantity));
+			setHasError(false);
 		}
 		setQuantity(1);
+		setSize('Choose a size');
 	};
 
 	useEffect(() => {
 		fetchProductById(params.id);
+		if (window.scrollY !== 0) {
+			window.scrollTo(0, 0);
+		}
 	}, [params]);
 
 	const sizeOptions = product.variant_groups[0]
-		? product.variant_groups[0].options.map((size) => (
-				<MenuItem value={size.name}>{size.name}</MenuItem>
-		  ))
+		? [
+				<MenuItem value={'Choose a size'} disabled>
+					Choose a size
+				</MenuItem>,
+				...product.variant_groups[0].options.map((option) => (
+					<MenuItem key={option.id} value={option}>
+						{option.name}
+					</MenuItem>
+				)),
+		  ]
 		: null;
 
 	return (
@@ -120,20 +135,26 @@ const ProductDetails = () => {
 						<Typography className={classes.priceHeader}>
 							{product.price.formatted_with_symbol}
 						</Typography>
-						<Typography className={classes.colorHeader}>
+						{/* {
+							<Typography className={classes.colorHeader}>
 							Color: Default
 						</Typography>
+						} */}
 						{sizeOptions && (
 							<>
 								<Typography className={classes.sizeHeader}>Size</Typography>
-
-								<Select
-									className={classes.sizeSelection}
-									onChange={(e) => setSize(e.target.value)}
-									value={size}
-								>
-									{sizeOptions}
-								</Select>
+								<FormControl required error={hasError}>
+									<Select
+										className={classes.sizeSelection}
+										onChange={(e) => setSize(e.target.value)}
+										value={size}
+									>
+										{sizeOptions}
+									</Select>
+									{hasError && (
+										<FormHelperText>Please select a size</FormHelperText>
+									)}
+								</FormControl>
 							</>
 						)}
 

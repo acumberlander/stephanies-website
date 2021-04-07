@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import commerce from '../../lib/commerce';
 import FormInput from './CustomTextField';
 
-const AddressForm = ({ setShippingData, checkoutToken, test }) => {
+const AddressForm = ({ setShippingData, checkoutToken, goToPayment }) => {
 	const [shippingCountries, setShippingCountries] = useState([]);
 	const [shippingCountry, setShippingCountry] = useState('');
 	const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
@@ -26,7 +26,6 @@ const AddressForm = ({ setShippingData, checkoutToken, test }) => {
 		const { countries } = await commerce.services.localeListShippingCountries(
 			checkoutTokenId
 		);
-		console.log(checkoutTokenId);
 
 		setShippingCountries(countries);
 		setShippingCountry(Object.keys(countries)[0]);
@@ -81,7 +80,7 @@ const AddressForm = ({ setShippingData, checkoutToken, test }) => {
 			<FormProvider {...methods}>
 				<form
 					onSubmit={methods.handleSubmit((data) =>
-						test({
+						goToPayment({
 							...data,
 							shippingCountry,
 							shippingSubdivision,

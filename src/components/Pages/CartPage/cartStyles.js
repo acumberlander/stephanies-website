@@ -37,7 +37,7 @@ export default makeStyles((theme) => ({
 		minWidth: '25%',
 		backgroundColor: colors.primary,
 		'&:hover': {
-			backgroundColor: 'red',
+			backgroundColor: colors.danger,
 		},
 		[theme.breakpoints.down('xs')]: {
 			marginBottom: '5px',

@@ -22,10 +22,9 @@ const CartItem = ({ item }) => {
 							{item.name}
 						</Typography>
 					</Link>
-					<Typography>{`Color: Default`}</Typography>
-					{/* TODO Make size appear dynamically */}
-					<Typography>Size: Medium</Typography>
-					{/* <Typography>{`Size: ${item.}`}</Typography> */}
+					{item.selected_options[0] && (
+						<Typography>{`Size: ${item.selected_options[0].option_name}`}</Typography>
+					)}
 					<div className={classes.buttons}>
 						<Button
 							type="button"

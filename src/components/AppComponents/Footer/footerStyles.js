@@ -53,6 +53,11 @@ export const useStyles = makeStyles((theme) => ({
 	trademark: {
 		height: 15,
 		width: 15,
+		[theme.breakpoints.down('xs')]: {
+			height: 10,
+			width: 10,
+			marginBottom: 30,
+		},
 	},
 	hidden: {
 		display: 'none',

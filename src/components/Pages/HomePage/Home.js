@@ -52,9 +52,9 @@ const Home = () => {
 						topText="Venomous Denim"
 					/>
 					<HomeCard
-						page="manifest-into-art"
+						page="manifest-N2-art"
 						image={tribalPic}
-						topText="Manifest into Art"
+						topText="Manifest N2 Art"
 					/>
 				</Grid>
 			</Fade>

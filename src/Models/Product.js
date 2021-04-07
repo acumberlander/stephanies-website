@@ -61,8 +61,8 @@ const product = {
 	thank_you_url: null,
 	updated: null,
 	variant_groups: [
-		{ name: '', options: [{ name: '' }, { name: '' }, { name: '' }] },
-		{ name: '', options: [{ name: '' }, { name: '' }, { name: '' }] },
+		{ id: '', name: '', options: [{ name: '' }, { name: '' }, { name: '' }] },
+		{ id: '', name: '', options: [{ name: '' }, { name: '' }, { name: '' }] },
 	],
 };
 

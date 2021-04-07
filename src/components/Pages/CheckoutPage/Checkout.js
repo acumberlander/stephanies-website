@@ -48,7 +48,7 @@ const Checkout = ({ cart, order, error }) => {
 		}
 	}, [cart]);
 
-	const test = (data) => {
+	const goToPayment = (data) => {
 		setShippingData(data);
 
 		nextStep();
@@ -111,7 +111,7 @@ const Checkout = ({ cart, order, error }) => {
 				checkoutToken={checkoutToken}
 				nextStep={nextStep}
 				setShippingData={setShippingData}
-				test={test}
+				goToPayment={goToPayment}
 			/>
 		) : (
 			<PaymentForm
