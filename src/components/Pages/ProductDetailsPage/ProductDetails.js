@@ -19,6 +19,7 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import productModel from "../../../Models/Product";
 import ProductDetailsDropdowns from "../../ProductComponents/ProductDetailsDropdowns/ProductDetailsDropdowns";
+import { useShopify } from "../../../redux/ducks/shopify/index";
 
 const client = Client.buildClient({
   storefrontAccessToken: "dd4d4dc146542ba7763305d71d1b3d38",
@@ -34,22 +35,24 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
+  const { fetchProduct } = useShopify();
+
   let params = useParams();
 
-  const fetchProductById = async (id) => {
-    const data = await client.product.fetch(id);
+  // const fetchProductById = async (id) => {
+  //   const data = await client.product.fetch(id);
 
-    setProduct(data);
-    setDisplayedProduct(data.assets[0].url);
-  };
+  //   setProduct(data);
+  //   setDisplayedProduct(data.images[0].src);
+  // };
 
   const handleAddToCart = () => {
-    if (product.variant_groups[0]) {
+    if (product.variants[0]) {
       if (size === "Choose a size") {
         setHasError(true);
         return;
       }
-      const { id } = product.variant_groups[0];
+      const { id } = product.variants[0];
       //   dispatch(addToCart(product.id, quantity, { [id]: size.id }));
       setHasError(false);
     } else {
@@ -61,24 +64,36 @@ const ProductDetails = () => {
   };
 
   useEffect(() => {
-    fetchProductById(params.id);
+    fetchProduct(params.id).then((currentProduct) => {
+      setProduct(currentProduct);
+      setDisplayedProduct(currentProduct.images[0].src);
+    });
     if (window.scrollY !== 0) {
       window.scrollTo(0, 0);
     }
   }, [params]);
 
-  const sizeOptions = product.variant_groups[0]
-    ? [
-        <MenuItem value={"Choose a size"} disabled>
-          Choose a size
-        </MenuItem>,
-        ...product.variant_groups[0].options.map((option) => (
-          <MenuItem key={option.id} value={option}>
-            {option.name}
-          </MenuItem>
-        )),
-      ]
-    : null;
+  const sizeOptions = product.variants[0]
+    ? //[
+      // <MenuItem value={"Choose a size"} disabled>
+      //   Choose a size
+      // </MenuItem>,
+      // ...product.variants[0].selectedOptions[1].map((option) => (
+      //   <MenuItem key={option.id} value={option}>
+      //     {option.name}
+      //   </MenuItem>
+      // )),
+      product.variants &&
+      product.variants.map((item, i) => {
+        return (
+          <option
+            value={item.id.toString()}
+            key={item.title + i}
+          >{`${item.title}`}</option>
+        );
+      })
+    : //]
+      null;
 
   return (
     <Container className={classes.container}>
@@ -87,7 +102,7 @@ const ProductDetails = () => {
           {/* Left Section */}
           <div className={classes.leftSection}>
             <Typography className={classes.productName} variant="h5">
-              {product.name}
+              {product.title}
             </Typography>
             <div className={classes.displayContainer}>
               {!displayedProduct ? (
@@ -101,14 +116,14 @@ const ProductDetails = () => {
                   <img
                     className={classes.productImage}
                     src={displayedProduct}
-                    alt={product.name}
+                    alt={product.title}
                   />
                 </Fade>
               )}
             </div>
 
             <div style={{ display: "flex", margin: "10px 0" }}>
-              {product.assets.map((imageObj) => (
+              {product.images.map((imageObj) => (
                 <div
                   key={imageObj.id}
                   onClick={(e) => setDisplayedProduct(e.target.src)}
@@ -130,14 +145,14 @@ const ProductDetails = () => {
             </div>
 
             <Typography className={classes.productDetailsText}>
-              {product.name}
+              {product.title}
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
             </Typography>
           </div>
           {/* Right Section */}
           <div className={classes.rightSection}>
             <Typography className={classes.priceHeader}>
-              {product.price.formatted_with_symbol}
+              {product.variants[0].price}
             </Typography>
             {/* {
 							<Typography className={classes.colorHeader}>

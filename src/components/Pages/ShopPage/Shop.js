@@ -9,7 +9,7 @@ import Product from "../../ProductComponents/Product/Product.js";
 
 export default function Shop() {
   const classes = useStyles();
-  const allProducts = useSelector((state) => state.products);
+  // const allProducts = useSelector((state) => state.products);
   const [products, setProducts] = useState([]);
   const shopify = useShopify();
 
@@ -25,19 +25,14 @@ export default function Shop() {
     .join(" ");
 
   useEffect(() => {
-    shopify.createShop();
-    shopify.fetchProducts();
-    // const data = allProducts.filter((product) => {
-    // 	return product.categories.every((category) => {
-    // 		return category.slug === params.category;
-    // 	});
-    // });
-    // if (!data.length) {
-    // 	setProducts(allProducts);
-    // } else {
-    // 	setProducts(data);
-    // }
-  }, [allProducts, params]);
+    shopify.client.product.fetchAll().then((storeProducts) => {
+      if (!storeProducts.length) {
+        setProducts([]);
+      } else {
+        setProducts(storeProducts);
+      }
+    });
+  }, []);
 
   return (
     <div className={classes.shopContainer}>
