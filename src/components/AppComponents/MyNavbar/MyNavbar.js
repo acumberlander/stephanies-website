@@ -6,6 +6,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { ShoppingCart } from "@material-ui/icons";
 import myLogo from "../../../assets/logos/logo-white.png";
 import useStyles from "./navbarStyles";
+import { useShopify } from "../../../hooks/index";
 
 const MyNavbar = () => {
   const { navContainer, logoLink, myNavbar, toolbar, cartIcon, navButton } =
@@ -13,6 +14,8 @@ const MyNavbar = () => {
   // const totalItems = useSelector((state) => state.cart.total_items);
   const [mobileView, setMobileView] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const { cartCount } = useShopify();
 
   useEffect(() => {
     const setResponsiveness = () => {
@@ -94,7 +97,7 @@ const MyNavbar = () => {
                 aria-label="Show cart items"
                 color="inherit"
               >
-                <Badge badgeContent={1} color="secondary">
+                <Badge badgeContent={cartCount} color="secondary">
                   <ShoppingCart className={cartIcon} />
                 </Badge>
               </IconButton>

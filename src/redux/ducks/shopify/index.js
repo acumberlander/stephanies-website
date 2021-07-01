@@ -70,8 +70,6 @@ export default (state = initialState, action) => {
 function getProducts() {
   return async (dispatch) => {
     const resp = await client.product.fetchAll();
-    console.log("IT RAN!!!");
-    console.log(resp);
     dispatch({
       type: PRODUCTS_FOUND,
       payload: resp,
@@ -122,7 +120,6 @@ function checkout() {
 function shopInfo() {
   return (dispatch) => {
     client.shop.fetchInfo().then((resp) => {
-      console.log(resp);
       dispatch({
         type: SHOP_FOUND,
         payload: resp,
@@ -241,14 +238,17 @@ export function useShopify() {
     fetchProducts,
     fetchProduct,
     getProduct,
+    getProducts,
     addToCart,
     // fetchCollection,
     createCheckout,
+    checkout,
     createShop,
     closeCart,
     openCart,
     updateQuantity,
     removeLineItem,
     setCount,
+    shopInfo,
   };
 }
