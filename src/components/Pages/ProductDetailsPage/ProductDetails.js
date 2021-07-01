@@ -35,7 +35,8 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const { fetchProduct } = useShopify();
+  const { fetchProduct, checkoutState, addVariant, setCount, cartCount } =
+    useShopify();
 
   let params = useParams();
 
@@ -46,21 +47,32 @@ const ProductDetails = () => {
   //   setDisplayedProduct(data.images[0].src);
   // };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (sizeId, quantity) => {
     if (product.variants[0]) {
       if (size === "Choose a size") {
         setHasError(true);
         return;
       }
-      const { id } = product.variants[0];
-      //   dispatch(addToCart(product.id, quantity, { [id]: size.id }));
-      setHasError(false);
+
+      const lineItemsToAdd = [
+        { variantId: sizeId, quantity: parseInt(quantity, 10) },
+      ];
+
+      const checkoutId = checkoutState.id;
+      addVariant(checkoutId, lineItemsToAdd);
     } else {
-      //   dispatch(addToCart(product.id, quantity));
       setHasError(false);
+      const lineItemsToAdd = [
+        { variantId: sizeId, quantity: parseInt(quantity, 10) },
+      ];
+
+      const checkoutId = checkoutState.id;
+      addVariant(checkoutId, lineItemsToAdd);
     }
     setQuantity(1);
     setSize("Choose a size");
+    const cartTotal = cartCount + quantity;
+    setCount(cartTotal);
   };
 
   useEffect(() => {
@@ -71,7 +83,7 @@ const ProductDetails = () => {
     if (window.scrollY !== 0) {
       window.scrollTo(0, 0);
     }
-  }, [params]);
+  }, []);
 
   const sizeOptions = product.variants[0]
     ? //[
@@ -137,7 +149,7 @@ const ProductDetails = () => {
                       cursor: "pointer",
                       borderRadius: "0.2rem",
                     }}
-                    src={imageObj.url}
+                    src={imageObj.src}
                     alt="hoodie"
                   />
                 </div>
@@ -159,7 +171,7 @@ const ProductDetails = () => {
 							Color: Default
 						</Typography>
 						} */}
-            {sizeOptions && (
+            {sizeOptions.length > 1 && (
               <>
                 <Typography className={classes.sizeHeader}>Size</Typography>
                 <FormControl required error={hasError}>
@@ -199,7 +211,7 @@ const ProductDetails = () => {
             <Button
               variant="contained"
               className={classes.button}
-              onClick={handleAddToCart}
+              onClick={() => handleAddToCart(size, quantity)}
             >
               Add To Cart
             </Button>

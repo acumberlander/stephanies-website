@@ -12,6 +12,7 @@ import Shop from "./components/Pages/ShopPage/Shop";
 import Footer from "./components/AppComponents/Footer/Footer";
 import ProductDetails from "./components/Pages/ProductDetailsPage/ProductDetails";
 import Services from "./components/Pages/ServicesPage/Services";
+import { useShopify } from "./hooks/index";
 // import { storageRef } from './photoData/firebaseConfig';
 
 const App = () => {
@@ -20,20 +21,35 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
 
+  const {
+    createShop,
+    createCheckout,
+    checkoutState,
+    fetchProducts,
+    // fetchCollection,
+  } = useShopify();
+
   useEffect(() => {
-    // storageRef
-    // 	.child('hair-and-makeup')
-    // 	.listAll()
-    // 	.then((res) => {
-    // 		res.items.forEach((item) => {
-    // 			item.getDownloadURL().then((res) => {
-    // 				console.log(res);
-    // 			});
-    // 		});
-    // 	});
-    // dispatch(fetchProducts());
-    // dispatch(fetchCart());
-  }, [dispatch]);
+    createShop();
+    // fetchProducts();
+    createCheckout();
+    // fetchCollection()
+  }, []);
+
+  // useEffect(() => {
+  //   // storageRef
+  //   // 	.child('hair-and-makeup')
+  //   // 	.listAll()
+  //   // 	.then((res) => {
+  //   // 		res.items.forEach((item) => {
+  //   // 			item.getDownloadURL().then((res) => {
+  //   // 				console.log(res);
+  //   // 			});
+  //   // 		});
+  //   // 	});
+  //   // dispatch(fetchProducts());
+  //   // dispatch(fetchCart());
+  // }, [dispatch]);
 
   return (
     <Router>
@@ -54,8 +70,11 @@ const App = () => {
         <Route exact path="/cart">
           <Cart />
         </Route>
+        <Route exact path="/cart/clear">
+          <Cart />
+        </Route>
         <Route exact path="/checkout">
-          <Checkout cart={cart} order={order} error={errorMessage} />
+          <Checkout cart={checkoutState} order={order} error={errorMessage} />
         </Route>
         <Route exact path="/product/:id">
           <ProductDetails />

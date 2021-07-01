@@ -8,13 +8,15 @@ import useStyles from "./cartItemStyles";
 const CartItem = ({ item }) => {
   const classes = useStyles();
 
-  const { checkoutState, updateQuantity, removeLineItem } = useShopify();
+  const { checkoutState, updateQuantity, removeLineItem, setCount, cartCount } =
+    useShopify();
 
   const decrementQuantity = (lineItemId, lineItemQuantity, e) => {
     e.preventDefault();
     const checkoutId = checkoutState.id;
     const updatedQuantity = lineItemQuantity - 1;
     updateQuantity(lineItemId, updatedQuantity, checkoutId);
+    setCount(cartCount - 1);
   };
 
   const incrementQuantity = (lineItemId, lineItemQuantity, e) => {
@@ -22,27 +24,33 @@ const CartItem = ({ item }) => {
     const checkoutId = checkoutState.id;
     const updatedQuantity = lineItemQuantity + 1;
     updateQuantity(lineItemId, updatedQuantity, checkoutId);
+    setCount(cartCount + 1);
   };
 
-  const deleteLineItem = (lineItemId, e) => {
+  const deleteLineItem = (itemQuantity, lineItemId, e) => {
     e.preventDefault();
     const checkoutId = checkoutState.id;
     removeLineItem(checkoutId, lineItemId);
+    setCount(cartCount - itemQuantity);
   };
   return (
     <Container className={classes.container}>
       <div className={classes.imageAndDescription}>
-        <Link className={classes.shopLink} to={`/product/${item.product_id}`}>
-          <img src={item.media.source} alt="hoodie" className={classes.media} />
+        <Link className={classes.shopLink} to={`/product/${item.id}`}>
+          <img
+            src={item.variant.image.src}
+            alt="hoodie"
+            className={classes.media}
+          />
         </Link>
         <div>
-          <Link className={classes.shopLink} to={`/product/${item.product_id}`}>
+          <Link className={classes.shopLink} to={`/product/${item.id}`}>
             <Typography variant="h6" className={classes.productName}>
-              {item.name}
+              {item.title}
             </Typography>
           </Link>
-          {item.selected_options[0] && (
-            <Typography>{`Size: ${item.selected_options[0].option_name}`}</Typography>
+          {item.variant && (
+            <Typography>{`Size: ${item.variant.title}`}</Typography>
           )}
           <div className={classes.buttons}>
             <Button
@@ -65,11 +73,13 @@ const CartItem = ({ item }) => {
       </div>
       <div className={classes.priceAndRemove}>
         {/* TODO need to apply logic to account for dynamic change amount (money) */}
-        <Typography>{`$${item.price.raw * item.quantity}.00`}</Typography>
+        <Typography>{`$${
+          parseInt(item.variant.price) * item.quantity
+        }`}</Typography>
         <Button
           type="button"
           color="secondary"
-          onClick={(e) => deleteLineItem(item.id, e)}
+          onClick={(e) => deleteLineItem(item.quantity, item.id, e)}
         >
           X
         </Button>

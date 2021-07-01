@@ -5,15 +5,21 @@ import { Link } from "react-router-dom";
 import useStyles from "./cartStyles";
 import CartItem from "../../CartComponents/CartItem/CartItem";
 import { useSelector, useDispatch } from "react-redux";
+import { useShopify } from "../../../hooks/index";
+import { SettingsCellOutlined } from "@material-ui/icons";
 
 const Cart = () => {
-  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const classes = useStyles();
+  const { checkoutState, setCount } = useShopify();
 
   if (window.scrollY !== 0) {
     window.scrollTo(0, 0);
   }
+
+  const handleEmptyCart = () => {
+    setCount(0);
+  };
 
   const EmptyCart = () => (
     <div className={classes.emptyCartContainer}>
@@ -35,25 +41,24 @@ const Cart = () => {
       </Typography>
       <Divider className={classes.divider} />
       <div>
-        {cart.line_items.map((item) => (
+        {checkoutState.lineItems.map((item) => (
           <CartItem key={item.id} item={item} />
         ))}
       </div>
       <div className={classes.emptyButtonContainer}>
-        {/* <Button
+        <Button
           className={classes.emptyButton}
           size="large"
           type="button"
           variant="contained"
           color="secondary"
-          onClick={handleEmptyCart}
           href="/cart/clear"
         >
           Empty Cart
-        </Button> */}
-        <a href="/cart/clear" class="btn clear-cart">
+        </Button>
+        {/* <a href="/cart" class="btn clear-cart">
           Empty Cart
-        </a>
+        </a> */}
       </div>
     </div>
   );
@@ -67,14 +72,14 @@ const Cart = () => {
       <Divider className={classes.divider} />
       <div className={classes.subtotalContainer}>
         <Typography>Subtotal</Typography>
-        <Typography>{cart.subtotal.formatted_with_symbol}</Typography>
+        <Typography>${checkoutState.subtotalPrice}</Typography>
       </div>
       <Typography>Estimate Shipping</Typography>
       <Divider className={classes.divider} />
       <div className={classes.totalContainer}>
         <Typography>Total</Typography>
         {/* TODO Need to add logic that accounts for shipping and other costs/discounts (taxes or discount codes) */}
-        <Typography>{cart.subtotal.formatted_with_symbol}</Typography>
+        <Typography>${checkoutState.subtotalPrice}</Typography>
       </div>
       <div className={classes.checkoutButtonContainer}>
         <Button
@@ -91,11 +96,11 @@ const Cart = () => {
     </div>
   );
 
-  if (!cart.line_items) return "Loading...";
+  if (!checkoutState.lineItems) return "Loading...";
 
   return (
     <Container className={classes.cartContainer}>
-      {!cart.line_items.length ? (
+      {!checkoutState.lineItems.length ? (
         <EmptyCart />
       ) : (
         <>
