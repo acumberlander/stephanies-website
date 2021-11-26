@@ -1,36 +1,28 @@
-import {
-	FETCH_CART,
-	ADD_TO_CART,
-	REMOVE_FROM_CART,
-	EMPTY_CART,
-	UPDATE_QUANTITY,
-	REFRESH_CART,
-	CAPTURE_CHECKOUT,
-} from '../constants/actionTypes';
+import * as actions from "../constants/actionTypes";
 
 const cartReducer = (cart = {}, action) => {
-	switch (action.type) {
-		case FETCH_CART:
-			return action.payload;
+  switch (action.type) {
+    case actions.FETCH_CART:
+      return action.payload;
 
-		case EMPTY_CART:
-			return action.payload;
+    case actions.EMPTY_CART:
+      return action.payload;
 
-		case UPDATE_QUANTITY:
-			return action.payload;
+    case actions.UPDATE_QUANTITY:
+      return action.payload;
 
-		case REFRESH_CART:
-			return action.payload;
+    case actions.REFRESH_CART:
+      return action.payload;
 
-		case ADD_TO_CART:
-			return action.payload;
+    case actions.ADD_TO_CART:
+      return action.payload;
 
-		case REMOVE_FROM_CART:
-			return action.payload;
+    case actions.REMOVE_FROM_CART:
+      return action.payload;
 
-		default:
-			return cart;
-	}
+    default:
+      return cart;
+  }
 };
 
 export default cartReducer;

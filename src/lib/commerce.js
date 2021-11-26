@@ -1,6 +1,6 @@
-import Commerce from '@chec/commerce.js';
+import Commerce from "@chec/commerce.js";
 
-const publicKey = process.env.REACT_APP_CHEC_PUBLIC_KEY;
+const publicKey = "pk_test_24256647a72235a632d8eafec3ffe6d9e3b08d54e47bd";
 
 const commerce = new Commerce(publicKey, true);
 

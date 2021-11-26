@@ -1,19 +1,16 @@
-import {
-	FETCH_ALL_PRODUCTS,
-	FETCH_PRODUCT_BY_ID,
-} from '../constants/actionTypes';
+import * as actions from "../constants/actionTypes";
 
 const productReducer = (products = [], action) => {
-	switch (action.type) {
-		case FETCH_ALL_PRODUCTS:
-			return action.payload;
+  switch (action.type) {
+    case actions.FETCH_ALL_PRODUCTS:
+      return action.payload;
 
-		case FETCH_PRODUCT_BY_ID:
-			return action.payload;
+    case actions.FETCH_PRODUCT_BY_ID:
+      return action.payload;
 
-		default:
-			return products;
-	}
+    default:
+      return products;
+  }
 };
 
 export default productReducer;
