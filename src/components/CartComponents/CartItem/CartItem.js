@@ -1,68 +1,91 @@
-import React from 'react';
-import { Typography, Button, Container } from '@material-ui/core';
-import { updateCartQty } from '../../../actions/cart';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Typography, Button, Container } from "@material-ui/core";
+import { useShopify } from "../../../hooks/index";
+import { Link } from "react-router-dom";
 
-import useStyles from './cartItemStyles';
+import useStyles from "./cartItemStyles";
 
 const CartItem = ({ item }) => {
-	const dispatch = useDispatch();
-	const classes = useStyles();
+  const classes = useStyles();
 
-	return (
-		<Container className={classes.container}>
-			<div className={classes.imageAndDescription}>
-				<Link className={classes.shopLink} to={`/product/${item.product_id}`}>
-					<img src={item.media.source} alt="hoodie" className={classes.media} />
-				</Link>
-				<div>
-					<Link className={classes.shopLink} to={`/product/${item.product_id}`}>
-						<Typography variant="h6" className={classes.productName}>
-							{item.name}
-						</Typography>
-					</Link>
-					{item.selected_options[0] && (
-						<Typography>{`Size: ${item.selected_options[0].option_name}`}</Typography>
-					)}
-					<div className={classes.buttons}>
-						<Button
-							type="button"
-							size="small"
-							onClick={() =>
-								dispatch(updateCartQty(item.id, item.quantity - 1))
-							}
-						>
-							-
-						</Button>
-						<Typography>{item.quantity}</Typography>
-						<Button
-							type="button"
-							size="small"
-							onClick={() =>
-								dispatch(updateCartQty(item.id, item.quantity + 1))
-							}
-						>
-							+
-						</Button>
-					</div>
-				</div>
-			</div>
-			<div className={classes.priceAndRemove}>
-				{/* TODO need to apply logic to account for dynamic change amount (money) */}
-				<Typography>{`$${item.price.raw * item.quantity}.00`}</Typography>
-				<Button
-					type="button"
-					color="secondary"
-					onClick={() =>
-						dispatch(updateCartQty(item.id, item.quantity - item.quantity))
-					}
-				>
-					X
-				</Button>
-			</div>
-		</Container>
-	);
+  const { checkoutState, updateQuantity, removeLineItem, setCount, cartCount } =
+    useShopify();
+
+  const decrementQuantity = (lineItemId, lineItemQuantity, e) => {
+    e.preventDefault();
+    const checkoutId = checkoutState.id;
+    const updatedQuantity = lineItemQuantity - 1;
+    updateQuantity(lineItemId, updatedQuantity, checkoutId);
+    setCount(cartCount - 1);
+  };
+
+  const incrementQuantity = (lineItemId, lineItemQuantity, e) => {
+    e.preventDefault();
+    const checkoutId = checkoutState.id;
+    const updatedQuantity = lineItemQuantity + 1;
+    updateQuantity(lineItemId, updatedQuantity, checkoutId);
+    setCount(cartCount + 1);
+  };
+
+  const deleteLineItem = (itemQuantity, lineItemId, e) => {
+    e.preventDefault();
+    const checkoutId = checkoutState.id;
+    removeLineItem(checkoutId, lineItemId);
+    setCount(cartCount - itemQuantity);
+  };
+  return (
+    <Container className={classes.container}>
+      <div className={classes.imageAndDescription}>
+        <Link className={classes.shopLink} to={`/product/${item.id}`}>
+          <img
+            src={item.variant.image.src}
+            alt="hoodie"
+            className={classes.media}
+          />
+        </Link>
+        <div>
+          <Link className={classes.shopLink} to={`/product/${item.id}`}>
+            <Typography variant="h6" className={classes.productName}>
+              {item.title}
+            </Typography>
+          </Link>
+          {item.variant && (
+            <Typography>{`Size: ${item.variant.title}`}</Typography>
+          )}
+          <div className={classes.buttons}>
+            <Button
+              type="button"
+              size="small"
+              onClick={(e) => decrementQuantity(item.id, item.quantity, e)}
+            >
+              -
+            </Button>
+            <Typography>{item.quantity}</Typography>
+            <Button
+              type="button"
+              size="small"
+              onClick={(e) => incrementQuantity(item.id, item.quantity, e)}
+            >
+              +
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className={classes.priceAndRemove}>
+        {/* TODO need to apply logic to account for dynamic change amount (money) */}
+        <Typography>{`$${
+          parseInt(item.variant.price) * item.quantity
+        }`}</Typography>
+        <Button
+          type="button"
+          color="secondary"
+          onClick={(e) => deleteLineItem(item.quantity, item.id, e)}
+        >
+          X
+        </Button>
+      </div>
+    </Container>
+  );
 };
 
 export default CartItem;
