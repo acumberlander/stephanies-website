@@ -6,12 +6,14 @@ import {
   ElementsConsumer,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-// import { captureCheckout, refreshCart } from '../../actions/cart';
+import { captureCheckout, refreshCart } from "../../actions/cart";
 import { useDispatch } from "react-redux";
 
 import Review from "./Review";
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(
+  "pk_test_51IXc8UGZ9VpDdAnjJiDCqNr2ZPX3juuFegGBPhKzMZuBpYHm8MW74hE2gbGPR89LttRRd98zXmOSgbyjcbiqOasb00lMKjHDhN"
+);
 
 const PaymentForm = ({
   checkoutToken,
@@ -60,12 +62,12 @@ const PaymentForm = ({
         },
       };
 
-      // dispatch(captureCheckout(checkoutToken.id, orderData));0
+      dispatch(captureCheckout(checkoutToken.id, orderData));
 
       timeout();
 
       nextStep();
-      // dispatch(refreshCart());
+      dispatch(refreshCart());
     }
   };
 

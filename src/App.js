@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import MyNavbar from "./components/AppComponents/MyNavbar/MyNavbar";
-import Cart from "./components/Pages/CartPage/Cart";
-import Checkout from "./components/Pages/CheckoutPage/Checkout";
-import About from "./components/Pages/AboutPage/About";
+import {
+  MyNavbar,
+  Cart,
+  Checkout,
+  About,
+  Home,
+  Shop,
+  Footer,
+  ProductDetails,
+  Services,
+} from "./components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-// import { fetchProducts } from './actions/products';
-// import { fetchCart } from './actions/cart';
-import Home from "./components/Pages/HomePage/Home";
-import Shop from "./components/Pages/ShopPage/Shop";
-import Footer from "./components/AppComponents/Footer/Footer";
-import ProductDetails from "./components/Pages/ProductDetailsPage/ProductDetails";
-import Services from "./components/Pages/ServicesPage/Services";
-import { useShopify } from "./hooks/index";
+import { fetchProducts } from "./actions/products";
+import { fetchCart } from "./actions/cart";
 // import { storageRef } from './photoData/firebaseConfig';
 
 const App = () => {
@@ -21,35 +22,20 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
 
-  const {
-    createShop,
-    createCheckout,
-    checkoutState,
-    fetchProducts,
-    // fetchCollection,
-  } = useShopify();
-
   useEffect(() => {
-    createShop();
-    // fetchProducts();
-    createCheckout();
-    // fetchCollection()
-  }, []);
-
-  // useEffect(() => {
-  //   // storageRef
-  //   // 	.child('hair-and-makeup')
-  //   // 	.listAll()
-  //   // 	.then((res) => {
-  //   // 		res.items.forEach((item) => {
-  //   // 			item.getDownloadURL().then((res) => {
-  //   // 				console.log(res);
-  //   // 			});
-  //   // 		});
-  //   // 	});
-  //   // dispatch(fetchProducts());
-  //   // dispatch(fetchCart());
-  // }, [dispatch]);
+    // storageRef
+    // 	.child('hair-and-makeup')
+    // 	.listAll()
+    // 	.then((res) => {
+    // 		res.items.forEach((item) => {
+    // 			item.getDownloadURL().then((res) => {
+    // 				console.log(res);
+    // 			});
+    // 		});
+    // 	});
+    dispatch(fetchProducts());
+    dispatch(fetchCart());
+  }, [dispatch]);
 
   return (
     <Router>
@@ -70,11 +56,8 @@ const App = () => {
         <Route exact path="/cart">
           <Cart />
         </Route>
-        <Route exact path="/cart/clear">
-          <Cart />
-        </Route>
         <Route exact path="/checkout">
-          <Checkout cart={checkoutState} order={order} error={errorMessage} />
+          <Checkout cart={cart} order={order} error={errorMessage} />
         </Route>
         <Route exact path="/product/:id">
           <ProductDetails />

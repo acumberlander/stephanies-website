@@ -12,9 +12,8 @@ import {
 } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
 
-// import commerce from '../../../lib/commerce';
-import AddressForm from "../../CheckoutComponents/AddressForm";
-import PaymentForm from "../../CheckoutComponents/PaymentForm";
+import commerce from "../../../lib/commerce";
+import { AddressForm, PaymentForm } from "../../index";
 import useStyles from "./checkoutStyles";
 
 const steps = ["Shipping address", "Payment details"];
@@ -34,12 +33,11 @@ const Checkout = ({ cart, order, error }) => {
     if (cart.id) {
       const generateToken = async () => {
         try {
-          // const token = await commerce.checkout.generateToken(cart.id, {
-          // 	type: 'cart',
-          // });
-          console.log("generate checkout out id");
+          const token = await commerce.checkout.generateToken(cart.id, {
+            type: "cart",
+          });
 
-          // setCheckoutToken(token);
+          setCheckoutToken(token);
         } catch {
           if (activeStep !== steps.length) history.push("/");
         }
