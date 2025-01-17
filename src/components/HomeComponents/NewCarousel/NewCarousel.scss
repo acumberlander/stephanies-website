@@ -49,14 +49,10 @@
 
 .hero-overlay {
   margin-top: 50px;
-  width: 450px;
-  height: 450px;
+  width: 400px;
+  height: 400px;
   position: absolute;
   z-index: 2;
-  @media (max-width: 1200px) {
-    width: 400px;
-    height: 400px;
-  }
   @media (max-width: 960px) {
     width: 275px;
     height: 275px;
@@ -70,12 +66,12 @@
   font-size: 1.5rem !important;
   font-weight: bold !important;
   z-index: 2;
-  top: 525px;
-  @media (max-width: 1200px) {
-    top: 500px;
-  }
+  top: 480px;
+  // @media (max-width: 1200px) {
+  //   top: 480px;
+  // }
   @media (max-width: 960px) {
-    top: 400px;
+    top: 410px;
   }
 }
 
@@ -85,11 +81,11 @@
   font-size: 1.5rem;
   color: #e646c3;
   cursor: pointer;
-  top: 580px !important;
-  @media (max-width: 1200px) {
-    top: 550px !important;
-  }
+  top: 520px !important;
+  // @media (max-width: 1200px) {
+  //   top: 520px !important;
+  // }
   @media (max-width: 960px) {
-    top: 460px !important;
+    top: 490px !important;
   }
 }

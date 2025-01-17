@@ -26,7 +26,7 @@ const NewCarousel = () => {
         indicatorContainerProps={indicatorContainerProps}
         indicatorIconButtonProps={indicatorIconButtonProps}
         activeIndicatorIconButtonProps={activeIndicatorIconButtonProps}
-        autoPlay={false}
+        autoPlay={true}
         className="carousel-container"
         height={"100vh"}
       >
