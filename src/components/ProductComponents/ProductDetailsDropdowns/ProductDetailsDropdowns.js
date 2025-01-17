@@ -4,63 +4,60 @@ import {
 	AccordionSummary,
 	AccordionDetails,
 	Typography,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { useStyles } from './styles';
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const ProductDetailsDropdowns = () => {
-	const classes = useStyles();
-
 	return (
 		<>
-			<Accordion className={classes.accordion}>
+			<Accordion className="accordion">
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon />}
 					aria-controls="panel1a-content"
 					id="panel1a-header"
 				>
-					<Typography className={classes.heading} variant="h6">
+					<Typography className="heading" variant="h6">
 						Product Info
 					</Typography>
 				</AccordionSummary>
 				<AccordionDetails>
-					<Typography className={classes.text}>
+					<Typography className="text">
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
 						malesuada lacus ex, sit amet blandit leo lobortis eget.
 					</Typography>
 				</AccordionDetails>
 			</Accordion>
 
-			<Accordion className={classes.accordion}>
+			<Accordion className="accordion">
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon />}
 					aria-controls="panel1a-content"
 					id="panel1a-header"
 				>
-					<Typography className={classes.heading} variant="h6">
+					<Typography className="heading" variant="h6">
 						Return & Refund Policy
 					</Typography>
 				</AccordionSummary>
 				<AccordionDetails>
-					<Typography className={classes.text}>
+					<Typography className="text">
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
 						malesuada lacus ex, sit amet blandit leo lobortis eget.
 					</Typography>
 				</AccordionDetails>
 			</Accordion>
 
-			<Accordion className={classes.accordion}>
+			<Accordion className="accordion">
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon />}
 					aria-controls="panel1a-content"
 					id="panel1a-header"
 				>
-					<Typography className={classes.heading} variant="h6">
+					<Typography className="heading" variant="h6">
 						Shipping Info
 					</Typography>
 				</AccordionSummary>
 				<AccordionDetails>
-					<Typography className={classes.text}>
+					<Typography className="text">
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
 						malesuada lacus ex, sit amet blandit leo lobortis eget.
 					</Typography>

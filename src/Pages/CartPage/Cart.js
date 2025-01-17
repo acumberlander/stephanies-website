@@ -1,16 +1,17 @@
 import React from 'react';
-import { Container, Typography, Button, Divider } from '@material-ui/core';
+import { Container, Typography, Button, Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import useStyles from './cartStyles';
-import CartItem from '../../CartComponents/CartItem/CartItem';
-import { emptyCart } from '../../../actions/cart';
+// import useStyles from './cartStyles';
+import CartItem from '../../components/CartComponents/CartItem/CartItem';
+import { emptyCart } from '../../actions/cart';
 import { useSelector, useDispatch } from 'react-redux';
+import './Cart.scss';
 
 const Cart = () => {
 	const dispatch = useDispatch();
 	const cart = useSelector((state) => state.cart);
-	const classes = useStyles();
+	// const classes = useStyles();
 
 	if (window.scrollY !== 0) {
 		window.scrollTo(0, 0);
@@ -21,10 +22,10 @@ const Cart = () => {
 	};
 
 	const EmptyCart = () => (
-		<div className={classes.emptyCartContainer}>
-			<Typography className={classes.emptyText}>
+		<div className="empty-cart-container">
+			<Typography className="empty-text">
 				You have no items in your shopping cart,{' '}
-				<Link to="/shop/all-products" className={classes.link}>
+				<Link to="/shop/all-products" className="link">
 					start adding some
 				</Link>
 				!
@@ -33,20 +34,20 @@ const Cart = () => {
 	);
 
 	const FilledCart = () => (
-		<div className={classes.cartItemsContainer}>
-			<div className={classes.toolbar} />
-			<Typography className={classes.title} variant="h6">
+		<div className="cart-items-container">
+			<div className="toolbar" />
+			<Typography className="title" variant="h6">
 				My Cart
 			</Typography>
-			<Divider className={classes.divider} />
+			<Divider className="divider" />
 			<div>
 				{cart.line_items.map((item) => (
 					<CartItem key={item.id} item={item} />
 				))}
 			</div>
-			<div className={classes.emptyButtonContainer}>
+			<div className="empty-button-container">
 				<Button
-					className={classes.emptyButton}
+					className="empty-button"
 					size="large"
 					type="button"
 					variant="contained"
@@ -60,28 +61,28 @@ const Cart = () => {
 	);
 
 	const OrderSummary = () => (
-		<div className={classes.orderSummaryContainer}>
-			<div className={classes.toolbar} />
-			<Typography className={classes.title} variant="h6">
+		<div className="order-summary-container">
+			<div className="toolbar" />
+			<Typography className="title" variant="h6">
 				Order Summary
 			</Typography>
-			<Divider className={classes.divider} />
-			<div className={classes.subtotalContainer}>
+			<Divider className="divider" />
+			<div className="subtotal-container">
 				<Typography>Subtotal</Typography>
 				<Typography>{cart.subtotal.formatted_with_symbol}</Typography>
 			</div>
 			<Typography>Estimate Shipping</Typography>
-			<Divider className={classes.divider} />
-			<div className={classes.totalContainer}>
+			<Divider className="divider" />
+			<div className="total-container">
 				<Typography>Total</Typography>
 				{/* TODO Need to add logic that accounts for shipping and other costs/discounts (taxes or discount codes) */}
 				<Typography>{cart.subtotal.formatted_with_symbol}</Typography>
 			</div>
-			<div className={classes.checkoutButtonContainer}>
+			<div className="checkout-button-container">
 				<Button
 					component={Link}
 					to="/checkout"
-					className={classes.checkoutButton}
+					className="checkout-button"
 					size="large"
 					type="button"
 					variant="contained"
@@ -95,7 +96,7 @@ const Cart = () => {
 	if (!cart.line_items) return 'Loading...';
 
 	return (
-		<Container className={classes.cartContainer}>
+		<Container className="cart-container">
 			{!cart.line_items.length ? (
 				<EmptyCart />
 			) : (

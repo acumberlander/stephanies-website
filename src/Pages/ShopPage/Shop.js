@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid2';
 import { useParams } from 'react-router-dom';
-import { Container, Typography, Fade } from '@material-ui/core';
+import { Container, Typography, Fade } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { useStyles } from './shopStyles.js';
-import Product from '../../ProductComponents/Product/Product.js';
+import Product from '../../components/ProductComponents/Product/Product.js';
 
 export default function Shop() {
-	const classes = useStyles();
 	const allProducts = useSelector((state) => state.products);
 	const [products, setProducts] = useState([]);
 
@@ -36,14 +34,14 @@ export default function Shop() {
 	}, [allProducts, params]);
 
 	return (
-		<div className={classes.shopContainer}>
-			<div className={classes.shopHeader}>
+		<div className="shop-container">
+			<div className="shop-header">
 				<Container maxWidth="sm">
 					<Typography
 						variant="h2"
 						align="center"
 						color="textPrimary"
-						className={classes.header}
+						className="header"
 						gutterBottom
 					>
 						{headerName}
@@ -51,7 +49,7 @@ export default function Shop() {
 				</Container>
 			</div>
 
-			<Container className={classes.cardGrid} maxWidth="xl">
+			<Container className="cardGrid" maxWidth="xl">
 				<Grid container spacing={4}>
 					{products.map((product) => (
 						<>
@@ -62,7 +60,7 @@ export default function Shop() {
 								{...(product !== null ? { timeout: 1500 } : {})}
 							>
 								<Grid
-									className={classes.gridItem}
+									className="grid-item"
 									item
 									xs={12}
 									sm={6}
@@ -70,7 +68,7 @@ export default function Shop() {
 									lg={4}
 									xl={3}
 								>
-									<Product product={product} className={classes.card} />
+									<Product product={product} className="card" />
 								</Grid>
 							</Fade>
 						</>

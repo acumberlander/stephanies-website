@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useStyles } from './productDetailsStyles';
-import commerce from '../../../lib/commerce';
+import commerce from '../../lib/commerce';
 import {
 	Container,
 	Select,
@@ -12,14 +11,15 @@ import {
 	Button,
 	CircularProgress,
 	Fade,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../../actions/cart';
-import PinterestIcon from '@material-ui/icons/Pinterest';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import productModel from '../../../Models/Product';
-import ProductDetailsDropdowns from '../../ProductComponents/ProductDetailsDropdowns/ProductDetailsDropdowns';
+import { addToCart } from '../../actions/cart';
+import PinterestIcon from '@mui/icons-material/Pinterest';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import productModel from '../../Models/Product';
+import ProductDetailsDropdowns from '../../components/ProductComponents/ProductDetailsDropdowns/ProductDetailsDropdowns';
+import './ProductDetails.scss';
 
 const ProductDetails = () => {
 	const [size, setSize] = useState('Choose a size');
@@ -28,7 +28,6 @@ const ProductDetails = () => {
 	const [quantity, setQuantity] = useState(1);
 	const [displayedProduct, setDisplayedProduct] = useState('');
 	const dispatch = useDispatch();
-	const classes = useStyles();
 
 	let params = useParams();
 
@@ -77,15 +76,15 @@ const ProductDetails = () => {
 		: null;
 
 	return (
-		<Container className={classes.container}>
-			<div className={classes.contentContainer}>
-				<div className={classes.productAndDetails}>
+		<Container className="container">
+			<div className="content-container">
+				<div className="product-and-details">
 					{/* Left Section */}
-					<div className={classes.leftSection}>
-						<Typography className={classes.productName} variant="h5">
+					<div className="left-section">
+						<Typography className="product-name" variant="h5">
 							{product.name}
 						</Typography>
-						<div className={classes.displayContainer}>
+						<div className="display-container">
 							{!displayedProduct ? (
 								<CircularProgress size={80} />
 							) : (
@@ -95,7 +94,7 @@ const ProductDetails = () => {
 									{...(displayedProduct !== null ? { timeout: 1000 } : {})}
 								>
 									<img
-										className={classes.productImage}
+										className="product-image"
 										src={displayedProduct}
 										alt={product.name}
 									/>
@@ -108,7 +107,7 @@ const ProductDetails = () => {
 								<div
 									key={imageObj.id}
 									onClick={(e) => setDisplayedProduct(e.target.src)}
-									className={classes.thumbnailContainer}
+									className="thumbnail-container"
 								>
 									<img
 										style={{
@@ -125,27 +124,27 @@ const ProductDetails = () => {
 							))}
 						</div>
 
-						<Typography className={classes.productDetailsText}>
+						<Typography className="product-details-text">
 							{product.name}
 							Lorem ipsum dolor sit amet consectetur adipisicing elit.
 						</Typography>
 					</div>
 					{/* Right Section */}
-					<div className={classes.rightSection}>
-						<Typography className={classes.priceHeader}>
+					<div className="right-section">
+						<Typography className="price-header">
 							{product.price.formatted_with_symbol}
 						</Typography>
 						{/* {
-							<Typography className={classes.colorHeader}>
+							<Typography className="color-header">
 							Color: Default
 						</Typography>
 						} */}
 						{sizeOptions && (
 							<>
-								<Typography className={classes.sizeHeader}>Size</Typography>
+								<Typography className="size-header">Size</Typography>
 								<FormControl required error={hasError}>
 									<Select
-										className={classes.sizeSelection}
+										className="size-selection"
 										onChange={(e) => setSize(e.target.value)}
 										value={size}
 									>
@@ -158,18 +157,18 @@ const ProductDetails = () => {
 							</>
 						)}
 
-						<Typography className={classes.quantityHeader}>Quantity</Typography>
+						<Typography className="quantity-header">Quantity</Typography>
 
-						<div className={classes.quantityContainer}>
+						<div className="quantity-container">
 							<Button
-								className={classes.quantityButton}
+								className="quantity-button"
 								onClick={() => setQuantity(quantity - 1)}
 							>
 								-
 							</Button>
 							<Typography>{quantity}</Typography>
 							<Button
-								className={classes.quantityButton}
+								className="quantity-button"
 								onClick={() => setQuantity(quantity + 1)}
 							>
 								+
@@ -179,20 +178,20 @@ const ProductDetails = () => {
 
 						<Button
 							variant="contained"
-							className={classes.button}
+							className="button"
 							onClick={handleAddToCart}
 						>
 							Add To Cart
 						</Button>
 
-						<div className={classes.accordionContainer}>
+						<div className="accordion-container">
 							<ProductDetailsDropdowns />
 						</div>
 
-						<div className={classes.socialMediaGroup}>
-							<PinterestIcon className={classes.socialIcon} />
-							<FacebookIcon className={classes.socialIcon} />
-							<TwitterIcon className={classes.socialIcon} />
+						<div className="social-media-group">
+							<PinterestIcon className="socialIcon" />
+							<FacebookIcon className="socialIcon" />
+							<TwitterIcon className="socialIcon" />
 						</div>
 					</div>
 				</div>

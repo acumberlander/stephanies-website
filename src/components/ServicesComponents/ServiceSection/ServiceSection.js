@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useStyles, responsive } from './serviceSectionStyles';
-import { Fade, Typography } from '@material-ui/core';
+import { Fade, Typography } from '@mui/material';
 import facebookIcon from '../../../assets/socialMedia/facebook.png';
 import instaIcon from '../../../assets/socialMedia/instagram.png';
 import Carousel from 'react-multi-carousel';
@@ -31,63 +31,63 @@ const ServiceSection = ({
 			});
 	}, [galleryType]);
 
-	const classes = useStyles();
+	// const classes = useStyles();
 
 	const imageFirstClass =
 		picFirst === true
-			? classes.serviceImageContainer
-			: classes.serviceImageHidden;
+			? "service-image-container"
+			: "service-image-hidden";
 
 	const imageSecondClass =
 		picFirst === true
-			? classes.serviceImageHidden2
-			: classes.serviceImageContainerLeft;
+			? "service-image-hidden-2"
+			: "service-image-container-left";
 
 	return (
-		<div className={classes.sectionContainer}>
-			<div className={classes.imageAndText}>
+		<div className="section-container">
+			<div className="image-and-text">
 				<Fade in={true} timeout={1000}>
 					<div className={imageFirstClass}>
 						<img className={serviceImageStyle} src={serviceImage} alt="" />
 					</div>
 				</Fade>
-				<div className={classes.serviceTextContainer}>
-					<Typography className={classes.serviceHeader} variant="h3">
+				<div className="service-text-container">
+					<Typography className="service-header" variant="h3">
 						{serviceHeader}
 					</Typography>
-					<Typography className={classes.serviceText}>{paragraph1}</Typography>
-					<Typography className={classes.serviceText}>{paragraph2}</Typography>
-					<Typography className={classes.serviceText}>{paragraph3}</Typography>
-					<span className={classes.serviceTextFooter}>
-						<div className={classes.contactContainer}>
-							<Typography className={classes.contactText}>
+					<Typography className="service-text">{paragraph1}</Typography>
+					<Typography className="service-text">{paragraph2}</Typography>
+					<Typography className="service-text">{paragraph3}</Typography>
+					<span className="service-text-footer">
+						<div className="contact-container">
+							<Typography className="contact-text">
 								email: sexes2014@gmail.com
 							</Typography>
-							<Typography className={classes.contactText}>
+							<Typography className="contact-text">
 								phone: (731) 313-3603
 							</Typography>
 						</div>
-						<div className={classes.socialIcons}>
+						<div className="social-icons">
 							<a
-								className={classes.socialLink}
+								className="social-link"
 								target="_blank"
 								rel="noopener noreferrer"
 								href="https://www.facebook.com/Sexes-Custom-Brand-149443252511629"
 							>
 								<img
-									className={classes.socialIcon}
+									className="social-icon"
 									src={facebookIcon}
 									alt="facebook"
 								/>
 							</a>
 							<a
-								className={classes.socialLink}
+								className="social-link"
 								target="_blank"
 								rel="noopener noreferrer"
 								href="https://www.instagram.com/sexesbystephanie/"
 							>
 								<img
-									className={classes.socialIcon}
+									className="social-icon"
 									src={instaIcon}
 									alt="instagram"
 								/>
@@ -99,7 +99,7 @@ const ServiceSection = ({
 					<img className={serviceImageStyle} src={serviceImage} alt="" />
 				</div>
 			</div>
-			<Carousel
+			{/* <Carousel
 				swipeable={true}
 				draggable={true}
 				showDots={true}
@@ -108,7 +108,7 @@ const ServiceSection = ({
 				centerMode={true}
 				keyBoardControl={true}
 				transitionDuration={1000}
-				containerClass={classes.carouselContainer}
+				containerClass="carouselContainer}
 				arrows
 				removeArrowOnDeviceType={['mobile']}
 				dotListClass="custom-dot-list-style"
@@ -116,16 +116,16 @@ const ServiceSection = ({
 			>
 				{gallery.map((item) => (
 					<Fade in={true} timeout={1000}>
-						<div key={item.id} className={classes.galleryItem}>
+						<div key={item.id} className="galleryItem}>
 							<img
-								className={classes.galleryItem}
+								className="galleryItem}
 								src={item.image}
 								alt="gallery item"
 							/>
 						</div>
 					</Fade>
 				))}
-			</Carousel>
+			</Carousel> */}
 		</div>
 	);
 };

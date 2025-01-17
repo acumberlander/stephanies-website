@@ -1,31 +1,30 @@
 import React from 'react';
-import { useStyles } from './aboutStyles';
-import steph from '../../../assets/tutu-1.jpeg';
-import { Typography } from '@material-ui/core';
+import steph from '../../assets/tutu-1.jpeg';
+import { Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import './About.scss';
 
 const About = () => {
-	const classes = useStyles();
 
 	if (window.scrollY !== 0) {
 		window.scrollTo(0, 0);
 	}
 
 	return (
-		<div className={classes.aboutContainer}>
-			<div className={classes.imageAndTextContainer}>
-				<Typography variant="h2" className={classes.aboutHeader}>
+		<div className="about-container">
+			<div className="image-and-text-container">
+				<Typography variant="h2" className="about-header">
 					About Us
 				</Typography>
-				<div className={classes.imageContainer}>
+				<div className="image-container">
 					<img
-						className={classes.ownerImage}
+						className="owner-image"
 						src={steph}
 						alt="Stephanie Wilbourn"
 					/>
 				</div>
-				<div className={classes.textBorder}>
-					<Typography className={classes.aboutText}>
+				<div className="text-border">
+					<Typography className="about-text">
 						Stephanie Wilbourn, a transcendent of a legacy of fashion designers
 						and seamstresses, helms from Jackson, TN. This renowned legacy
 						consisted of seven girls and their mother, who started the world
@@ -42,7 +41,7 @@ const About = () => {
 						1996, she independently opened her first salon Caché The Cutting
 						Edge.
 					</Typography>
-					<Typography className={classes.aboutText}>
+					<Typography className="about-text">
 						In 2006 Stephanie birthed her first clothing brand SexesByStephanie
 						a unisex clothing brand which protrayed her passion for hair, art
 						and designing all into one. In 2015, SexesByStephanie launched its
@@ -58,13 +57,13 @@ const About = () => {
 						writer, artist, hair and clothing stylist, but also a creator of all
 						her deep-rooted passions and desires!
 					</Typography>
-					<Typography variant="h5" className={classes.adamsSlogan}>
+					<Typography variant="h5" className="adams-slogan">
 						All Designs Are My Soul!
 					</Typography>
 				</div>
 			</div>
-			<Link className={classes.shopLink} to="/shop/all-products">
-				<h1 className={classes.linkText}>See Our Collection</h1>
+			<Link className="see-collection-link" to="/shop/all-products">
+				<h1 className="link-text">See Our Collection</h1>
 			</Link>
 		</div>
 	);

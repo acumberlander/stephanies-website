@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { CircularProgress, Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import useStyles from './productStyles';
+// import useStyles from './productStyles';
 
 const Product = ({ product }) => {
-	const classes = useStyles();
+	// const classes = useStyles();
 	const [imageLoaded, setimageLoaded] = useState(false);
 
 	const setPicture = () => {
@@ -13,23 +13,23 @@ const Product = ({ product }) => {
 	};
 
 	const loadingClass =
-		imageLoaded === false ? classes.loadingSpinnerContainer : classes.hidden;
+		imageLoaded === false ? "loading-spinner-container" : "hidden";
 
 	let productClass;
 	let overlayImageClass;
 
 	if (imageLoaded === false) {
-		productClass = classes.hidden;
-		overlayImageClass = classes.hidden;
+		productClass = "hidden";
+		overlayImageClass = "hidden";
 	} else {
 		productClass = !product.assets[1]
-			? classes.onlyOneProductImage
-			: classes.productImage;
-		overlayImageClass = classes.productImageOverlay;
+			? "only-one-product-image"
+			: "product-image";
+		overlayImageClass = "product-image-overlay";
 	}
 
 	return (
-		<div className={classes.productContainer}>
+		<div className="product-container">
 			<div>
 				<Link to={`/product/${product.id}`}>
 					<div className={loadingClass}>
@@ -50,14 +50,14 @@ const Product = ({ product }) => {
 					)}
 				</Link>
 			</div>
-			<Link to={`/product/${product.id}`} className={classes.cardContent}>
-				<Typography variant="h6" className={classes.productName}>
+			<Link to={`/product/${product.id}`} className="card-content">
+				<Typography variant="h6" className="product-name">
 					{product.name}
 				</Typography>
-				<div className={classes.hyphen}>
-					<hr className={classes.lineBreak} />
+				<div className="hyphen">
+					<hr className="line-break" />
 				</div>
-				<Typography variant="h6" className={classes.price}>
+				<Typography variant="h6" className="price">
 					{product.price.formatted_with_symbol}
 				</Typography>
 			</Link>

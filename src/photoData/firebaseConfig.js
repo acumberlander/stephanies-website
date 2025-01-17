@@ -1,5 +1,5 @@
-import firebase from 'firebase/app';
-import 'firebase/storage';
+import { initializeApp } from 'firebase/app';
+import { getStorage, ref } from 'firebase/storage'
 
 const firebaseConfig = {
 	apiKey: process.env.FIREBASE_API_KEY,
@@ -9,9 +9,12 @@ const firebaseConfig = {
 	messagingSenderId: '228491648849',
 	appId: '1:228491648849:web:9e313d5c1c3a46fed7bd70',
 };
-if (!firebase.apps.length) {
-	firebase.initializeApp(firebaseConfig);
-}
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Storage
+const storage = getStorage(app);
 
 /* 
 TODO: Figure out the proper way to dynamically retrieve and plug in images from firebase storage.
@@ -23,4 +26,4 @@ bandwidth limit.
 */
 
 // Storage reference that points to the root directory of firebase storage service
-export const storageRef = firebase.storage().ref();
+export const storageRef = ref(storage);

@@ -1,17 +1,18 @@
-import { useStyles } from './myGalleryStyles';
-import Gallery from 'react-photo-gallery';
+// import { useStyles } from './myGalleryStyles';
+// import Gallery from 'react-photo-gallery';
 import { photos } from './photos';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
+import './MyGallery.scss';
 
 const MyGallery = () => {
-	const classes = useStyles();
+	// const classes = useStyles();
 
 	return (
-		<div className={classes.galleryContainer}>
-			<Typography className={classes.galleryHeader} variant="h3">
+		<div className="gallery-container">
+			<Typography className="gallery-header" variant="h3">
 				Follow Us on IG{' '}
 				<a
-					className={classes.instaTag}
+					className="insta-tag"
 					href="https://www.instagram.com/sexesbystephanie/"
 					target="_blank"
 					rel="noreferrer"
@@ -19,7 +20,7 @@ const MyGallery = () => {
 					@sexesbystephanie
 				</a>
 			</Typography>
-			<Gallery photos={photos} />
+			{/* <Gallery photos={photos} /> */}
 		</div>
 	);
 };

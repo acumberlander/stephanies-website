@@ -1,22 +1,22 @@
 import React from 'react';
-import { useStyles } from './servicesStyles';
-import ServiceSection from '../../ServicesComponents/ServiceSection/ServiceSection';
-import { Typography } from '@material-ui/core';
+// import { useStyles } from './servicesStyles';
+import ServiceSection from '../../components/ServicesComponents/ServiceSection/ServiceSection';
+import { Typography } from '@mui/material';
 import {
 	serviceImagesObject,
 	ascotsTextObject,
 	eventsTextObject,
 	makeupTextObject,
-} from '../../ServicesComponents/serviceImages/serviceImages';
+} from '../../components/ServicesComponents/serviceImages/serviceImages';
 import 'react-multi-carousel/lib/styles.css';
 
 const { ascotsImage, eventsImage, hairAndMakeupImage } = serviceImagesObject;
 
 const Services = () => {
-	const classes = useStyles();
+	// const classes = useStyles();
 	return (
-		<div className={classes.container}>
-			<Typography variant="h2" className={classes.pageHeader}>
+		<div className="service-container">
+			<Typography variant="h2" className="page-header">
 				Services
 			</Typography>
 			<ServiceSection
@@ -25,7 +25,7 @@ const Services = () => {
 				paragraph1={ascotsTextObject.paragraph1}
 				paragraph2={ascotsTextObject.paragraph2}
 				paragraph3={ascotsTextObject.paragraph3}
-				serviceImageStyle={classes.ascotsStyle}
+				serviceImageStyle="ascots-style"
 				galleryType="hair-and-makeup"
 			/>
 			<ServiceSection
@@ -34,7 +34,7 @@ const Services = () => {
 				paragraph1={eventsTextObject.paragraph1}
 				paragraph2={eventsTextObject.paragraph2}
 				paragraph3={eventsTextObject.paragraph3}
-				serviceImageStyle={classes.hairAndEventsStyle}
+				serviceImageStyle="hair-and-events-style"
 				galleryType="events"
 				picFirst={false}
 			/>
@@ -44,7 +44,7 @@ const Services = () => {
 				paragraph1={makeupTextObject.paragraph1}
 				paragraph2={makeupTextObject.paragraph2}
 				paragraph3={makeupTextObject.paragraph3}
-				serviceImageStyle={classes.hairAndEventsStyle}
+				serviceImageStyle="hair-and-events-style"
 				galleryType="hair-and-makeup"
 			/>
 		</div>

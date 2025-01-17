@@ -13,10 +13,10 @@ export { default as ProductDetailsDropdowns } from "./ProductComponents/ProductD
 export { default as ServiceSection } from "./ServicesComponents/ServiceSection/ServiceSection";
 
 // Pages
-export { default as About } from "./Pages/AboutPage/About";
-export { default as Cart } from "./Pages/CartPage/Cart";
-export { default as Checkout } from "./Pages/CheckoutPage/Checkout";
-export { default as Home } from "./Pages/HomePage/Home";
-export { default as ProductDetails } from "./Pages/ProductDetailsPage/ProductDetails";
-export { default as Services } from "./Pages/ServicesPage/Services";
-export { default as Shop } from "./Pages/ShopPage/Shop";
+export { default as About } from "../Pages/AboutPage/About";
+export { default as Cart } from "../Pages/CartPage/Cart";
+export { default as Checkout } from "../Pages/CheckoutPage/Checkout";
+export { default as Home } from "../Pages/HomePage/Home";
+export { default as ProductDetails } from "../Pages/ProductDetailsPage/ProductDetails";
+export { default as Services } from "../Pages/ServicesPage/Services";
+export { default as Shop } from "../Pages/ShopPage/Shop";

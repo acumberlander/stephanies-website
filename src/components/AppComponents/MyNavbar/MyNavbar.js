@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Button, Badge, IconButton } from '@material-ui/core';
+import { AppBar, Toolbar, Button, Badge, IconButton } from '@mui/material';
+import { ShoppingCart } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import MobileView from './Views/MobileView';
 import { Link as RouterLink } from 'react-router-dom';
-import { ShoppingCart } from '@material-ui/icons';
 import myLogo from '../../../assets/logos/logo-white.png';
-import useStyles from './navbarStyles';
+import './MyNavbar.scss';
 
 const MyNavbar = () => {
-	const {
-		navContainer,
-		logoLink,
-		myNavbar,
-		toolbar,
-		cartIcon,
-		navButton,
-	} = useStyles();
 	const totalItems = useSelector((state) => state.cart.total_items);
 	const [mobileView, setMobileView] = useState(false);
 	const [drawerOpen, setDrawerOpen] = useState(false);
@@ -33,14 +25,14 @@ const MyNavbar = () => {
 	}, [totalItems]);
 
 	const stephaniesLogo = (
-		<RouterLink className={logoLink} to="/">
+		<RouterLink className="logo-link" to="/">
 			<img style={{ height: 50, width: 50 }} src={myLogo} alt="logo" />
 		</RouterLink>
 	);
 
 	return (
-		<div className={navContainer}>
-			<AppBar className={myNavbar}>
+		<div className="nav-container">
+			<AppBar className="my-navbar">
 				{mobileView ? (
 					<MobileView
 						stephaniesLogo={stephaniesLogo}
@@ -49,7 +41,7 @@ const MyNavbar = () => {
 						totalItems={totalItems}
 					/>
 				) : (
-					<Toolbar className={toolbar}>
+					<Toolbar className="toolbar">
 						{stephaniesLogo}
 						<span>
 							<Button
@@ -57,7 +49,7 @@ const MyNavbar = () => {
 								color="inherit"
 								to="/"
 								component={RouterLink}
-								className={navButton}
+								className="nav-button"
 							>
 								Home
 							</Button>
@@ -67,7 +59,7 @@ const MyNavbar = () => {
 								color="inherit"
 								to="/about"
 								component={RouterLink}
-								className={navButton}
+								className="nav-button"
 							>
 								About
 							</Button>
@@ -77,7 +69,7 @@ const MyNavbar = () => {
 								color="inherit"
 								to="/shop/all-products"
 								component={RouterLink}
-								className={navButton}
+								className="nav-button"
 							>
 								Shop
 							</Button>
@@ -87,7 +79,7 @@ const MyNavbar = () => {
 								color="inherit"
 								to="/services"
 								component={RouterLink}
-								className={navButton}
+								className="nav-button"
 							>
 								Services
 							</Button>
@@ -101,7 +93,7 @@ const MyNavbar = () => {
 								color="inherit"
 							>
 								<Badge badgeContent={totalItems} color="secondary">
-									<ShoppingCart className={cartIcon} />
+									<ShoppingCart className="cart-icon" />
 								</Badge>
 							</IconButton>
 						</span>

@@ -6,11 +6,10 @@ import {
 	Drawer,
 	Link,
 	MenuItem,
-} from '@material-ui/core';
-import { ShoppingCart } from '@material-ui/icons';
-import MenuIcon from '@material-ui/icons/Menu';
+} from '@mui/material';
+import { ShoppingCart, Menu } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
-import useStyles from '../navbarStyles';
+// import useStyles from '../navbarStyles';
 
 const MobileView = ({
 	stephaniesLogo,
@@ -25,29 +24,29 @@ const MobileView = ({
 		setDrawerOpen(!drawerOpen);
 	};
 
-	const {
-		menuButton,
-		toolbar,
-		cartIcon,
-		drawerContainer,
-		cartButton,
-		drawerContent,
-		menuItem,
-	} = useStyles();
+	// const {
+	// 	menuButton,
+	// 	toolbar,
+	// 	cartIcon,
+	// 	drawerContainer,
+	// 	cartButton,
+	// 	drawerContent,
+	// 	menuItem,
+	// } = useStyles();
 
 	return (
-		<Toolbar className={toolbar}>
+		<Toolbar className="toolbar">
 			{stephaniesLogo}
 			<div>
 				<IconButton
-					className={cartButton}
+					className="cart-button"
 					component={RouterLink}
 					to="/cart"
 					aria-label="Show cart items"
 					color="inherit"
 				>
 					<Badge badgeContent={totalItems} color="secondary">
-						<ShoppingCart className={cartIcon} />
+						<ShoppingCart className="cart-icon" />
 					</Badge>
 				</IconButton>
 				<IconButton
@@ -57,17 +56,17 @@ const MobileView = ({
 					aria-haspopup="true"
 					onClick={handleDrawerOpen}
 				>
-					<MenuIcon className={menuButton} />
+					<Menu className="menu-button" />
 				</IconButton>
 			</div>
 
 			<Drawer
-				className={drawerContainer}
+				className="drawer-container"
 				anchor="right"
 				open={drawerOpen}
 				onClose={handleDrawerClose}
 			>
-				<div className={drawerContent}>
+				<div className="drawer-content">
 					<Link
 						component={RouterLink}
 						onClick={toggleDrawer}
@@ -76,7 +75,7 @@ const MobileView = ({
 						style={{ textDecoration: 'none' }}
 						key="Home"
 					>
-						<MenuItem className={menuItem}>Home</MenuItem>
+						<MenuItem className="menu-item">Home</MenuItem>
 					</Link>
 					<Link
 						component={RouterLink}
@@ -86,7 +85,7 @@ const MobileView = ({
 						style={{ textDecoration: 'none' }}
 						key="Shop"
 					>
-						<MenuItem className={menuItem}>Shop</MenuItem>
+						<MenuItem className="menu-item">Shop</MenuItem>
 					</Link>
 					<Link
 						component={RouterLink}
@@ -96,7 +95,7 @@ const MobileView = ({
 						style={{ textDecoration: 'none' }}
 						key="About"
 					>
-						<MenuItem className={menuItem}>About</MenuItem>
+						<MenuItem className="menu-item">About</MenuItem>
 					</Link>
 					<Link
 						component={RouterLink}
@@ -106,7 +105,7 @@ const MobileView = ({
 						style={{ textDecoration: 'none' }}
 						key="Services"
 					>
-						<MenuItem className={menuItem}>Services</MenuItem>
+						<MenuItem className="menu-item">Services</MenuItem>
 					</Link>
 				</div>
 			</Drawer>
