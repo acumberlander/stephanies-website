@@ -49,7 +49,6 @@ export default function Shop() {
         </Container>
       </div>
 
-      {/* <Container className="card-grid" maxWidth="xl"> */}
         <Grid className="card-grid" container spacing={4}>
           {products?.map((product) => (
             <>
@@ -74,7 +73,6 @@ export default function Shop() {
             </>
           ))}
         </Grid>
-      {/* </Container> */}
     </div>
   );
 }

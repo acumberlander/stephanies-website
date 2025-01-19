@@ -3,9 +3,9 @@ const productModel = {
   category: "",
   price: 0,
   id: "",
-  images: [],
+  images: [""],
 	option_groups: {
-		sizes: [],
+		sizes: [""],
 	}
 };
 

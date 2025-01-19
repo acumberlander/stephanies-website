@@ -23,14 +23,16 @@ import "./ProductDetails.scss";
 
 const ProductDetails = () => {
   const [size, setSize] = useState("Choose a size");
+  const [sizeOptions, setSizeOptions] = useState([]);
   const [hasError, setHasError] = useState(false);
   const allProducts = useSelector((state) => state.products);
   const [product, setProduct] = useState(productModel);
+  const [displayedImage, setDisplayedImage] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [displayedProduct, setDisplayedProduct] = useState(product.images[0]);
   const dispatch = useDispatch();
 
   let params = useParams();
+	// let sizeOptions = null;
 
   const handleAddToCart = () => {
     if (product.option_groups && product.option_groups[0]) {
@@ -38,10 +40,10 @@ const ProductDetails = () => {
         setHasError(true);
         return;
       }
-      // dispatch(addToCart(product.id, quantity));
+      dispatch(addToCart(product.id, quantity));
       setHasError(false);
     } else {
-      // dispatch(addToCart(product.id, quantity));
+      dispatch(addToCart(product.id, quantity));
       setHasError(false);
     }
     setQuantity(1);
@@ -57,25 +59,29 @@ const ProductDetails = () => {
 
 		if (data.length) {
 			setProduct(data[0]);
+			setDisplayedImage(data[0].images[0]);
 		}
 		
     if (window.scrollY !== 0) {
       window.scrollTo(0, 0);
     }
-  }, [params]);
 
-  const sizeOptions = product?.option_groups[0]
-    ? [
-        <MenuItem value={"Choose a size"} disabled>
-          Choose a size
-        </MenuItem>,
-        ...product?.option_groups[0].sizes.map((option) => (
-          <MenuItem key={option.id} value={option}>
-            {option.name}
-          </MenuItem>
-        )),
-      ]
-    : null;
+		if (product.option_groups && product.option_groups[0]) {
+			setSizeOptions(
+				[
+					<MenuItem value={"Choose a size"} disabled>
+						Choose a size
+					</MenuItem>,
+					...product.option_groups[0].sizes.map((option, i) => (
+						<MenuItem key={i} value={option}>
+							{option.name}
+						</MenuItem>
+					)),
+				]
+			)
+		}
+  }, [params, sizeOptions]);
+
 
   return (
     <Container className="container">
@@ -87,28 +93,29 @@ const ProductDetails = () => {
               {product.name}
             </Typography>
             <div className="display-container">
-              {!displayedProduct ? (
+              {!product ? (
                 <CircularProgress size={80} />
               ) : (
                 <Fade
-                  in={displayedProduct !== null}
+                  in={product !== null}
                   style={{ transformOrigin: "0 0 0" }}
-                  {...(displayedProduct !== null ? { timeout: 1000 } : {})}
+                  {...(product !== null ? { timeout: 1000 } : {})}
                 >
                   <img
                     className="product-detail-image"
-                    src={displayedProduct}
+                    src={displayedImage}
                     alt={product.name}
                   />
                 </Fade>
               )}
             </div>
 
+						{/* Images List */}
             <div style={{ display: "flex", margin: "10px 0" }}>
               {product.images.map((imageObj) => (
                 <div
                   key={imageObj.id}
-                  onClick={(e) => setDisplayedProduct(e.target.src)}
+                  onClick={(e) => setDisplayedImage(e.target.src)}
                   className="thumbnail-container"
                 >
                   <img
@@ -120,7 +127,7 @@ const ProductDetails = () => {
                       cursor: "pointer",
                       borderRadius: "0.2rem",
                     }}
-                    src={imageObj.url}
+                    src={imageObj}
                     alt="hoodie"
                   />
                 </div>
@@ -128,7 +135,7 @@ const ProductDetails = () => {
             </div>
 
             <Typography className="product-details-text">
-              {product.name}
+              {product.name} -
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
             </Typography>
           </div>
@@ -142,7 +149,7 @@ const ProductDetails = () => {
 							Color: Default
 						</Typography>
 						} */}
-            {sizeOptions && (
+            {sizeOptions.length > 0 && (
               <>
                 <Typography className="size-header">Size</Typography>
                 <FormControl required error={hasError}>
