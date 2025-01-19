@@ -26,8 +26,6 @@ export default function Shop() {
       return params.category.includes(product.category);
     })
 
-    console.log('products: ', allProducts);
-
   	if (!data.length) {
   		setProducts(allProducts);
   	} else {

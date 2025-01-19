@@ -16,8 +16,7 @@ import { fetchProducts } from "./actions/products";
 import { fetchCart } from "./actions/cart";
 import { createGuest } from "./actions/cart";
 import { signInAsGuest } from "./firebaseConfig";
-
-
+import { ThemeProvider } from "@mui/material";
 
 const App = () => {
   const cart = useSelector((state) => state.cart);
