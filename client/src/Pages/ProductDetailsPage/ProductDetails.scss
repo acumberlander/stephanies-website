@@ -1,0 +1,127 @@
+.container {
+  margin-top: 100px;
+  padding: 4px 16px;
+}
+
+.content-container {
+  display: flex;
+  justify-content: center;
+}
+
+.product-and-details {
+  display: 'flex';
+  @media (max-width: 760px) {
+    flex-direction: column;
+  }
+}
+
+.left-section {
+  max-width: 550px;
+}
+
+.product-details-name {
+  margin-bottom: 10px;
+}
+
+.display-container {
+  max-width: 450px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (max-width: 650px) {
+    max-width: 350px;
+    height: 500px;
+  }
+}
+
+.detail-image {
+  max-width: 450px;
+  height: 600px;
+  border-radius: 0.3rem !important;
+  @media (max-width: 650px) {
+    max-width: 350px;
+    height: 500px;
+  }
+}
+
+.thumbnail-container:hover {
+  border: 2px solid lightblue;
+}
+
+.product-details-text {
+  max-width: 450px;
+  font-family: 'Philosopher', 'sans-serif';
+}
+
+.right-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 450px;
+  padding: 2px 6px;
+  // [theme.breakpoints.down('md')]: {
+  // 			padding: theme.spacing(1, 0),
+  // 		},
+}
+
+.price-header {
+  margin-top: 20px;
+  font-family: 'Philosopher', 'sans-serif';
+}
+
+.size-header {
+  margin-top: 20px;
+  font-family: 'Philosopher', 'sans-serif';
+}
+
+.quantity-header {
+  margin-top: 20px;
+  font-family: 'Philosopher', 'sans-serif';
+}
+
+.quantity-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid black;
+}
+
+.quantity-button {
+  max-width: 30px;
+  max-height: 30px;
+}
+
+.button {
+  background-color: #cc34ab;
+  color: #fff;
+}
+.button:hover {
+  background-color: #b32093;
+}
+
+.accordion {
+  box-shadow: none;
+  margin: 0 !important;
+}
+
+.accordion-container {
+  margin: 30px 0;
+}
+
+.social-media-group {
+  display: flex;
+}
+
+.socialIcon {
+  height: 20px;
+  width: 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.color-header {
+  margin-top: 20px;
+  font-family: 'Philosopher', 'sans-serif';
+}

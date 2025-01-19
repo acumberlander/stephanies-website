@@ -1,0 +1,39 @@
+.cart-item-container {
+  display: 'flex';
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 10px;
+  width: 100%;
+  border-bottom: 1px solid;
+}
+
+.image-and-description {
+  display: flex;
+}
+
+.shop-link {
+  text-decoration: none;
+  color: #000;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  border: 1px solid;
+  height: 30px;
+}
+
+.price-and-remove {
+  display: flex;
+  align-items: center;
+}
+
+.media {
+  height: 125px;
+  width: 75px;
+  margin-right: 10px;
+}
+
+.cart-product-name {
+  margin-bottom: 20px;
+}
