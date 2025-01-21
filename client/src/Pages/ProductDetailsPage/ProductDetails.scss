@@ -1,0 +1,135 @@
+.container {
+  margin-top: 100px;
+  padding: 4px 16px;
+}
+
+.content-container {
+  display: flex;
+  justify-content: center;
+}
+
+.product-and-details {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-evenly;
+  @media (max-width: 760px) {
+    // justify-content: center;
+    flex-direction: column;
+  }
+}
+
+.left-section {
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-details-name {
+  margin-bottom: 10px;
+}
+
+.display-container {
+  max-width: 450px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (max-width: 650px) {
+    max-width: 350px;
+    height: 500px;
+  }
+}
+
+.product-detail-image {
+  max-width: 450px;
+  height: 500px;
+  border-radius: 0.3rem !important;
+  @media (max-width: 650px) {
+    max-width: 350px;
+    height: 500px;
+  }
+}
+
+.thumbnail-container:hover {
+  border: 2px solid lightblue;
+}
+
+.product-details-text {
+  max-width: 450px;
+  font-family: 'Philosopher', 'sans-serif';
+}
+
+.right-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 450px;
+  padding: 0 30px;
+  @media (max-width: 760px) {
+    padding: 0
+  }
+}
+
+.price-header {
+  margin-top: 20px;
+  font-family: 'Philosopher', 'sans-serif';
+}
+
+.size-header {
+  margin-top: 20px;
+  font-family: 'Philosopher', 'sans-serif';
+}
+
+.quantity-header {
+  margin-top: 20px;
+  font-family: 'Philosopher', 'sans-serif';
+}
+
+.quantity-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid black;
+}
+
+.quantity-button {
+  max-width: 30px;
+  max-height: 30px;
+}
+
+.add-to-cart-button {
+  background-color: #cc34ab !important;
+  color: #fff;
+}
+.add-to-cart-button:hover {
+  background-color: #b32093 !important;
+}
+
+.accordion {
+  box-shadow: none;
+  margin: 0 !important;
+}
+
+.accordion-container {
+  margin: 30px 0 5px;
+}
+
+.social-media-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.socialIcon {
+  height: 20px;
+  width: 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.color-header {
+  margin-top: 20px;
+  font-family: 'Philosopher', 'sans-serif';
+}

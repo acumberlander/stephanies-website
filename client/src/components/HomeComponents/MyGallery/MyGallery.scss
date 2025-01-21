@@ -1,0 +1,21 @@
+.gallery-container {
+  margin-bottom: 40px;
+}
+
+.gallery-header {
+  font-family: 'Philosopher', 'sans-serif' !important;
+  text-align: center;
+  margin-bottom: 90;
+  @media (max-width: 960px) {
+    font-size: 36px;
+  }
+}
+
+.insta-tag {
+  text-decoration: none;
+  color: #cc34ab;
+  font-family: 'Philosopher', 'sans-serif';
+  @media (max-width: 960px) {
+    font-size: 36px;
+  }
+}

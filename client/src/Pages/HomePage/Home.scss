@@ -1,0 +1,67 @@
+.home-container {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.link-container {
+  display: flex;
+  justify-content: center;
+}
+
+.options {
+  flex-grow: 1;
+  padding: 100px 0 35px;
+}
+
+.content-wrapper {
+  padding: 5rem 200px;
+}
+
+.pre-header {
+  margin-bottom: 100px;
+  font-family: 'Philosopher', 'sans-serif' !important;
+  @media (max-width: 900px) {
+    font-size: 26px !important;
+  }
+}
+
+.discount-header {
+  margin-bottom: 100;
+  font-family: 'Philosopher', 'sans-serif' !important;
+  @media (max-width: 900px) {
+    font-size: 60px !important;
+  }
+}
+
+.discount-container {
+  text-align: center;
+  padding: 150px 20px;
+  background-color: #cc34ab;
+  color: #fff;
+  height: 100%;
+}
+
+.input-and-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.join-button {
+  width: 150px !important;
+  color: #fff !important;
+  font-family: 'Philosopher', 'sans-serif' !important;
+  font-size: 20px !important;
+}
+
+.email-input {
+  width: 400px;
+  @media (max-width: 900px) {
+    width: 200px,
+  }
+  margin-bottom: 35px;
+  border-bottom: 2px solid #fff;
+  padding: 0 15px;
+  color: #fff !important;
+}

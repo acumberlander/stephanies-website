@@ -1,0 +1,62 @@
+.home-card-grid-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  margin: 20px 0;
+}
+
+.option-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  border-radius: 0.3rem;
+}
+
+.overlay {
+  background-color: black;
+  width: 350px;
+  height: 600px;
+  position: absolute;
+  opacity: 0.2;
+  border-radius: 0.3rem;
+  @media (max-width: 600px) {
+    width: 350px;
+    height: 400px;
+  }
+}
+
+.home-card-disabled {
+  background-color: black;
+  width: 350px;
+  height: 600px;
+  position: absolute;
+  opacity: 0.6;
+  border-radius: 0.3rem;
+  @media (max-width: 600px) {
+    width: 350px;
+    height: 400px;
+  }
+}
+
+.disabled-card-link {
+  // cursor: ;
+}
+
+.option-header {
+  position: absolute;
+  text-align: center;
+}
+
+.option-images {
+  width: 350px;
+  height: 600px;
+  object-fit: cover;
+  object-position: 50% 5%;
+  border-radius: 0.3rem;
+  @media (max-width: 600px) {
+    width: 350px;
+    height: 400px;
+  }
+}

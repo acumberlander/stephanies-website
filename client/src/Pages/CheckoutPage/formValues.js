@@ -1,0 +1,16 @@
+export const defaultValues = {
+  firstName: "",
+  lastName: "",
+  addressLine1: "",
+  addressLine2: "",
+  city: "",
+  state: "",
+  zip: "",
+  phone: "",
+  email: "",
+  cardName: "",
+  cardNumber: "",
+  cardExpirationMonth: "",
+  cardExpirationYear: "",
+  cvc: "",
+};
