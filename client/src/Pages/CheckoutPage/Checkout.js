@@ -1,148 +1,129 @@
-import React, { useState, useEffect } from "react";
-import {
-  CssBaseline,
-  Paper,
-  Stepper,
-  Step,
-  StepLabel,
-  Typography,
-  CircularProgress,
-  Divider,
-  Button,
-} from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector, useDispatch } from "react-redux";
+import { createOrder } from "../../store/userThunks/userThunks";
+import { useNavigate } from "react-router-dom";
+import { ShippingInfo } from "./CheckoutSteps/ShippingInfo";
+import { PaymentInfo } from "./CheckoutSteps/PaymentInfo";
+import { OrderReview } from "./CheckoutSteps/OrderReview";
+import { Button } from "@mui/material";
+import { defaultValues } from "./formValues";
+import "./Checkout.scss";
 
-import commerce from "../../lib/commerce";
-import { AddressForm, PaymentForm } from "../../components/index";
-
-const steps = ["Shipping address", "Payment details"];
-
-const Checkout = ({ cart, order, error }) => {
-  const [checkoutToken, setCheckoutToken] = useState(null);
-  const [activeStep, setActiveStep] = useState(0);
-  const [shippingData, setShippingData] = useState({});
-  const [isFinished, setIsFinished] = useState(false);
+function CheckoutPage() {
+  const cartItems = useSelector((state) => state.user.cart.cart_items);
+  const { uid } = useSelector((state) => state.user);
+  const [step, setStep] = useState(1);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({ defaultValues });
 
-  useEffect(() => {
-    if (cart.id) {
-      const generateToken = async () => {
-        try {
-          const token = await commerce.checkout.generateToken(cart.id, {
-            type: "cart",
-          });
+  // TODO: Integrate api that determines the sales tax based the zip code
+  const TAX_RATE = 0.095; // 9.5% tax
+  const SHIPPING_FEE = 8.0;
 
-          setCheckoutToken(token);
-        } catch {
-          if (activeStep !== steps.length) navigate("/");
-        }
-      };
+  // Compute cart subtotal, tax, total in a memo
+  const { subtotal, taxAmount, total } = useMemo(() => {
+    const sum = cartItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+    const tax = sum * TAX_RATE;
+    return {
+      subtotal: sum.toFixed(2),
+      taxAmount: tax.toFixed(2),
+      total: sum + tax + SHIPPING_FEE,
+    };
+  }, [cartItems]);
 
-      generateToken();
+  const onSubmit = async (data) => {
+    if (step < 3) {
+      // Move to next step
+      setStep(step + 1);
+      return;
     }
-  }, [cart]);
+    const timestamp = new Date();
+    const serializedTimestamp = timestamp.toISOString();
 
-  const goToPayment = (data) => {
-    setShippingData(data);
-
-    nextStep();
+    try {
+      // Prepare order data
+      const orderData = {
+        id: crypto.randomUUID(),
+        createdAt: serializedTimestamp,
+        shippingInfo: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          addressLine1: data.addressLine1,
+          addressLine2: data.addressLine2,
+          city: data.city,
+          state: data.state,
+          zip: data.zip,
+          phone: data.phone,
+          email: data.email,
+        },
+        // TODO: Integrate payment api (stripe, paypal, etc)
+        paymentInfo: {
+          cardName: data.cardName,
+          cardNumber: data.cardNumber,
+          cardExpirationMonth: data.cardExpirationMonth,
+          cardExpirationYear: data.cardExpirationYear,
+          cvc: data.cvc,
+        },
+        items: cartItems,
+        subtotal,
+        taxAmount,
+        shippingFee: SHIPPING_FEE,
+        total: total.toFixed(2),
+      };
+      dispatch(createOrder({ uid, orderData }));
+      navigate("/thank-you");
+      alert("Order placed successfully!");
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("There was an error processing your order.");
+    }
   };
 
-  const timeout = () => {
-    setTimeout(() => {
-      setIsFinished(true);
-    }, 2500);
-  };
-
-  let Confirmation = () =>
-    order.customer ? (
-      <>
-        <div>
-          <Typography variant="h5">
-            Thank you for your purchase, {order.customer.firstname}{" "}
-            {order.customer.lastname}!
-          </Typography>
-          <Divider className="divider" />
-          <Typography variant="subtitle2">
-            Order ref: {order.customer_reference}
-          </Typography>
-        </div>
-        <br />
-        <Button component={Link} variant="outlined" type="button" to="/">
-          Back to home
-        </Button>
-      </>
-    ) : isFinished ? (
-      <>
-        <div>
-          <Typography variant="h5">Thank you for your purchase!</Typography>
-          <Divider className="divider" />
-        </div>
-        <br />
-        <Button component={Link} variant="outlined" type="button" to="/">
-          Back to home
-        </Button>
-      </>
-    ) : (
-      <div className="spinner">
-        <CircularProgress />
-      </div>
-    );
-  if (error) {
-    Confirmation = () => (
-      <>
-        <Typography variant="h5">Error: {error}</Typography>
-        <br />
-        <Button component={Link} variant="outlined" type="button" to="/">
-          Back to home
-        </Button>
-      </>
-    );
-  }
-  const Form = () =>
-    activeStep === 0 ? (
-      <AddressForm
-        checkoutToken={checkoutToken}
-        nextStep={nextStep}
-        setShippingData={setShippingData}
-        goToPayment={goToPayment}
-      />
-    ) : (
-      <PaymentForm
-        checkoutToken={checkoutToken}
-        nextStep={nextStep}
-        backStep={backStep}
-        shippingData={shippingData}
-        timeout={timeout}
-      />
-    );
   return (
-    <>
-      <CssBaseline />
-      <div className="toolbar" />
-      <main className="layout">
-        <Paper className="paper">
-          <Typography variant="h4" align="center">
-            Checkout
-          </Typography>
-          <Stepper activeStep={activeStep} className="stepper">
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          {activeStep === steps.length ? (
-            <Confirmation />
-          ) : (
-            checkoutToken && <Form />
+    <div className="checkout-container">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {step === 1 && <ShippingInfo errors={errors} register={register} />}
+        {step === 2 && <PaymentInfo errors={errors} register={register} />}
+        {step === 3 && (
+          <OrderReview
+            register={register}
+            errors={errors}
+            cartItems={cartItems}
+            subtotal={subtotal}
+            shippingFee={SHIPPING_FEE}
+            taxAmount={taxAmount}
+            total={total}
+          />
+        )}
+
+        <div className="button-group" style={{ marginTop: "1rem" }}>
+          {step > 1 && (
+            <Button
+              className="button"
+              type="button"
+              onClick={() => setStep(step - 1)}
+            >
+              Back
+            </Button>
           )}
-        </Paper>
-      </main>
-    </>
+          <Button className="button" type="submit">
+            {step < 3 ? "Next" : "Place Order"}
+          </Button>
+        </div>
+      </form>
+    </div>
   );
-};
-export default Checkout;
+}
+
+export default CheckoutPage;

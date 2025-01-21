@@ -8,6 +8,7 @@ import "./Shop.scss";
 
 export default function Shop() {
   const allProducts = useSelector((state) => state.products);
+  const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
 
   if (window.scrollY !== 0) {
@@ -22,15 +23,24 @@ export default function Shop() {
     .join(" ");
 
   useEffect(() => {
-    const data = allProducts.filter((product) => {
-      return params.category.includes(product.category);
-    })
+    if (allProducts.status === "failed") {
+      setIsLoading(false);
+      throw new Error("There was a problem loading products...");
+    }
 
-  	if (!data.length) {
-  		setProducts(allProducts);
-  	} else {
-  		setProducts(data);
-  	}
+    if (allProducts.status === "succeeded") {
+      setIsLoading(false);
+
+      const data = allProducts.items.filter((product) => {
+        return params.category.includes(product.category);
+      });
+
+      if (!data.length) {
+        setProducts(allProducts.items);
+      } else {
+        setProducts(data);
+      }
+    }
   }, [allProducts, params]);
 
   return (
@@ -49,30 +59,27 @@ export default function Shop() {
         </Container>
       </div>
 
-        <Grid className="card-grid" container spacing={4}>
-          {products?.map((product) => (
-            <>
-              <Fade
-                key={product.id}
-                in={product !== null}
-                style={{ transformOrigin: "0 0 0" }}
-                {...(product !== null ? { timeout: 1500 } : {})}
-              >
-                <Grid
-                  className="grid-item"
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={4}
-                  xl={3}
-                  key={product.id}
-                >
-                  <Product key={product.id} product={product} className="card" />
-                </Grid>
-              </Fade>
-            </>
-          ))}
-        </Grid>
+      <Grid className="card-grid" container spacing={4}>
+        {products?.map((product) => (
+          <Fade
+            key={product.id}
+            in={product !== null}
+            style={{ transformOrigin: "0 0 0" }}
+            {...(product !== null ? { timeout: 1500 } : {})}
+          >
+            <Grid
+              className="grid-item"
+              xs={12}
+              sm={6}
+              md={4}
+              lg={4}
+              xl={3}
+            >
+              <Product product={product} className="card" />
+            </Grid>
+          </Fade>
+        ))}
+      </Grid>
     </div>
   );
 }

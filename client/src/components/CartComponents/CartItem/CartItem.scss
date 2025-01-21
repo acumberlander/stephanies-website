@@ -1,5 +1,5 @@
 .cart-item-container {
-  display: 'flex';
+  display: flex;
   align-items: flex-start;
   justify-content: space-between;
   padding: 10px;
@@ -9,18 +9,22 @@
 
 .image-and-description {
   display: flex;
+  align-items: center;
 }
 
-.shop-link {
+.product-link {
   text-decoration: none;
   color: #000;
+  margin-right: 50px;
 }
 
 .buttons {
   display: flex;
   align-items: center;
+  justify-content: center;
   border: 1px solid;
   height: 30px;
+  max-width: 120px;
 }
 
 .price-and-remove {
@@ -28,7 +32,7 @@
   align-items: center;
 }
 
-.media {
+.cart-item {
   height: 125px;
   width: 75px;
   margin-right: 10px;

@@ -97,16 +97,6 @@ const MobileView = ({
 					>
 						<MenuItem className="menu-item">About</MenuItem>
 					</Link>
-					<Link
-						component={RouterLink}
-						onClick={toggleDrawer}
-						to="/services"
-						color="inherit"
-						style={{ textDecoration: 'none' }}
-						key="Services"
-					>
-						<MenuItem className="menu-item">Services</MenuItem>
-					</Link>
 				</div>
 			</Drawer>
 		</Toolbar>

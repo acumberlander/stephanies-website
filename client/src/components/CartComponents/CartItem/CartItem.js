@@ -1,45 +1,50 @@
 import React from 'react';
 import { Typography, Button, Container } from '@mui/material';
-import { updateCartQty } from '../../../actions/cart';
-import { useDispatch } from 'react-redux';
+import { incrementProductQuantity, decrementProductQuantity, removeProductFromCart } from '../../../store/cartThunks/cartThunks';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './CartItem.scss';
 
-const CartItem = ({ item }) => {
+const CartItem = ({ product }) => {
 	const dispatch = useDispatch();
+	const { uid } = useSelector((state) => state.user);
+	const handleRemoveProduct = () => {
+		dispatch(removeProductFromCart({uid, product}));
+	};
 
 	return (
 		<Container className="cart-item-container">
 			<div className="image-and-description">
-				<Link className="shop-link" to={`/product/${item.product_id}`}>
-					<img src={item.media.source} alt="hoodie" className="media" />
+				<Link className="product-link" to={`/product/${product.id}`}>
+					<img src={product.images[0]} alt="hoodie" className="cart-item" />
 				</Link>
 				<div>
-					<Link className="shop-link" to={`/product/${item.product_id}`}>
+					<Link className="product-link" to={`/product/${product.id}`}>
 						<Typography variant="h6" className="cart-product-name">
-							{item.name}
+							{product.name}
 						</Typography>
 					</Link>
-					{item.selected_options[0] && (
-						<Typography>{`Size: ${item.selected_options[0].option_name}`}</Typography>
+					{product.selected_size && (
+						<Typography>{`Size: ${product.selected_size}`}</Typography>
 					)}
 					<div className="buttons">
 						<Button
+							disabled={product.quantity < 2}
 							type="button"
 							size="small"
-							// onClick={() =>
-							// 	dispatch(updateCartQty(item.id, item.quantity - 1))
-							// }
+							onClick={() =>
+								dispatch(decrementProductQuantity({uid, product}))
+							}
 						>
 							-
 						</Button>
-						<Typography>{item.quantity}</Typography>
+						<Typography>{product.quantity}</Typography>
 						<Button
 							type="button"
 							size="small"
-							// onClick={() =>
-							// 	dispatch(updateCartQty(item.id, item.quantity + 1))
-							// }
+							onClick={() =>
+								dispatch(incrementProductQuantity({uid, product}))
+							}
 						>
 							+
 						</Button>
@@ -48,13 +53,11 @@ const CartItem = ({ item }) => {
 			</div>
 			<div className="price-and-remove">
 				{/* TODO need to apply logic to account for dynamic change amount (money) */}
-				<Typography>{`$${item.price.raw * item.quantity}.00`}</Typography>
+				<Typography>{`$${product.price * product.quantity}`}</Typography>
 				<Button
 					type="button"
 					color="secondary"
-					// onClick={() =>
-					// 	dispatch(updateCartQty(item.id, item.quantity - item.quantity))
-					// }
+					onClick={handleRemoveProduct}
 				>
 					X
 				</Button>

@@ -8,7 +8,7 @@ import myLogo from '../../../assets/logos/logo-white.png';
 import './MyNavbar.scss';
 
 const MyNavbar = () => {
-	const totalItems = useSelector((state) => state.cart.total_items);
+	const totalItems = useSelector((state) => state.user.cart.total_items) || 0;
 	const [mobileView, setMobileView] = useState(false);
 	const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -72,16 +72,6 @@ const MyNavbar = () => {
 								className="nav-button"
 							>
 								Shop
-							</Button>
-
-							<Button
-								key="Services"
-								color="inherit"
-								to="/services"
-								component={RouterLink}
-								className="nav-button"
-							>
-								Services
 							</Button>
 						</span>
 

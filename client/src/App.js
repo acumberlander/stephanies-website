@@ -9,20 +9,19 @@ import {
   Home,
   Shop,
   ProductDetails,
-  Services,
 } from "./components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { fetchProducts } from "./actions/products";
-import { fetchCart } from "./actions/cart";
-import { createGuest } from "./actions/cart";
-import { signInAsGuest } from "./firebaseConfig";
-import { ThemeProvider } from "@mui/material";
+import { signInUser } from "./store/userThunks/userThunks"
+import { getAllProducts } from "./store/productThunks/productThunks";
+import ThankYou from "./Pages/ThankYouPage/ThankYou";
+import "./App.scss";
 
 const App = () => {
   const cart = useSelector((state) => state.cart);
   const [order, setOrder] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
+  const { uid, status } = useSelector((state) => state.user)
 
   useEffect(() => {
     // storageRef
@@ -35,27 +34,27 @@ const App = () => {
     // 			});
     // 		});
     // 	});
-    // check if user has visited the site by checking for cookie
-    signInAsGuest();
-    dispatch(fetchProducts());
-    // dispatch(fetchCart());
-  }, [dispatch]);
+    if (!uid) {
+      dispatch(signInUser())
+      dispatch(getAllProducts())
+    }
+  }, [uid, dispatch]);
+
 
   return (
     <Router>
       <MyNavbar />
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/about" element={<About />} />
-        <Route exact path="/shop/:category" element={<Shop />} />
-        <Route exact path="/services" element={<Services />} />
-        <Route exact path="/cart" element={<Cart />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/shop/:category" element={<Shop />} />
+        <Route  path="/cart" element={<Cart />} />
         <Route
-          exact
           path="/checkout"
-          element={<Checkout cart={cart} order={order} error={errorMessage} />}
+          element={<Checkout order={order} error={errorMessage} />}
         />
-        <Route exact path="/product/:id" element={<ProductDetails />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/thank-you" element={<ThankYou />} />
       </Routes>
       <Footer />
     </Router>
