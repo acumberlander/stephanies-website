@@ -5,11 +5,12 @@ export const PaymentInfo = ({ register, errors }) => {
     <div>
       <h2>Payment Info</h2>
       <div className="form-group">
-        <label htmlFor="cardNumber">Card Number</label>
+        <label htmlFor="cardNumber">Fake Card Number</label>
         <input
-          {...register("cardNumber", { required: true })}
+          {...register("cardNumber", { required: false })}
           id="cardNumber"
           type="text"
+          disabled={true}
           placeholder="xxxx xxxx xxxx xxxx"
         />
         {errors.cardNumber?.type === "required" && (
