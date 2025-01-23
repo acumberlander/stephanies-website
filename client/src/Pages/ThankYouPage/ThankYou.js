@@ -12,8 +12,11 @@ const ThankYou = () => {
   // If there's no order, show an error or placeholder
   if (!lastOrder) {
     return (
-      <div style={{ padding: "2rem", minHeight: "500px" }}>
-        <h1>No Order Found</h1>
+      <div
+        id="no-order-container"
+        style={{ padding: "2rem", minHeight: "500px" }}
+      >
+        <h1 id="no-order-header">No Order Found</h1>
         <p>It looks like you haven’t placed an order yet!</p>
       </div>
     );

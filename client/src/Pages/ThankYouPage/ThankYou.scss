@@ -1,10 +1,9 @@
 .thank-you-container {
+  padding: 100px 0;
+  min-height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  text-align: center;
 }
 
 #thank-you-header {
@@ -13,4 +12,14 @@
 
 #order-summary-header {
   color: #cc34ab;
+}
+
+#no-order-header {
+  color: #cc34ab;
+}
+
+#no-order-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

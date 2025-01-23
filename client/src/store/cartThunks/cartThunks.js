@@ -9,13 +9,19 @@ export const emptyCart = createAsyncThunk(
   "user/emptyCart",
   async (uid, { rejectWithValue }) => {
     try {
-      // PUT to /api/users/:uid/cart with an empty cart
-      const res = await axios.put(`/api/users/${uid}/cart`, {
+      // Updates mongoDB cart
+      await axios.put(`/api/users/${uid}/cart`, {
         cart_items: [],
         total_items: 0,
         subtotal: 0,
       });
-      return res.data; // Should be the updated user doc
+
+      // Updates redux user cart state
+      return {
+        cart_items: [],
+        total_items: 0,
+        subtotal: 0,
+      };
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -29,52 +35,54 @@ export const emptyCart = createAsyncThunk(
  */
 export const addToCart = createAsyncThunk(
   "user/addToCart",
-  async ({ uid, product }, { getState, rejectWithValue }) => {
+  async ({ uid, product, quantity }, { getState, rejectWithValue }) => {
     try {
       // Get the current user state from Redux
       const { user } = getState();
+      const { cart_items } = user.cart;
 
       // Clone existing cart items
-      const newCartItems = [...user.cart.cart_items];
+      const newCartItems = [...cart_items];
 
       // Check if this exact product is already in the cart
-      // (match both `id` and `selected_size` if you have multiple size variants)
       const index = newCartItems.findIndex((item) => {
-        return (
-          item.id === product.id && item.selected_size === product.selected_size
-        );
+        return item.id === product.id;
       });
 
       if (index !== -1) {
         // Already in cart: just bump quantity
         newCartItems[index] = {
           ...newCartItems[index],
-          quantity: newCartItems[index].quantity + product.quantity,
+          quantity: newCartItems[index].quantity + quantity,
         };
       } else {
         // Not in cart yet: push new item
-        newCartItems.push(product);
+        newCartItems.push({ ...product, quantity });
       }
 
-      // Recalculate totals
-      const total_items = newCartItems.reduce(
-        (acc, item) => acc + item.quantity,
+      // Recalculate totals based on newCartItems
+      const newTotalItems = newCartItems.reduce(
+        (sum, item) => sum + item.quantity,
         0
       );
-      const subtotal = newCartItems.reduce(
-        (acc, item) => acc + item.price * item.quantity,
+      const newSubtotal = newCartItems.reduce(
+        (sum, item) => sum + item.quantity * item.price,
         0
       );
 
-      // PUT to /api/users/:uid/cart (adjust your route as needed)
-      const res = await axios.put(`/api/users/${uid}/cart`, {
+      // Update mongoDB cart
+      await axios.put(`/api/users/${uid}/cart`, {
         cart_items: newCartItems,
-        total_items,
-        subtotal,
+        total_items: newTotalItems,
+        subtotal: newSubtotal,
       });
 
-      // The server should return the updated user doc
-      return res.data;
+      // Return the updated cart data
+      return {
+        cart_items: newCartItems,
+        total_items: newTotalItems,
+        subtotal: newSubtotal,
+      };
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -87,15 +95,15 @@ export const addToCart = createAsyncThunk(
  * @param selectedSize
  */
 export const incrementProductQuantity = createAsyncThunk(
-  "user/incrementQuantity",
-  async ({ uid, productId, selectedSize }, { getState, rejectWithValue }) => {
+  "user/incrementProductQuantity",
+  async (product, { getState, rejectWithValue }) => {
     try {
       const { user } = getState();
       const newCartItems = [...user.cart.cart_items];
 
       // Find the product in the cart
       const index = newCartItems.findIndex((item) => {
-        return item.id === productId && item.selected_size === selectedSize;
+        return item.id === product.id;
       });
 
       if (index !== -1) {
@@ -115,13 +123,19 @@ export const incrementProductQuantity = createAsyncThunk(
         0
       );
 
-      const res = await axios.put(`/api/users/${uid}/cart`, {
+      // Updates mongoDB cart
+      await axios.put(`/api/users/${user.uid}/cart`, {
         cart_items: newCartItems,
         total_items,
         subtotal,
       });
 
-      return res.data;
+      // Updates redux user cart state
+      return {
+        cart_items: newCartItems,
+        total_items,
+        subtotal,
+      };
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -134,16 +148,17 @@ export const incrementProductQuantity = createAsyncThunk(
  * @param selectedSize
  */
 export const decrementProductQuantity = createAsyncThunk(
-  "user/decrementQuantity",
-  async ({ uid, productId, selectedSize }, { getState, rejectWithValue }) => {
+  "user/decrementProductQuantity",
+  async (product, { getState, rejectWithValue }) => {
     try {
       const { user } = getState();
       let newCartItems = [...user.cart.cart_items];
 
       // Find the product in the cart
-      const index = newCartItems.findIndex(
-        (item) => item.id === productId && item.selected_size === selectedSize
-      );
+      const index = newCartItems.findIndex((item) => {
+        return item.id === product.id;
+      });
+
       if (index !== -1) {
         const currentQty = newCartItems[index].quantity;
         const newQty = currentQty - 1;
@@ -170,13 +185,19 @@ export const decrementProductQuantity = createAsyncThunk(
         0
       );
 
-      const res = await axios.put(`/api/users/${uid}/cart`, {
+      // Updates mongoDB cart
+      await axios.put(`/api/users/${user.uid}/cart`, {
         cart_items: newCartItems,
         total_items,
         subtotal,
       });
 
-      return res.data;
+      // Updates redux user cart state
+      return {
+        cart_items: newCartItems,
+        total_items,
+        subtotal,
+      };
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -190,15 +211,15 @@ export const decrementProductQuantity = createAsyncThunk(
  */
 export const removeProductFromCart = createAsyncThunk(
   "user/removeFromCart",
-  async ({ uid, productId, selectedSize }, { getState, rejectWithValue }) => {
+  async (product, { getState, rejectWithValue }) => {
     try {
       const { user } = getState();
       let newCartItems = [...user.cart.cart_items];
 
       // Find the product in the cart
-      const index = newCartItems.findIndex(
-        (item) => item.id === productId && item.selected_size === selectedSize
-      );
+      const index = newCartItems.findIndex((item) => {
+        return item.id === product.id;
+      });
       // If found, remove it
       if (index !== -1) {
         newCartItems.splice(index, 1);
@@ -214,14 +235,19 @@ export const removeProductFromCart = createAsyncThunk(
         0
       );
 
-      // PUT updated cart to the server
-      const res = await axios.put(`/api/users/${uid}/cart`, {
+      // Updates mongoDB cart
+      await axios.put(`/api/users/${user.uid}/cart`, {
         cart_items: newCartItems,
         total_items,
         subtotal,
       });
 
-      return res.data;
+      // Updates redux user cart state
+      return {
+        cart_items: newCartItems,
+        total_items,
+        subtotal,
+      };
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }

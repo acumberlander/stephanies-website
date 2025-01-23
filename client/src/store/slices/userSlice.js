@@ -63,13 +63,13 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
+        state.status = "succeeded";
         // Update state.cart with new cart data
         state.cart = {
           cart_items: action.payload.cart_items,
           total_items: action.payload.total_items,
           subtotal: action.payload.subtotal,
         };
-        state.status = "succeeded";
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.status = "failed";
@@ -78,35 +78,34 @@ const userSlice = createSlice({
 
       // emptyCart
       .addCase(emptyCart.pending, (state, action) => {
-        state.error = action.payload;
         state.status = "loading";
+        state.error = action.payload;
       })
       .addCase(emptyCart.fulfilled, (state, action) => {
-        // Update state.cart with emptied cart data
+        state.status = "succeeded";
         state.cart = {
           cart_items: action.payload.cart_items,
           total_items: action.payload.total_items,
           subtotal: action.payload.subtotal,
         };
-        state.status = "succeeded";
       })
       .addCase(emptyCart.rejected, (state, action) => {
-        state.error = action.payload;
         state.status = "failed";
+        state.error = action.payload;
       })
 
       // decrementProductQuantity
       .addCase(decrementProductQuantity.pending, (state, action) => {
-        state.error = action.payload;
         state.status = "loading";
+        state.error = action.payload;
       })
       .addCase(decrementProductQuantity.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.cart = {
           cart_items: action.payload.cart_items,
           total_items: action.payload.total_items,
           subtotal: action.payload.subtotal,
         };
-        state.status = "succeeded";
       })
       .addCase(decrementProductQuantity.rejected, (state, action) => {
         state.error = action.payload;
@@ -115,53 +114,53 @@ const userSlice = createSlice({
 
       // incrementProductQuantity
       .addCase(incrementProductQuantity.pending, (state, action) => {
-        state.error = action.payload;
         state.status = "loading";
+        state.error = action.payload;
       })
       .addCase(incrementProductQuantity.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.cart = {
           cart_items: action.payload.cart_items,
           total_items: action.payload.total_items,
           subtotal: action.payload.subtotal,
         };
-        state.status = "succeeded";
       })
       .addCase(incrementProductQuantity.rejected, (state, action) => {
-        state.error = action.payload;
         state.status = "failed";
+        state.error = action.payload;
       })
 
       // removeProuctFromCart
       .addCase(removeProductFromCart.pending, (state, action) => {
-        state.error = action.payload;
         state.status = "loading";
+        state.error = action.payload;
       })
       .addCase(removeProductFromCart.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.cart = {
           cart_items: action.payload.cart_items,
           total_items: action.payload.total_items,
           subtotal: action.payload.subtotal,
         };
-        state.status = "succeeded";
       })
       .addCase(removeProductFromCart.rejected, (state, action) => {
-        state.error = action.payload;
         state.status = "failed";
+        state.error = action.payload;
       })
 
       // createOrder
       .addCase(createOrder.pending, (state, action) => {
-        state.error = action.payload;
         state.status = "loading";
+        state.error = action.payload;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.cart = action.payload.cart;
         state.orders = action.payload.orders;
-        state.status = "succeeded";
       })
       .addCase(createOrder.rejected, (state, action) => {
-        state.error = action.payload;
         state.status = "failed";
+        state.error = action.payload;
       });
   },
 });

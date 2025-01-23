@@ -54,18 +54,17 @@ router.post("/", async (req, res) => {
   }
 });
 
-// PUT update user cart
+// PUT add to cart
 router.put("/:uid/cart", async (req, res) => {
   try {
-    // e.g. { cart_items, total_items, subtotal }
-    const updateData = req.body;
+    const { cart_items, total_items, subtotal } = req.body;
     const user = await User.findOneAndUpdate(
       { uid: req.params.uid },
       {
         $set: {
-          "cart.cart_items": updateData.cart_items,
-          "cart.total_items": updateData.total_items,
-          "cart.subtotal": updateData.subtotal,
+          "cart.cart_items": cart_items,
+          "cart.total_items": total_items,
+          "cart.subtotal": subtotal,
         },
       },
       { new: true }
@@ -80,16 +79,35 @@ router.put("/:uid/cart", async (req, res) => {
 // PUT add an order
 router.put("/:uid/orders", async (req, res) => {
   try {
-    const { order } = req.body;
+    const { orderData } = req.body;
+
+    // Validate order data
+    if (!orderData || typeof orderData !== "object") {
+      return res.status(400).json({ error: "Invalid order data" });
+    }
+
+    // Add new order to the 'orders' array and clear the cart in one query
     const user = await User.findOneAndUpdate(
       { uid: req.params.uid },
-      { $push: { orders: order } },
+      {
+        $push: { orders: orderData },
+        $set: {
+          "cart.cart_items": [],
+          "cart.total_items": 0,
+          "cart.subtotal": 0,
+        },
+      },
       { new: true }
     );
-    if (!user) return res.status(404).json({ error: "User not found" });
-    res.json(user);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user); // Return updated user document with new order + cleared cart
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error creating order:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

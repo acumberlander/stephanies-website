@@ -38,39 +38,32 @@ export const fetchUserByUid = createAsyncThunk(
 );
 
 /**
- * @param userData
- * Adds the _id value to the current user redux state.
- */
-// export const setUser = createAsyncThunk(
-//   "user/setUser",
-//   async (mongoUser, { rejectWithValue }) => {
-//     try {
-//       const user = await fetchUserByUid(uid);
-//       if (!user) {
-//         const userData = {
-//           ...userModel,
-//           uid,
-//         };
-//       }
-//       return user;
-//     } catch (err) {
-//       return rejectWithValue(err.response?.data || err.message);
-//     }
-//   }
-// );
-
-/**
- * @param uid
- * @param order
+ * @param orderData
  */
 export const createOrder = createAsyncThunk(
   "user/createOrder",
-  async ({ uid, order }, { rejectWithValue }) => {
+  async (orderData, { getState, rejectWithValue }) => {
+    const { user } = getState();
     try {
-      // Assume your server adds `order` to `orders` array, empties the cart, etc.
-      const res = await axios.put(`/api/users/${uid}/orders`, { order });
-      return res.data;
+      // Updates orders in mongoDB
+      await axios.put(`/api/users/${user.uid}/orders`, { orderData });
+
+      // Create updated orders array
+      const updatedOrders = user.orders
+        ? [...user.orders, orderData]
+        : [orderData];
+
+      // Return updated orders and cart data (for Redux)
+      return {
+        cart: {
+          cart_items: [],
+          total_items: 0,
+          subtotal: 0,
+        },
+        orders: updatedOrders,
+      };
     } catch (err) {
+      // Extract and return error message
       return rejectWithValue(err.response?.data || err.message);
     }
   }
