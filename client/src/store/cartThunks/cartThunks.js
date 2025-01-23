@@ -1,297 +1,229 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { doc, updateDoc, getDoc } from "firebase/firestore/lite";
-import { db } from "../../firebaseConfig";
+import axios from "axios";
 
 /**
- * Adds an item to the user's cart in firebase/firestore and in redux
- * @param uid
- */
-export const addToCart = createAsyncThunk(
-  "user/addToCart",
-  async ({ uid, product, quantity }, { rejectWithValue }) => {
-    if (!uid) {
-      return rejectWithValue("User is not signed in.");
-    }
-
-    try {
-      // TODO: replace firebase web sdk for the firebase admin adk.
-      // Want to abstract this logic to node backend.
-      const userRef = doc(db, "users", uid);
-      const userSnap = await getDoc(userRef);
-      if (!userSnap.exists()) {
-        return rejectWithValue("User doc not found.");
-      }
-
-      const userData = userSnap.data();
-      const { cart } = userData;
-      let { cart_items, total_items, subtotal } = cart;
-
-      // Check if product already in cart
-      const existingProductIndex = cart_items.findIndex(
-        (item) => item.id === product.id
-      );
-
-      if (existingProductIndex >= 0) {
-        // Increase quantity
-        cart_items[existingProductIndex].quantity += quantity;
-      } else {
-        // Add new product with quantity
-        cart_items.push({ ...product, quantity: quantity });
-      }
-
-      // Update total items, subtotal
-      total_items += quantity;
-      subtotal += quantity * product.price;
-
-      // Write updated data back to Firestore
-      await updateDoc(userRef, {
-        cart: {
-          cart_items,
-          total_items,
-          subtotal,
-        },
-      });
-
-      // Return new cart data (for Redux)
-      return {
-        cart_items,
-        total_items,
-        subtotal,
-      };
-    } catch (err) {
-      return rejectWithValue(err.message);
-    }
-  }
-);
-
-/**
- * Empties user's cart in firebase/firestore as well as in redux state
+ * Empties user's cart in the database as well as in redux state
  * @param uid
  */
 export const emptyCart = createAsyncThunk(
   "user/emptyCart",
-  async ({ uid }, { rejectWithValue }) => {
-    if (!uid) {
-      return rejectWithValue("User is not signed in.");
-    }
-
+  async (uid, { rejectWithValue }) => {
     try {
-      // Get user data from firebase/firestore
-      const userRef = doc(db, "users", uid);
-
-      // Write emptied cart back to Firestore
-      await updateDoc(userRef, {
-        cart: {
-          cart_items: [],
-          total_items: 0,
-          subtotal: 0,
-        },
-      });
-
-      // Return emptied cart data (for Redux)
-      return {
+      // PUT to /api/users/:uid/cart with an empty cart
+      const res = await axios.put(`/api/users/${uid}/cart`, {
         cart_items: [],
         total_items: 0,
         subtotal: 0,
-      };
+      });
+      return res.data; // Should be the updated user doc
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );
 
 /**
- * Increases quantity of a product the user's cart by 1 in firebase/firestore as well as in redux state
+ * Merges a new product into the cart, or increments its quantity if it's already there.
  * @param uid
- * @param productId
+ * @param product
  */
-export const incrementProductQuantity = createAsyncThunk(
-  "user/incrementProductQuantity",
-  async ({ uid, product }, { rejectWithValue }) => {
-    if (!uid) {
-      return rejectWithValue("User is not signed in.");
-    }
-
+export const addToCart = createAsyncThunk(
+  "user/addToCart",
+  async ({ uid, product }, { getState, rejectWithValue }) => {
     try {
-      // Get user data from firebase/firestore
-      const userRef = doc(db, "users", uid);
-      const userSnap = await getDoc(userRef);
-      if (!userSnap.exists()) {
-        return rejectWithValue("User doc not found.");
-      }
-      const userData = userSnap.data();
-      const { cart } = userData;
-      let { cart_items, total_items, subtotal } = cart;
+      // Get the current user state from Redux
+      const { user } = getState();
 
-      // Find the index of the product
-      const productIndex = cart_items.findIndex((item) => {
-        return item.id === product.id;
+      // Clone existing cart items
+      const newCartItems = [...user.cart.cart_items];
+
+      // Check if this exact product is already in the cart
+      // (match both `id` and `selected_size` if you have multiple size variants)
+      const index = newCartItems.findIndex((item) => {
+        return (
+          item.id === product.id && item.selected_size === product.selected_size
+        );
       });
 
-      // Filter for selected product
-      const selectedProduct = cart_items[productIndex];
-
-      // Increment product quantity and total item count
-      selectedProduct.quantity += 1;
-      total_items += 1;
-
-      // Recalculate subtotal
-      let newSubtotal = 0;
-      for (let item of cart_items) {
-        newSubtotal += item.price * item.quantity;
+      if (index !== -1) {
+        // Already in cart: just bump quantity
+        newCartItems[index] = {
+          ...newCartItems[index],
+          quantity: newCartItems[index].quantity + product.quantity,
+        };
+      } else {
+        // Not in cart yet: push new item
+        newCartItems.push(product);
       }
-      subtotal = newSubtotal;
 
-      // Write updated data back to Firestore
-      await updateDoc(userRef, {
-        cart: {
-          cart_items,
-          total_items,
-          subtotal,
-        },
-      });
+      // Recalculate totals
+      const total_items = newCartItems.reduce(
+        (acc, item) => acc + item.quantity,
+        0
+      );
+      const subtotal = newCartItems.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      );
 
-      // Return new cart data (for Redux)
-      return {
-        cart_items,
+      // PUT to /api/users/:uid/cart (adjust your route as needed)
+      const res = await axios.put(`/api/users/${uid}/cart`, {
+        cart_items: newCartItems,
         total_items,
         subtotal,
-      };
+      });
+
+      // The server should return the updated user doc
+      return res.data;
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );
 
 /**
- * Decreases quantity of a product the user's cart by 1 in firebase/firestore as well as in redux state
  * @param uid
  * @param productId
+ * @param selectedSize
  */
-export const decrementProductQuantity = createAsyncThunk(
-  "user/decrementProductQuantity",
-  async ({ uid, product }, { rejectWithValue }) => {
-    if (!uid) {
-      return rejectWithValue("User is not signed in.");
-    }
-
+export const incrementProductQuantity = createAsyncThunk(
+  "user/incrementQuantity",
+  async ({ uid, productId, selectedSize }, { getState, rejectWithValue }) => {
     try {
-      // Get user data from firebase/firestore
-      const userRef = doc(db, "users", uid);
-      const userSnap = await getDoc(userRef);
-      if (!userSnap.exists()) {
-        return rejectWithValue("User doc not found.");
-      }
+      const { user } = getState();
+      const newCartItems = [...user.cart.cart_items];
 
-      const userData = userSnap.data();
-      let { cart } = userData;
-      let { cart_items, total_items, subtotal } = cart;
-
-      // Find the index of the product
-      const productIndex = cart_items.findIndex((item) => {
-        return item.id === product.id;
+      // Find the product in the cart
+      const index = newCartItems.findIndex((item) => {
+        return item.id === productId && item.selected_size === selectedSize;
       });
 
-      // Filter for selected product
-      const selectedProduct = cart_items[productIndex];
-
-      // Decrement product quantity and total item count
-      selectedProduct.quantity -= 1;
-      total_items -= 1;
-      
-      // Recalculate subtotal
-      let newSubtotal = 0;
-      for (let item of cart_items) {
-        newSubtotal += item.price * item.quantity;
+      if (index !== -1) {
+        newCartItems[index] = {
+          ...newCartItems[index],
+          quantity: newCartItems[index].quantity + 1,
+        };
       }
-      subtotal = newSubtotal;
 
-      // Check if this is the last item
-      if (selectedProduct.quantity <= 0) {
-        // Remove product from cart
-        if (productIndex !== -1) {
-          cart_items.splice(productIndex, 1);
+      // Recalculate totals
+      const total_items = newCartItems.reduce(
+        (acc, item) => acc + item.quantity,
+        0
+      );
+      const subtotal = newCartItems.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      );
+
+      const res = await axios.put(`/api/users/${uid}/cart`, {
+        cart_items: newCartItems,
+        total_items,
+        subtotal,
+      });
+
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
+/**
+ * @param uid
+ * @param productId
+ * @param selectedSize
+ */
+export const decrementProductQuantity = createAsyncThunk(
+  "user/decrementQuantity",
+  async ({ uid, productId, selectedSize }, { getState, rejectWithValue }) => {
+    try {
+      const { user } = getState();
+      let newCartItems = [...user.cart.cart_items];
+
+      // Find the product in the cart
+      const index = newCartItems.findIndex(
+        (item) => item.id === productId && item.selected_size === selectedSize
+      );
+      if (index !== -1) {
+        const currentQty = newCartItems[index].quantity;
+        const newQty = currentQty - 1;
+
+        if (newQty > 0) {
+          // Just decrement
+          newCartItems[index] = {
+            ...newCartItems[index],
+            quantity: newQty,
+          };
+        } else {
+          // If quantity goes to zero, remove item from cart
+          newCartItems.splice(index, 1);
         }
       }
 
-      // Write updated data back to Firestore
-      await updateDoc(userRef, {
-        cart: {
-          cart_items,
-          total_items,
-          subtotal,
-        },
-      });
+      // Recalculate totals
+      const total_items = newCartItems.reduce(
+        (acc, item) => acc + item.quantity,
+        0
+      );
+      const subtotal = newCartItems.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      );
 
-      // Return new cart data (for Redux)
-      return {
-        cart_items,
+      const res = await axios.put(`/api/users/${uid}/cart`, {
+        cart_items: newCartItems,
         total_items,
         subtotal,
-      };
+      });
+
+      return res.data;
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );
 
 /**
- * Removes a product from the user's cart in firebase/firestore as well as in redux state
+ * Removes a product from the user's cart in database as well as in redux state
  * @param uid
  * @param productId
  */
 export const removeProductFromCart = createAsyncThunk(
-  "user/removeProductFromCart",
-  async ({ uid, product }, { rejectWithValue }) => {
-    if (!uid) {
-      return rejectWithValue("User is not signed in.");
-    }
-
+  "user/removeFromCart",
+  async ({ uid, productId, selectedSize }, { getState, rejectWithValue }) => {
     try {
-      // Get user data from firebase/firestore
-      const userRef = doc(db, "users", uid);
-      const userSnap = await getDoc(userRef);
-      if (!userSnap.exists()) {
-        return rejectWithValue("User doc not found.");
+      const { user } = getState();
+      let newCartItems = [...user.cart.cart_items];
+
+      // Find the product in the cart
+      const index = newCartItems.findIndex(
+        (item) => item.id === productId && item.selected_size === selectedSize
+      );
+      // If found, remove it
+      if (index !== -1) {
+        newCartItems.splice(index, 1);
       }
 
-      const userData = userSnap.data();
-      let { cart } = userData;
-      let { cart_items, total_items, subtotal } = cart;
+      // Recalculate totals
+      const total_items = newCartItems.reduce(
+        (acc, item) => acc + item.quantity,
+        0
+      );
+      const subtotal = newCartItems.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+      );
 
-      const productIndex = cart_items.findIndex((item) => {
-        return item.id === product.id;
-      });
-      // Remove product from cart
-      if (productIndex !== -1) {
-        cart_items.splice(productIndex, 1);
-      }
-      total_items -= 1;
-
-      // Recalculate subtotal
-      let newSubtotal = 0;
-      for (let item of cart_items) {
-        newSubtotal += item.price * item.quantity;
-      }
-      subtotal = newSubtotal;
-
-      // Write updated data back to Firestore
-      await updateDoc(userRef, {
-        cart: {
-          cart_items,
-          total_items,
-          subtotal,
-        },
-      });
-
-      // Return new cart data (for Redux)
-      return {
-        cart_items,
+      // PUT updated cart to the server
+      const res = await axios.put(`/api/users/${uid}/cart`, {
+        cart_items: newCartItems,
         total_items,
         subtotal,
-      };
+      });
+
+      return res.data;
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );

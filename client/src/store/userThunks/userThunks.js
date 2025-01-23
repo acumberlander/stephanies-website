@@ -1,101 +1,77 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { signInAnonymouslyToFirebase, db } from "../../firebaseConfig";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore/lite";
+// import { fetchUserByUid } from "../../api/userRequests";
+import axios from "axios";
 
-export const signInUser = createAsyncThunk(
-  "user/signInUser",
-  async (_, { rejectWithValue }) => {
+/**
+ * @param userData
+ * Creates a user object in redux as well as in mongodb.
+ * The _id property will have a value of null.
+ */
+export const createUser = createAsyncThunk(
+  "user/createUser",
+  async (userData, { rejectWithValue }) => {
     try {
-      // TODO: replace firebase web sdk for the firebase admin adk.
-      // Want to abstract this logic to node backend.
-      const { user } = await signInAnonymouslyToFirebase();
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-
-      if (!userSnap.exists()) {
-        await setDoc(userRef, {
-          cart: {
-            cart_items: [],
-            total_items: 0,
-            subtotal: 0,
-          },
-          orders: [],
-        });
-        return {
-          uid: user.uid,
-          cart: {
-            cart_items: [],
-            total_items: 0,
-            subtotal: 0,
-          },
-          orders: [],
-        };
-      } else {
-        const userData = userSnap.data();
-        const { orders, cart } = userData;
-        let { cart_items, total_items, subtotal } = cart;
-        return {
-          uid: user.uid,
-          cart: {
-            cart_items,
-            total_items,
-            subtotal,
-          },
-          orders,
-        };
-      }
+      const response = await axios.post("/api/users", userData);
+      return response.data; // The newly created user document
     } catch (err) {
+      if (err.response && err.response.data) {
+        return rejectWithValue(err.response.data);
+      }
       return rejectWithValue(err.message);
     }
   }
 );
 
+export const fetchUserByUid = createAsyncThunk(
+  "user/fetchUserByUid",
+  async (uid, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/api/users/${uid}`);
+      return response.data;
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        return rejectWithValue({ error: "User not found" });
+      }
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
+/**
+ * @param userData
+ * Adds the _id value to the current user redux state.
+ */
+// export const setUser = createAsyncThunk(
+//   "user/setUser",
+//   async (mongoUser, { rejectWithValue }) => {
+//     try {
+//       const user = await fetchUserByUid(uid);
+//       if (!user) {
+//         const userData = {
+//           ...userModel,
+//           uid,
+//         };
+//       }
+//       return user;
+//     } catch (err) {
+//       return rejectWithValue(err.response?.data || err.message);
+//     }
+//   }
+// );
+
+/**
+ * @param uid
+ * @param order
+ */
 export const createOrder = createAsyncThunk(
   "user/createOrder",
-  async ({ uid, orderData }, { rejectWithValue }) => {
+  async ({ uid, order }, { rejectWithValue }) => {
     try {
-      if (!uid) {
-        return rejectWithValue("User is not signed in");
-      }
-      // TODO: replace firebase web sdk for the firebase admin adk.
-      // Want to abstract this logic to node backend.
-      const userRef = doc(db, "users", uid);
-      const userSnap = await getDoc(userRef);
-      if (!userSnap.exists()) {
-        return rejectWithValue("User doc not found.");
-      }
-
-      const userData = userSnap.data();
-      let { orders } = userData;
-
-      // Add orderData to orders array
-      if (!orders) {
-        orders = [orderData];
-      } else {
-        orders.push(orderData);
-      }
-
-      // Write updated data back to Firestore
-      await updateDoc(userRef, {
-        cart: {
-          cart_items: [],
-          total_items: 0,
-          subtotal: 0,
-        },
-        orders,
-      });
-
-      // Return emptied cart data (for Redux)
-      return {
-        cart: {
-          cart_items: [],
-          total_items: 0,
-          subtotal: 0,
-        },
-        orders,
-      };
+      // Assume your server adds `order` to `orders` array, empties the cart, etc.
+      const res = await axios.put(`/api/users/${uid}/orders`, { order });
+      return res.data;
     } catch (err) {
-      return rejectWithValue(err.message);
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { initializeApp } from "./utils/initializeApp";
+import { fetchAllProducts } from "./store/productThunks/productThunks";
 import {
   MyNavbar,
   Footer,
@@ -10,36 +13,19 @@ import {
   Shop,
   ProductDetails,
 } from "./components";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { signInUser } from "./store/userThunks/userThunks"
-import { getAllProducts } from "./store/productThunks/productThunks";
 import ThankYou from "./Pages/ThankYouPage/ThankYou";
 import "./App.scss";
 
 const App = () => {
-  const cart = useSelector((state) => state.cart);
-  const [order, setOrder] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
-  const { uid, status } = useSelector((state) => state.user)
+  const { uid } = useSelector((state) => state.user);
 
   useEffect(() => {
-    // storageRef
-    // 	.child('hair-and-makeup')
-    // 	.listAll()
-    // 	.then((res) => {
-    // 		res.items.forEach((item) => {
-    // 			item.getDownloadURL().then((res) => {
-    // 				console.log(res);
-    // 			});
-    // 		});
-    // 	});
     if (!uid) {
-      dispatch(signInUser())
-      dispatch(getAllProducts())
+      initializeApp(dispatch);
     }
   }, [uid, dispatch]);
-
 
   return (
     <Router>
@@ -48,11 +34,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/shop/:category" element={<Shop />} />
-        <Route  path="/cart" element={<Cart />} />
-        <Route
-          path="/checkout"
-          element={<Checkout order={order} error={errorMessage} />}
-        />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout error={errorMessage} />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/thank-you" element={<ThankYou />} />
       </Routes>

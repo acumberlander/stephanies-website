@@ -6,29 +6,55 @@ import {
   incrementProductQuantity,
   removeProductFromCart,
 } from "../cartThunks/cartThunks";
-import { createOrder, signInUser } from "../userThunks/userThunks";
+import {
+  createOrder,
+  createUser,
+  fetchUserByUid,
+} from "../userThunks/userThunks";
 import { userModel } from "../../Models/User";
 
 const userSlice = createSlice({
   name: "user",
   initialState: userModel,
-  reducers: {},
+  reducers: {
+    /**
+     * @param state
+     * @param action.payload
+     */
+    setUserIds(state, action) {
+      state._id = action.payload._id;
+      state.uid = action.payload.uid;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      // signInUser
-      .addCase(signInUser.pending, (state) => {
+
+      // createUser
+      .addCase(createUser.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
-      .addCase(signInUser.fulfilled, (state, action) => {
+      .addCase(createUser.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.uid = action.payload.uid;
-        state.cart = action.payload.cart;
-        state.orders = action.payload.orders;
+        state.user = action.payload.user;
+        Object.assign(state, action.payload);
       })
-      .addCase(signInUser.rejected, (state, action) => {
+      .addCase(createUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+      })
+
+      // fetchUser
+      .addCase(fetchUserByUid.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUserByUid.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        Object.assign(state, action.payload);
+      })
+      .addCase(fetchUserByUid.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload.error || action.payload;
       })
 
       // addToCart
@@ -51,6 +77,10 @@ const userSlice = createSlice({
       })
 
       // emptyCart
+      .addCase(emptyCart.pending, (state, action) => {
+        state.error = action.payload;
+        state.status = "loading";
+      })
       .addCase(emptyCart.fulfilled, (state, action) => {
         // Update state.cart with emptied cart data
         state.cart = {
@@ -66,6 +96,10 @@ const userSlice = createSlice({
       })
 
       // decrementProductQuantity
+      .addCase(decrementProductQuantity.pending, (state, action) => {
+        state.error = action.payload;
+        state.status = "loading";
+      })
       .addCase(decrementProductQuantity.fulfilled, (state, action) => {
         state.cart = {
           cart_items: action.payload.cart_items,
@@ -76,9 +110,14 @@ const userSlice = createSlice({
       })
       .addCase(decrementProductQuantity.rejected, (state, action) => {
         state.error = action.payload;
+        state.status = "failed";
       })
 
       // incrementProductQuantity
+      .addCase(incrementProductQuantity.pending, (state, action) => {
+        state.error = action.payload;
+        state.status = "loading";
+      })
       .addCase(incrementProductQuantity.fulfilled, (state, action) => {
         state.cart = {
           cart_items: action.payload.cart_items,
@@ -93,6 +132,10 @@ const userSlice = createSlice({
       })
 
       // removeProuctFromCart
+      .addCase(removeProductFromCart.pending, (state, action) => {
+        state.error = action.payload;
+        state.status = "loading";
+      })
       .addCase(removeProductFromCart.fulfilled, (state, action) => {
         state.cart = {
           cart_items: action.payload.cart_items,
@@ -107,6 +150,10 @@ const userSlice = createSlice({
       })
 
       // createOrder
+      .addCase(createOrder.pending, (state, action) => {
+        state.error = action.payload;
+        state.status = "loading";
+      })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.cart = action.payload.cart;
         state.orders = action.payload.orders;
@@ -118,5 +165,6 @@ const userSlice = createSlice({
       });
   },
 });
+export const { setUserIds } = userSlice.actions;
 
 export default userSlice.reducer;
