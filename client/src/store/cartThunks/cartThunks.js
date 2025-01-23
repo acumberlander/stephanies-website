@@ -1,5 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import {
+  _addToCart,
+  _emptyCart,
+  _updateProductQuantity,
+  _removeProductFromCart,
+} from "../../api/mongoRequests";
 
 /**
  * Empties user's cart in the database as well as in redux state
@@ -9,19 +14,17 @@ export const emptyCart = createAsyncThunk(
   "user/emptyCart",
   async (uid, { rejectWithValue }) => {
     try {
-      // Updates mongoDB cart
-      await axios.put(`/api/users/${uid}/cart`, {
-        cart_items: [],
-        total_items: 0,
-        subtotal: 0,
-      });
-
-      // Updates redux user cart state
-      return {
+      const cart = {
         cart_items: [],
         total_items: 0,
         subtotal: 0,
       };
+
+      // Updates mongoDB
+      await _emptyCart(uid, cart);
+
+      // Updates redux user cart state
+      return;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -70,19 +73,19 @@ export const addToCart = createAsyncThunk(
         0
       );
 
-      // Update mongoDB cart
-      await axios.put(`/api/users/${uid}/cart`, {
-        cart_items: newCartItems,
-        total_items: newTotalItems,
-        subtotal: newSubtotal,
-      });
-
-      // Return the updated cart data
-      return {
+      const cart = {
         cart_items: newCartItems,
         total_items: newTotalItems,
         subtotal: newSubtotal,
       };
+
+      console.log("cart: ", cart);
+
+      // Update mongoDB cart
+      await _addToCart(user.uid, cart);
+
+      // Return the updated cart data
+      return cart;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -123,19 +126,17 @@ export const incrementProductQuantity = createAsyncThunk(
         0
       );
 
-      // Updates mongoDB cart
-      await axios.put(`/api/users/${user.uid}/cart`, {
-        cart_items: newCartItems,
-        total_items,
-        subtotal,
-      });
-
-      // Updates redux user cart state
-      return {
+      const cart = {
         cart_items: newCartItems,
         total_items,
         subtotal,
       };
+
+      // Updates mongoDB cart
+      await _updateProductQuantity(user.uid, cart);
+
+      // Updates redux user cart state
+      return cart;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -184,20 +185,17 @@ export const decrementProductQuantity = createAsyncThunk(
         (acc, item) => acc + item.price * item.quantity,
         0
       );
-
-      // Updates mongoDB cart
-      await axios.put(`/api/users/${user.uid}/cart`, {
-        cart_items: newCartItems,
-        total_items,
-        subtotal,
-      });
-
-      // Updates redux user cart state
-      return {
+      const cart = {
         cart_items: newCartItems,
         total_items,
         subtotal,
       };
+
+      // Updates mongoDB cart
+      await _updateProductQuantity(user.uid, cart);
+
+      // Updates redux user cart state
+      return cart;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -235,19 +233,17 @@ export const removeProductFromCart = createAsyncThunk(
         0
       );
 
-      // Updates mongoDB cart
-      await axios.put(`/api/users/${user.uid}/cart`, {
-        cart_items: newCartItems,
-        total_items,
-        subtotal,
-      });
-
-      // Updates redux user cart state
-      return {
+      const cart = {
         cart_items: newCartItems,
         total_items,
         subtotal,
       };
+
+      // Updates mongoDB cart
+      await _removeProductFromCart(user.uid, cart);
+
+      // Updates redux user cart state
+      return cart;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }

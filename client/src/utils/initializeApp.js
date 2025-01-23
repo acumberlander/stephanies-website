@@ -17,6 +17,8 @@ export const initializeApp = async (dispatch) => {
     // Attempt to fetch the user from MongoDB
     const user = await dispatch(fetchUserByUid(uid)).unwrap();
 
+    console.log("user: ", user);
+
     if (user && user.uid && user._id) {
       // User exists, set _id in Redux
       dispatch(setUserIds(user));

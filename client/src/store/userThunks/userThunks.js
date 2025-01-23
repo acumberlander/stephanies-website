@@ -1,6 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-// import { fetchUserByUid } from "../../api/userRequests";
-import axios from "axios";
+import {
+  _createOrder,
+  _createUser,
+  _fetchUserByUid,
+} from "../../api/mongoRequests";
 
 /**
  * @param userData
@@ -11,8 +14,8 @@ export const createUser = createAsyncThunk(
   "user/createUser",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/users", userData);
-      return response.data; // The newly created user document
+      const response = await _createUser(userData);
+      return response;
     } catch (err) {
       if (err.response && err.response.data) {
         return rejectWithValue(err.response.data);
@@ -26,8 +29,8 @@ export const fetchUserByUid = createAsyncThunk(
   "user/fetchUserByUid",
   async (uid, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/users/${uid}`);
-      return response.data;
+      const response = await _fetchUserByUid(uid);
+      return response;
     } catch (err) {
       if (err.response && err.response.status === 404) {
         return rejectWithValue({ error: "User not found" });
@@ -44,9 +47,9 @@ export const createOrder = createAsyncThunk(
   "user/createOrder",
   async (orderData, { getState, rejectWithValue }) => {
     const { user } = getState();
+    console.log("user", user);
     try {
-      // Updates orders in mongoDB
-      await axios.put(`/api/users/${user.uid}/orders`, { orderData });
+      await _createOrder(orderData, user.uid);
 
       // Create updated orders array
       const updatedOrders = user.orders
