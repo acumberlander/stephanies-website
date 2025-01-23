@@ -2,7 +2,7 @@ import React from "react";
 import { Fade, Typography, Input, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import HomeCardList from "../../components/HomeComponents/HomeCardList/HomeCardList";
-import NewCarousel from "../../components/HomeComponents/NewCarousel/NewCarousel";
+import MyCarousel from "../../components/HomeComponents/MyCarousel/MyCarousel";
 import "./Home.scss";
 
 const Home = () => {
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <div className="home-container">
       {/* <Carousel /> */}
-      <NewCarousel />
+      <MyCarousel />
       <Fade in={true} timeout={1000}>
         <Grid container spacing={8} className="options">
           <HomeCardList />
