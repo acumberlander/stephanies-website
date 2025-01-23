@@ -1,18 +1,18 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
-import "./NewCarousel.scss";
-import { carouselStylesObj } from "../Carousel/carouselStyles";
+import { carouselStylesObj } from "./carouselStyles";
 import { Typography } from "@mui/material";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import "./MyCarousel.scss";
 
 const {
   indicatorContainerProps,
   indicatorIconButtonProps,
   activeIndicatorIconButtonProps,
 } = carouselStylesObj;
-const homeLogo = require('../../../assets/logos/logo-white.png');
+const homeLogo = require("../../../assets/logos/logo-white.png");
 
-const NewCarousel = () => {
+const MyCarousel = () => {
   return (
     <>
       <div className="hero-overlay-container">
@@ -35,8 +35,8 @@ const NewCarousel = () => {
         <div className="image-div-3" />
         <div className="image-div-4" />
       </Carousel>
-      </>
+    </>
   );
 };
 
-export default NewCarousel;
+export default MyCarousel;

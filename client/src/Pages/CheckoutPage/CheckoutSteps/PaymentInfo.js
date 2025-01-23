@@ -5,11 +5,12 @@ export const PaymentInfo = ({ register, errors }) => {
     <div>
       <h2>Payment Info</h2>
       <div className="form-group">
-        <label htmlFor="cardNumber">Card Number</label>
+        <label htmlFor="cardNumber">Fake Card Number</label>
         <input
-          {...register("cardNumber", { required: true })}
+          {...register("cardNumber", { required: false })}
           id="cardNumber"
           type="text"
+          disabled={true}
           placeholder="xxxx xxxx xxxx xxxx"
         />
         {errors.cardNumber?.type === "required" && (
@@ -18,6 +19,21 @@ export const PaymentInfo = ({ register, errors }) => {
           </p>
         )}
       </div>
+      <div className="form-group">
+        <label htmlFor="cardName">Card Name</label>
+        <input
+          {...register("cardName", { required: false })}
+          id="cardName"
+          type="text"
+          placeholder="John Doe"
+        />
+        {errors.cardName?.type === "required" && (
+          <p style={{ color: "red" }} role="alert">
+            Card Name is required
+          </p>
+        )}
+      </div>
+
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="expMonth">Expiration Month</label>
@@ -61,7 +77,7 @@ export const PaymentInfo = ({ register, errors }) => {
       <div className="form-group">
         <label htmlFor="cvc">CVC</label>
         <input
-          {...register("cvv", { required: true })}
+          {...register("cvc", { required: true })}
           id="cvc"
           type="text"
           placeholder="123"

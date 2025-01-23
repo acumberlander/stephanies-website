@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CircularProgress, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import "./Product.scss";

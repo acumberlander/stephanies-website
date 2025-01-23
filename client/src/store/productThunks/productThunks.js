@@ -1,43 +1,28 @@
-// src/store/productSlice.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, doc, getDocs, getDoc } from "firebase/firestore/lite";
-import { db } from "../../firebaseConfig";
+import { _fetchAllProducts, _fetchProductById } from "../../api/mongoRequests";
 
 // Thunk to fetch all products
-export const getAllProducts = createAsyncThunk(
-  "products/getAllProducts",
+export const fetchAllProducts = createAsyncThunk(
+  "products/fetchAllProducts",
   async (_, { rejectWithValue }) => {
     try {
-      // TODO: replace firebase web sdk for the firebase admin adk.
-      // Want to abstract this logic to node backend.
-      const colRef = collection(db, "products")
-      const snapshot = await getDocs(colRef)
-
-      const products = []
-      snapshot.forEach((docSnap) => {
-        products.push({ id: docSnap.id, ...docSnap.data() })
-      });
-
-      return products
+      const response = await _fetchAllProducts();
+      return response;
     } catch (err) {
-      return rejectWithValue(err.message)
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
-)
+);
 
-// Thunk to fetch a single product by ID
-export const getProductById = createAsyncThunk(
-  "products/getProductById",
-  async (productId, { rejectWithValue }) => {
+// Thunk to fetch all products
+export const fetchProductById = createAsyncThunk(
+  "products/fetchProductById",
+  async ({ productId }, { rejectWithValue }) => {
     try {
-      const docRef = doc(db, "products", productId)
-      const docSnap = await getDoc(docRef)
-      if (!docSnap.exists()) {
-        throw new Error("Product not found")
-      }
-      return { id: docSnap.id, ...docSnap.data() }
+      const response = await _fetchProductById(productId);
+      return response;
     } catch (err) {
-      return rejectWithValue(err.message)
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
-)
+);

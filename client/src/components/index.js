@@ -1,10 +1,6 @@
 export { default as MyNavbar } from "./AppComponents/MyNavbar/MyNavbar";
 export { default as Footer } from "./AppComponents/Footer/Footer";
 export { default as CartItem } from "./CartComponents/CartItem/CartItem";
-export { default as AddressForm } from "./CheckoutComponents/AddressForm";
-export { default as CustomTextField } from "./CheckoutComponents/CustomTextField";
-export { default as Review } from "./CheckoutComponents/Review";
-export { default as Carousel } from "./HomeComponents/Carousel/Carousel";
 export { default as HomeCard } from "./HomeComponents/HomeCard/HomeCard";
 export { default as MyGallery } from "./HomeComponents/MyGallery/MyGallery";
 export { default as Product } from "./ProductComponents/Product/Product";

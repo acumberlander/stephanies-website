@@ -1,101 +1,73 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { signInAnonymouslyToFirebase, db } from "../../firebaseConfig";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore/lite";
+import {
+  _createOrder,
+  _createUser,
+  _fetchUserByUid,
+} from "../../api/mongoRequests";
 
-export const signInUser = createAsyncThunk(
-  "user/signInUser",
-  async (_, { rejectWithValue }) => {
+/**
+ * @param userData
+ * Creates a user object in redux as well as in mongodb.
+ * The _id property will have a value of null.
+ */
+export const createUser = createAsyncThunk(
+  "user/createUser",
+  async (userData, { rejectWithValue }) => {
     try {
-      // TODO: replace firebase web sdk for the firebase admin adk.
-      // Want to abstract this logic to node backend.
-      const { user } = await signInAnonymouslyToFirebase();
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-
-      if (!userSnap.exists()) {
-        await setDoc(userRef, {
-          cart: {
-            cart_items: [],
-            total_items: 0,
-            subtotal: 0,
-          },
-          orders: [],
-        });
-        return {
-          uid: user.uid,
-          cart: {
-            cart_items: [],
-            total_items: 0,
-            subtotal: 0,
-          },
-          orders: [],
-        };
-      } else {
-        const userData = userSnap.data();
-        const { orders, cart } = userData;
-        let { cart_items, total_items, subtotal } = cart;
-        return {
-          uid: user.uid,
-          cart: {
-            cart_items,
-            total_items,
-            subtotal,
-          },
-          orders,
-        };
-      }
+      const response = await _createUser(userData);
+      return response;
     } catch (err) {
+      if (err.response && err.response.data) {
+        return rejectWithValue(err.response.data);
+      }
       return rejectWithValue(err.message);
     }
   }
 );
 
+export const fetchUserByUid = createAsyncThunk(
+  "user/fetchUserByUid",
+  async (uid, { rejectWithValue }) => {
+    try {
+      const response = await _fetchUserByUid(uid);
+      return response;
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        return rejectWithValue({ error: "User not found" });
+      }
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
+/**
+ * @param orderData
+ */
 export const createOrder = createAsyncThunk(
   "user/createOrder",
-  async ({ uid, orderData }, { rejectWithValue }) => {
+  async (orderData, { getState, rejectWithValue }) => {
+    const { user } = getState();
+    console.log("user", user);
     try {
-      if (!uid) {
-        return rejectWithValue("User is not signed in");
-      }
-      // TODO: replace firebase web sdk for the firebase admin adk.
-      // Want to abstract this logic to node backend.
-      const userRef = doc(db, "users", uid);
-      const userSnap = await getDoc(userRef);
-      if (!userSnap.exists()) {
-        return rejectWithValue("User doc not found.");
-      }
+      await _createOrder(orderData, user.uid);
 
-      const userData = userSnap.data();
-      let { orders } = userData;
+      // Create updated orders array
+      const updatedOrders = user.orders
+        ? [...user.orders, orderData]
+        : [orderData];
 
-      // Add orderData to orders array
-      if (!orders) {
-        orders = [orderData];
-      } else {
-        orders.push(orderData);
-      }
-
-      // Write updated data back to Firestore
-      await updateDoc(userRef, {
-        cart: {
-          cart_items: [],
-          total_items: 0,
-          subtotal: 0,
-        },
-        orders,
-      });
-
-      // Return emptied cart data (for Redux)
+      // Return updated orders and cart data (for Redux)
       return {
         cart: {
           cart_items: [],
           total_items: 0,
           subtotal: 0,
         },
-        orders,
+        orders: updatedOrders,
       };
     } catch (err) {
-      return rejectWithValue(err.message);
+      // Extract and return error message
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );

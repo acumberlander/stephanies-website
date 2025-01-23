@@ -6,29 +6,55 @@ import {
   incrementProductQuantity,
   removeProductFromCart,
 } from "../cartThunks/cartThunks";
-import { createOrder, signInUser } from "../userThunks/userThunks";
+import {
+  createOrder,
+  createUser,
+  fetchUserByUid,
+} from "../userThunks/userThunks";
 import { userModel } from "../../Models/User";
 
 const userSlice = createSlice({
   name: "user",
   initialState: userModel,
-  reducers: {},
+  reducers: {
+    /**
+     * @param state
+     * @param action.payload
+     */
+    setUserIds(state, action) {
+      state._id = action.payload._id;
+      state.uid = action.payload.uid;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      // signInUser
-      .addCase(signInUser.pending, (state) => {
+
+      // createUser
+      .addCase(createUser.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
-      .addCase(signInUser.fulfilled, (state, action) => {
+      .addCase(createUser.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.uid = action.payload.uid;
-        state.cart = action.payload.cart;
-        state.orders = action.payload.orders;
+        state.user = action.payload.user;
+        Object.assign(state, action.payload);
       })
-      .addCase(signInUser.rejected, (state, action) => {
+      .addCase(createUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+      })
+
+      // fetchUser
+      .addCase(fetchUserByUid.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUserByUid.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        Object.assign(state, action.payload);
+      })
+      .addCase(fetchUserByUid.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload.error || action.payload;
       })
 
       // addToCart
@@ -37,13 +63,13 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
+        state.status = "succeeded";
         // Update state.cart with new cart data
         state.cart = {
           cart_items: action.payload.cart_items,
           total_items: action.payload.total_items,
           subtotal: action.payload.subtotal,
         };
-        state.status = "succeeded";
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.status = "failed";
@@ -51,72 +77,93 @@ const userSlice = createSlice({
       })
 
       // emptyCart
+      .addCase(emptyCart.pending, (state, action) => {
+        state.status = "loading";
+        state.error = action.payload;
+      })
       .addCase(emptyCart.fulfilled, (state, action) => {
-        // Update state.cart with emptied cart data
+        state.status = "succeeded";
         state.cart = {
           cart_items: action.payload.cart_items,
           total_items: action.payload.total_items,
           subtotal: action.payload.subtotal,
         };
-        state.status = "succeeded";
       })
       .addCase(emptyCart.rejected, (state, action) => {
-        state.error = action.payload;
         state.status = "failed";
+        state.error = action.payload;
       })
 
       // decrementProductQuantity
+      .addCase(decrementProductQuantity.pending, (state, action) => {
+        state.status = "loading";
+        state.error = action.payload;
+      })
       .addCase(decrementProductQuantity.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.cart = {
           cart_items: action.payload.cart_items,
           total_items: action.payload.total_items,
           subtotal: action.payload.subtotal,
         };
-        state.status = "succeeded";
       })
       .addCase(decrementProductQuantity.rejected, (state, action) => {
         state.error = action.payload;
+        state.status = "failed";
       })
 
       // incrementProductQuantity
+      .addCase(incrementProductQuantity.pending, (state, action) => {
+        state.status = "loading";
+        state.error = action.payload;
+      })
       .addCase(incrementProductQuantity.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.cart = {
           cart_items: action.payload.cart_items,
           total_items: action.payload.total_items,
           subtotal: action.payload.subtotal,
         };
-        state.status = "succeeded";
       })
       .addCase(incrementProductQuantity.rejected, (state, action) => {
-        state.error = action.payload;
         state.status = "failed";
+        state.error = action.payload;
       })
 
       // removeProuctFromCart
+      .addCase(removeProductFromCart.pending, (state, action) => {
+        state.status = "loading";
+        state.error = action.payload;
+      })
       .addCase(removeProductFromCart.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.cart = {
           cart_items: action.payload.cart_items,
           total_items: action.payload.total_items,
           subtotal: action.payload.subtotal,
         };
-        state.status = "succeeded";
       })
       .addCase(removeProductFromCart.rejected, (state, action) => {
-        state.error = action.payload;
         state.status = "failed";
+        state.error = action.payload;
       })
 
       // createOrder
+      .addCase(createOrder.pending, (state, action) => {
+        state.status = "loading";
+        state.error = action.payload;
+      })
       .addCase(createOrder.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.cart = action.payload.cart;
         state.orders = action.payload.orders;
-        state.status = "succeeded";
       })
       .addCase(createOrder.rejected, (state, action) => {
-        state.error = action.payload;
         state.status = "failed";
+        state.error = action.payload;
       });
   },
 });
+export const { setUserIds } = userSlice.actions;
 
 export default userSlice.reducer;
