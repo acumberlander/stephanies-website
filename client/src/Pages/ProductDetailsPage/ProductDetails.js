@@ -21,9 +21,6 @@ import productModel from "../../Models/Product";
 import "./ProductDetails.scss";
 
 const ProductDetails = () => {
-  const [size, setSize] = useState("Choose a size");
-  const [sizeOptions, setSizeOptions] = useState([]);
-  const [hasError, setHasError] = useState(false);
   const [product, setProduct] = useState(productModel);
   const [displayedImage, setDisplayedImage] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -32,26 +29,17 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
 
   let params = useParams();
-  // let sizeOptions = null;
-
 
   /**
    * Adds current product to the users cart. Updates the user state in redux
    */
   const handleAddToCart = () => {
     if (product.option_groups && product.option_groups[0]) {
-      if (size === "Choose a size") {
-        setHasError(true);
-        return;
-      }
-      dispatch(addToCart({uid, product, quantity}));
-      setHasError(false);
+      dispatch(addToCart({ uid, product, quantity }));
     } else {
-      dispatch(addToCart({uid, product, quantity}));
-      setHasError(false);
+      dispatch(addToCart({ uid, product, quantity }));
     }
     setQuantity(1);
-    setSize("Choose a size");
   };
 
   useEffect(() => {
@@ -67,20 +55,7 @@ const ProductDetails = () => {
     if (window.scrollY !== 0) {
       window.scrollTo(0, 0);
     }
-
-    if (product.option_groups && product.option_groups[0]) {
-      setSizeOptions([
-        <MenuItem value={"Choose a size"} disabled>
-          Choose a size
-        </MenuItem>,
-        ...product.option_groups[0].sizes.map((option, i) => (
-          <MenuItem key={i} value={option}>
-            {option.name}
-          </MenuItem>
-        )),
-      ]);
-    }
-  }, [params, sizeOptions, allProducts]);
+  }, [params, allProducts]);
 
   return (
     <Container className="container">
@@ -111,14 +86,13 @@ const ProductDetails = () => {
 
             {/* Images List */}
             <div style={{ display: "flex", margin: "10px 0" }}>
-              {product.images.map((imageObj) => 
+              {product.images.map((imageObj, i) => (
                 <div
-                  key={product.id}
+                  key={imageObj + i}
                   onClick={(e) => setDisplayedImage(e.target.src)}
                   className="thumbnail-container"
                 >
                   <img
-                    key={product.id}
                     style={{
                       height: "50px",
                       width: "40px",
@@ -130,7 +104,7 @@ const ProductDetails = () => {
                     alt={product.name}
                   />
                 </div>
-              )}
+              ))}
             </div>
 
             <Typography className="product-details-text">
@@ -140,27 +114,7 @@ const ProductDetails = () => {
           </div>
           {/* Right Section */}
           <div className="right-section">
-            <Typography className="price-header">
-              {product.price}
-            </Typography>
-            
-            {sizeOptions.length > 0 && (
-              <>
-                <Typography className="size-header">Size</Typography>
-                <FormControl required error={hasError}>
-                  <Select
-                    className="size-selection"
-                    onChange={(e) => setSize(e.target.value)}
-                    value={size}
-                  >
-                    {sizeOptions}
-                  </Select>
-                  {hasError && (
-                    <FormHelperText>Please select a size</FormHelperText>
-                  )}
-                </FormControl>
-              </>
-            )}
+            <Typography className="price-header">{product.price}</Typography>
 
             <Typography className="quantity-header">Quantity</Typography>
 

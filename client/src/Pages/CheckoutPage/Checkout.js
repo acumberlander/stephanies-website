@@ -12,7 +12,6 @@ import "./Checkout.scss";
 
 function CheckoutPage() {
   const cartItems = useSelector((state) => state.user.cart.cart_items);
-  const { uid } = useSelector((state) => state.user);
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -81,7 +80,7 @@ function CheckoutPage() {
         shippingFee: SHIPPING_FEE,
         total: total.toFixed(2),
       };
-      dispatch(createOrder({ uid, orderData }));
+      dispatch(createOrder(orderData));
       navigate("/thank-you");
       alert("Order placed successfully!");
     } catch (error) {

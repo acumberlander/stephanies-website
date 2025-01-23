@@ -22,6 +22,9 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+  }
+
+  #cart-items-container {
     border-bottom: 1px solid #cc34ab;
   }
 
@@ -114,7 +117,7 @@
       font-size: 1rem;
 
       &:hover {
-        background-color: #b32093
+        background-color: #b32093;
       }
     }
   }

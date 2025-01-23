@@ -8,15 +8,16 @@ import CartItem from "../../components/CartComponents/CartItem/CartItem";
 import "./Cart.scss";
 
 const Cart = () => {
+  const { uid } = useSelector((state) => state.user);
+  const { subtotal, cart_items } = useSelector((state) => state.user.cart);
   const dispatch = useDispatch();
-  const { uid, cart: { subtotal, cart_items } } = useSelector((state) => state.user);
 
   if (window.scrollY !== 0) {
     window.scrollTo(0, 0);
   }
 
   const handleEmptyCart = () => {
-    dispatch(emptyCart({ uid }));
+    dispatch(emptyCart(uid));
   };
 
   const EmptyCart = () => (
@@ -40,8 +41,8 @@ const Cart = () => {
       <Divider className="divider" />
       <div>
         {cart_items.map((product) => (
-					<CartItem key={product.id} product={product} />
-				))}
+          <CartItem key={product.id} product={product} />
+        ))}
       </div>
       <div className="empty-button-container">
         <Button
