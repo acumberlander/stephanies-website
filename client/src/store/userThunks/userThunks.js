@@ -47,7 +47,6 @@ export const createOrder = createAsyncThunk(
   "user/createOrder",
   async (orderData, { getState, rejectWithValue }) => {
     const { user } = getState();
-    console.log("user", user);
     try {
       await _createOrder(orderData, user.uid);
 
