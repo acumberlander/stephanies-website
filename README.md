@@ -6,6 +6,8 @@ This is an e-commerce I built for a client who runs her own clothing line called
 
 [View Demo](https://stephanies-website-frontend.onrender.com/)
 
+**Note**: You can run the app locally, but you won't get full functionality because it would require that I expose my firebase api key. I'm using firebase for authentication and I currently have the product pictures loading up from the storage there as well.
+
 ## Instructions to run locally
 
 - Clone the project down
