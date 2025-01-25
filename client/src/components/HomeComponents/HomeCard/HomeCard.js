@@ -1,6 +1,6 @@
-import React from "react";
-import Grid from "@mui/material/Grid2";
 import { Link } from "react-router-dom";
+import Grid from "@mui/material/Grid2";
+import { capitalizeFirstLetter } from "../../../utils/helpers/helpers";
 import "./HomeCard.scss";
 
 const HomeCard = ({
@@ -12,7 +12,7 @@ const HomeCard = ({
   bottomText,
   disabled = false,
 }) => {
-	
+
   const overlayStyle = disabled ? "home-card-disabled" : "overlay";
   return (
     <Grid
@@ -27,8 +27,8 @@ const HomeCard = ({
     >
 				<Link className="option-image-container" to={`/shop/${page}`}>
 					<div className={overlayStyle} />
-					{category ? (
-						<h1 className="option-header">{category}</h1>
+					{capitalizeFirstLetter(page) ? (
+						<h1 className="option-header">{capitalizeFirstLetter(page)}</h1>
 					) : (
 						<div style={{ position: "absolute", textAlign: "center" }}>
 							<h1 style={{ position: "relative" }} className="option-header">

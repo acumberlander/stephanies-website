@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid2";
 import { useParams } from "react-router-dom";
-import { Container, Typography, Fade } from "@mui/material";
+import { CircularProgress, Container, Typography, Fade } from "@mui/material";
 import { useSelector } from "react-redux";
 import Product from "../../components/ProductComponents/Product/Product.js";
 import "./Shop.scss";
@@ -58,8 +58,12 @@ export default function Shop() {
           </Typography>
         </Container>
       </div>
-
-      <Grid className="card-grid" container spacing={4}>
+      {isLoading ? (
+        <div className="page-loading">
+          <CircularProgress size={80} />
+        </div>
+      ) :
+      (<Grid className="card-grid" container spacing={4}>
         {products?.map((product) => (
           <Fade
             key={product.id}
@@ -79,7 +83,7 @@ export default function Shop() {
             </Grid>
           </Fade>
         ))}
-      </Grid>
+      </Grid>)}
     </div>
   );
 }

@@ -2,7 +2,6 @@ import { Typography } from "@mui/material";
 import "./MyGallery.scss";
 
 const MyGallery = () => {
-  // const classes = useStyles();
 
   return (
     <div className="gallery-container">

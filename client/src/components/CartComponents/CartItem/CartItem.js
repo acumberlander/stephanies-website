@@ -1,17 +1,15 @@
-import React from "react";
-import { Typography, Button, Container } from "@mui/material";
+import { Typography, Button, Container,  } from "@mui/material";
 import {
   incrementProductQuantity,
   decrementProductQuantity,
   removeProductFromCart,
 } from "../../../store/cartThunks/cartThunks";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import "./CartItem.scss";
 
 const CartItem = ({ product }) => {
   const dispatch = useDispatch();
-  const { uid } = useSelector((state) => state.user);
   const handleRemoveProduct = () => {
     dispatch(removeProductFromCart(product));
   };
@@ -29,9 +27,6 @@ const CartItem = ({ product }) => {
             </Typography>
           </Link>
           {/* TODO: Implement feature for product selected size*/}
-          {/* {product.selected_size && (
-						<Typography>{`Size: ${product.selected_size}`}</Typography>
-					)} */}
           <div className="buttons">
             <Button
               disabled={product.quantity < 2}

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Typography, Button, Divider } from "@mui/material";
 import { emptyCart } from "../../store/cartThunks/cartThunks";

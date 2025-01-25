@@ -23,26 +23,14 @@ export const initializeApp = async (dispatch) => {
     }
   } catch (error) {
     if (error.error === "User not found") {
-      // User doesn't exist, create a new one
-      const userData = {
-        ...userModel,
-        uid,
-      };
-
-      try {
-        const newMongoUser = await dispatch(createUser(userData)).unwrap();
-        if (newMongoUser && newMongoUser._id && newMongoUser.uid) {
-          dispatch(setUserIds(newMongoUser));
-        }
-      } catch (createUserError) {
-        console.error("Error creating user:", createUserError);
+      const newMongoUser = await dispatch(createUser({...userModel, uid})).unwrap();
+      if (newMongoUser && newMongoUser._id) {
+        dispatch(setUserIds(newMongoUser));
       }
     } else {
-      // Handle other errors
       console.error("Error fetching user:", error);
     }
   } finally {
-    // Optionally, fetch all products regardless of user status
     dispatch(fetchAllProducts());
   }
 };

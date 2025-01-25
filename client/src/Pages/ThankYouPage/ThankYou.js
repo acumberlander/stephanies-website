@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import "./ThankYou.scss";
 
@@ -7,7 +7,7 @@ const ThankYou = () => {
   const orders = useSelector((state) => state.user.orders);
   const lastOrder = useMemo(() => {
     return orders[orders.length - 1];
-  });
+  }, [orders]);
 
   // If there's no order, show an error or placeholder
   if (!lastOrder) {

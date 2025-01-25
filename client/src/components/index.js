@@ -13,3 +13,4 @@ export { default as Checkout } from "../Pages/CheckoutPage/Checkout";
 export { default as Home } from "../Pages/HomePage/Home";
 export { default as ProductDetails } from "../Pages/ProductDetailsPage/ProductDetails";
 export { default as Shop } from "../Pages/ShopPage/Shop";
+export { default as ErrorPage } from "../Pages/ErrorPage/ErrorPage";
