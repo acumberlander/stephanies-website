@@ -3,12 +3,12 @@ const productModel = {
   category: "",
   price: 0,
   id: "",
-  images: [""],
-	option_groups: {
-		sizes: [""],
-	},
+  images: [],
+  option_groups: {
+    sizes: [""],
+  },
   selected_size: "",
-  quantity: 1
+  quantity: 1,
 };
 
 export default productModel;
