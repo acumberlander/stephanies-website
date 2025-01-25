@@ -48,7 +48,7 @@ const App = () => {
           draggable
           pauseOnHover
           theme="light"
-          style={{ marginTop: "40px" }}
+          style={{ marginTop: "60px" }}
           stacked
         />
       )}

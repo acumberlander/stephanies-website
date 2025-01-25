@@ -1,4 +1,4 @@
-import { Typography, Button, Container,  } from "@mui/material";
+import { Typography, Button, Container } from "@mui/material";
 import {
   incrementProductQuantity,
   decrementProductQuantity,
@@ -49,7 +49,9 @@ const CartItem = ({ product }) => {
       </div>
       <div className="price-and-remove">
         {/* TODO need to apply logic to account for dynamic change amount (money) */}
-        <Typography>{`$${product.price * product.quantity}`}</Typography>
+        <Typography>{`$${(product.price * product.quantity).toFixed(
+          2
+        )}`}</Typography>
         <Button type="button" color="secondary" onClick={handleRemoveProduct}>
           X
         </Button>
