@@ -251,6 +251,9 @@ export const removeProductFromCart = createAsyncThunk(
       // Updates mongoDB cart
       await _removeProductFromCart(user.uid, cart);
 
+      // Notification
+      toast("You removed a product from you cart!");
+
       // Updates redux user cart state
       return cart;
     } catch (err) {
