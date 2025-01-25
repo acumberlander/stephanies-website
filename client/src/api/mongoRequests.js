@@ -1,7 +1,7 @@
 import axios from "axios";
 import { userModel } from "../Models/User";
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
+const baseUrl = "https://stephanies-website-backend.onrender.com";
 
 /********************************************** User Requests ***********************************************/
 

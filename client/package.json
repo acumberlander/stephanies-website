@@ -11,6 +11,7 @@
     "@mui/styles": "^6.4.0",
     "@redux-devtools/extension": "^3.3.0",
     "@reduxjs/toolkit": "^2.5.0",
+    "@tanstack/react-query": "^5.64.2",
     "axios": "^1.7.9",
     "crypto": "^1.0.1",
     "crypto-browserify": "^3.12.1",
@@ -24,8 +25,9 @@
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "react": "18.3.1",
-    "react-dom": "18.3.1",
     "react-app-rewired": "^2.2.1",
+    "react-dom": "18.3.1",
+    "react-error-boundary": "^5.0.0",
     "react-hook-form": "^7.54.2",
     "react-material-ui-carousel": "^3.4.2",
     "react-multi-carousel": "^2.8.5",
@@ -38,8 +40,7 @@
     "stream-browserify": "^3.0.0",
     "stripe": "^17.5.0",
     "uuid": "^11.0.5",
-    "vm-browserify": "^1.1.2",
-    "@tanstack/react-query": "^5.64.2"
+    "vm-browserify": "^1.1.2"
   },
   "browser": {
     "crypto": false
