@@ -38,8 +38,8 @@ const ThankYou = () => {
         {items.map((item) => (
           <li key={item.id} style={{ marginBottom: "0.5rem" }}>
             {item.name} <br />
-            Quantity: {item.quantity} <br />
-            Price: ${item.price} each
+            Quantity: {item.quantity.toFixed(2)} <br />
+            Price: ${item.price.toFixed(2)} each
           </li>
         ))}
       </ul>
