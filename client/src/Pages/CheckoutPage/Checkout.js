@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { createOrder } from "../../store/userThunks/userThunks";
@@ -20,7 +20,6 @@ function CheckoutPage() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm({ defaultValues });
 
   // TODO: Integrate api that determines the sales tax based the zip code

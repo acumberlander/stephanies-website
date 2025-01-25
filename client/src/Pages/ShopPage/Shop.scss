@@ -1,5 +1,5 @@
  .shop-container {
-  height: auto;
+  margin-bottom: 500px;
  }
 
  .header {
@@ -43,4 +43,10 @@
  .footer {
   background-color: whitesmoke;
   padding: 15px;
+ }
+
+ .page-loading {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
  }

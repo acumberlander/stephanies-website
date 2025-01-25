@@ -1,4 +1,3 @@
-import React from 'react';
 import steph from '../../assets/tutu-1.jpeg';
 import { Typography } from '@mui/material';
 import { Link } from 'react-router-dom';

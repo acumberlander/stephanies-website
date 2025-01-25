@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeApp } from "./utils/initializeApp";
@@ -11,6 +11,7 @@ import {
   Home,
   Shop,
   ProductDetails,
+  ErrorPage
 } from "./components";
 import ThankYou from "./Pages/ThankYouPage/ThankYou";
 import "./App.scss";
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/thank-you" element={<ThankYou />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />
     </Router>

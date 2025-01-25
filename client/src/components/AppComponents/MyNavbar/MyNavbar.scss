@@ -34,11 +34,17 @@
   margin-left: 20px;
 }
 
+.cart-and-menu-container {
+  display: flex;  
+  justify-content: space-between;
+  width: 100%;
+  max-width: 80px;
+}
+
 .cart-button {
   font-family: 'Philospher', 'sans-serif' !important;
   font-weight: 700;
   size: 18px;
-  margin-right: 10px;
 }
 
 .toolbar {

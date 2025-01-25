@@ -1,4 +1,3 @@
-import React from 'react';
 import {
 	Toolbar,
 	Badge,
@@ -37,7 +36,7 @@ const MobileView = ({
 	return (
 		<Toolbar className="toolbar">
 			{stephaniesLogo}
-			<div>
+			<div className="cart-and-menu-container">
 				<IconButton
 					className="cart-button"
 					component={RouterLink}
