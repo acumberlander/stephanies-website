@@ -6,11 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { ShippingInfo } from "./CheckoutSteps/ShippingInfo";
 import { PaymentInfo } from "./CheckoutSteps/PaymentInfo";
 import { OrderReview } from "./CheckoutSteps/OrderReview";
+import { toast } from "react-toastify";
 import { Button } from "@mui/material";
 import { defaultValues } from "./formValues";
 import "./Checkout.scss";
 
-function CheckoutPage() {
+const CheckoutPage = ({ isMobile }) => {
   const cartItems = useSelector((state) => state.user.cart.cart_items);
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
@@ -81,10 +82,18 @@ function CheckoutPage() {
       };
       dispatch(createOrder(orderData));
       navigate("/thank-you");
-      alert("Order placed successfully!");
+      if (!isMobile) {
+        toast("Order placed successfully!");
+      } else {
+        alert("Order placed successfully!");
+      }
     } catch (error) {
       console.error("Error placing order:", error);
-      alert("There was an error processing your order.");
+      if (!isMobile) {
+        toast("There was an error processing your order.");
+      } else {
+        alert("There was an error processing your order.");
+      }
     }
   };
 
@@ -122,6 +131,6 @@ function CheckoutPage() {
       </form>
     </div>
   );
-}
+};
 
 export default CheckoutPage;

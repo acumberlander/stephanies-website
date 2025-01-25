@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import {
   _addToCart,
   _emptyCart,
@@ -23,8 +24,11 @@ export const emptyCart = createAsyncThunk(
       // Updates mongoDB
       await _emptyCart(uid, cart);
 
+      // Notification
+      toast("Your cart was emptied!");
+
       // Updates redux user cart state
-      return;
+      return cart;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -81,6 +85,13 @@ export const addToCart = createAsyncThunk(
 
       // Update mongoDB cart
       await _addToCart(user.uid, cart);
+
+      // Notification
+      if (quantity === 1) {
+        toast("Your item has been added to the cart!");
+      } else {
+        toast("Your items have been added to the cart!");
+      }
 
       // Return the updated cart data
       return cart;
@@ -239,6 +250,9 @@ export const removeProductFromCart = createAsyncThunk(
 
       // Updates mongoDB cart
       await _removeProductFromCart(user.uid, cart);
+
+      // Notification
+      toast("You removed a product from you cart!");
 
       // Updates redux user cart state
       return cart;
