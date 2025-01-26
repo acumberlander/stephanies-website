@@ -25,9 +25,9 @@ mongoose
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 
-// Catch-all for undefined routes (optional but recommended)
-app.use((req, res) => {
-  res.status(404).json({ error: "Endpoint not found" });
+// Catch-all for undefined routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 // Start server

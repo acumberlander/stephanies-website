@@ -40,8 +40,9 @@
   }
 }
 
-.disabled-card-link {
-  // cursor: ;
+#manifest-card {
+  pointer-events: none;
+  cursor: default;
 }
 
 .option-header {

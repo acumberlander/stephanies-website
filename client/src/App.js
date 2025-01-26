@@ -51,6 +51,7 @@ const App = () => {
           style={{
             marginTop: "60px",
             maxHeight: "40px",
+            zIndex: "1",
           }}
           stacked
         />

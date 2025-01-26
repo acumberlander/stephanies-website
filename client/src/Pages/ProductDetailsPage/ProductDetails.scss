@@ -7,6 +7,9 @@
   display: flex;
   justify-content: center;
   padding-top: 70px;
+  @media (max-width: 760px) {
+    padding-top: 0;
+  }
 }
 
 .product-and-details {
@@ -25,6 +28,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  h5 {
+    color: #cc34ab;
+    font-family: "Philosopher", "sans-serif";
+    margin-bottom: 20px;
+  }
 }
 
 .product-details-name {
@@ -60,6 +68,11 @@
 .product-details-text {
   max-width: 450px;
   font-family: "Philosopher", "sans-serif";
+  margin-bottom: 50px !important;
+  @media (max-width: 760px) {
+    padding: 0;
+    margin-bottom: 0;
+  }
 }
 
 .right-section {
@@ -71,6 +84,7 @@
   padding: 0 30px;
   @media (max-width: 760px) {
     padding: 0;
+    margin-bottom: 50px;
   }
 }
 

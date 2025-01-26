@@ -6,21 +6,20 @@ import steph2 from "../../../assets/denim/denim-one-shot.jpg";
 import tribalPic from "../../../assets/tribal-pic.png";
 import HomeCard from "../../../components/HomeComponents/HomeCard/HomeCard";
 
-
 const HomeCardList = () => {
   return (
     <>
       <HomeCard
         page="accessories"
         image={accessoryPic}
-        // category="Accessories"
+        category="Accessories"
       />
       <HomeCard page="glassware" image={glasswarePic} category="Glassware" />
       <HomeCard
         style={{ objectPosition: "30%" }}
         page="tees"
         image={teePic}
-        // category="Tees"
+        category="Tees"
       />
       <HomeCard
         page="adams-apple-ascots"
