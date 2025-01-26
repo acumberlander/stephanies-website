@@ -64,7 +64,7 @@ const App = () => {
         <Route path="/checkout" element={<Checkout isMobile={isMobile} />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/thank-you" element={<ThankYou />} />
-        {/* <Route path="*" element={<ErrorPage />} /> */}
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />
     </Router>
