@@ -1,26 +1,24 @@
-import { useState, useEffect } from "react";
-import { AppBar, Toolbar, Button, Badge, IconButton } from "@mui/material";
+import { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Badge,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { ShoppingCart } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import MobileView from "./Views/MobileView";
 import { Link as RouterLink } from "react-router-dom";
 import myLogo from "../../../assets/logos/logo-white.png";
 import "./MyNavbar.scss";
+import { useIsMobile } from "../../../hooks/hooks";
 
-const MyNavbar = ({ isMobile }) => {
+const MyNavbar = ({ openModal }) => {
   const totalItems = useSelector((state) => state.user.cart.total_items) || 0;
-  // const [mobileView, setMobileView] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  useEffect(() => {
-    // const setResponsiveness = () => {
-    //   return window.innerWidth < 900
-    //     ? setMobileView(true)
-    //     : setMobileView(false);
-    // };
-    // setResponsiveness();
-    // window.addEventListener("resize", () => setResponsiveness());
-  }, [totalItems]);
+  const { isMobile } = useIsMobile(false);
 
   const stephaniesLogo = (
     <RouterLink className="logo-link" to="/">
@@ -84,6 +82,9 @@ const MyNavbar = ({ isMobile }) => {
                   <ShoppingCart className="cart-icon" />
                 </Badge>
               </IconButton>
+              <Button id="login-button" onClick={openModal}>
+                Login
+              </Button>
             </span>
           </Toolbar>
         )}

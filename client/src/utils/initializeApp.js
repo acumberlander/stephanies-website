@@ -23,7 +23,9 @@ export const initializeApp = async (dispatch) => {
     }
   } catch (error) {
     if (error.error === "User not found") {
-      const newMongoUser = await dispatch(createUser({...userModel, uid})).unwrap();
+      const newMongoUser = await dispatch(
+        createUser({ ...userModel, uid })
+      ).unwrap();
       if (newMongoUser && newMongoUser._id) {
         dispatch(setUserIds(newMongoUser));
       }

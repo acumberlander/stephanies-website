@@ -1,4 +1,5 @@
 import { months, years } from "../../../constants/constants";
+import { Input } from "@mui/material";
 
 export const PaymentInfo = ({ register, errors }) => {
   return (
@@ -6,7 +7,7 @@ export const PaymentInfo = ({ register, errors }) => {
       <h2>Payment Info</h2>
       <div className="form-group">
         <label htmlFor="cardNumber">Fake Card Number</label>
-        <input
+        <Input
           {...register("cardNumber", { required: false })}
           id="cardNumber"
           type="text"
@@ -21,7 +22,7 @@ export const PaymentInfo = ({ register, errors }) => {
       </div>
       <div className="form-group">
         <label htmlFor="cardName">Card Name</label>
-        <input
+        <Input
           {...register("cardName", { required: false })}
           id="cardName"
           type="text"
@@ -76,7 +77,7 @@ export const PaymentInfo = ({ register, errors }) => {
       </div>
       <div className="form-group">
         <label htmlFor="cvc">CVC</label>
-        <input
+        <Input
           {...register("cvc", { required: true })}
           id="cvc"
           type="text"

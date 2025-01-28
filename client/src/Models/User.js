@@ -1,6 +1,7 @@
 export const userModel = {
   _id: null,
   uid: null,
+  oldUid: null,
   isGuest: true,
   cart: {
     cart_items: [],

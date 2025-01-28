@@ -9,10 +9,12 @@ import { OrderReview } from "./CheckoutSteps/OrderReview";
 import { toast } from "react-toastify";
 import { Button } from "@mui/material";
 import { defaultValues } from "./formValues";
+import { useIsMobile } from "../../hooks/hooks";
 import "./Checkout.scss";
 
-const CheckoutPage = ({ isMobile }) => {
+const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.user.cart.cart_items);
+  const { isMobile } = useIsMobile(false);
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();

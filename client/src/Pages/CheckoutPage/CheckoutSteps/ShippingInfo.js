@@ -1,10 +1,12 @@
+import { Input } from "@mui/material";
+
 export const ShippingInfo = ({ register, errors }) => {
   return (
     <div className="form-container">
       <h2>CONTACT INFORMATION</h2>
       <div className="form-group">
         <label htmlFor="email">Email</label>
-        <input
+        <Input
           {...register("email", { required: true })}
           id="email"
           type="text"
@@ -19,7 +21,7 @@ export const ShippingInfo = ({ register, errors }) => {
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="firstName">First Name</label>
-          <input
+          <Input
             {...register("firstName", { required: true })}
             id="firstName"
             type="text"
@@ -33,7 +35,7 @@ export const ShippingInfo = ({ register, errors }) => {
         </div>
         <div className="form-group">
           <label htmlFor="lastName">Last Name</label>
-          <input
+          <Input
             {...register("lastName", { required: true })}
             id="lastName"
             type="text"
@@ -49,7 +51,7 @@ export const ShippingInfo = ({ register, errors }) => {
 
       <div className="form-group">
         <label htmlFor="addressLine1">Address</label>
-        <input
+        <Input
           {...register("addressLine1", { required: true })}
           id="addressLine1"
           type="text"
@@ -64,7 +66,7 @@ export const ShippingInfo = ({ register, errors }) => {
 
       <div className="form-group">
         <label htmlFor="addressLine2">Address</label>
-        <input
+        <Input
           {...register("addressLine2", { required: false })}
           id="addressLine2"
           type="text"
@@ -74,7 +76,7 @@ export const ShippingInfo = ({ register, errors }) => {
 
       <div className="form-group">
         <label htmlFor="city">City</label>
-        <input
+        <Input
           {...register("city", { required: true })}
           id="city"
           type="text"
@@ -90,7 +92,7 @@ export const ShippingInfo = ({ register, errors }) => {
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="state">State</label>
-          <input
+          <Input
             {...register("state", { required: true })}
             id="state"
             type="text"
@@ -104,7 +106,7 @@ export const ShippingInfo = ({ register, errors }) => {
         </div>
         <div className="form-group">
           <label htmlFor="zip">ZIP Code</label>
-          <input
+          <Input
             {...register("zip", { required: true })}
             id="zip"
             type="text"

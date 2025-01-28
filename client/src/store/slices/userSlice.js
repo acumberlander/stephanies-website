@@ -10,6 +10,7 @@ import {
   createOrder,
   createUser,
   fetchUserByUid,
+  convertToGoogleAuth,
 } from "../userThunks/userThunks";
 import { userModel } from "../../Models/User";
 
@@ -24,6 +25,7 @@ const userSlice = createSlice({
     setUserIds(state, action) {
       state._id = action.payload._id;
       state.uid = action.payload.uid;
+      state.oldUid = action.payload.oldUid || null;
     },
   },
   extraReducers: (builder) => {
@@ -40,6 +42,21 @@ const userSlice = createSlice({
         Object.assign(state, action.payload);
       })
       .addCase(createUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+
+      // convertToGoogleAuth
+      .addCase(convertToGoogleAuth.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(convertToGoogleAuth.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.user = action.payload.user;
+        Object.assign(state, action.payload);
+      })
+      .addCase(convertToGoogleAuth.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })
