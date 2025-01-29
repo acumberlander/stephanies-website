@@ -1,5 +1,6 @@
 export { default as MyNavbar } from "./AppComponents/MyNavbar/MyNavbar";
 export { default as Footer } from "./AppComponents/Footer/Footer";
+export { default as AuthModal } from "./AppComponents/AuthModal/AuthModal";
 export { default as CartItem } from "./CartComponents/CartItem/CartItem";
 export { default as HomeCard } from "./HomeComponents/HomeCard/HomeCard";
 export { default as MyGallery } from "./HomeComponents/MyGallery/MyGallery";
@@ -14,3 +15,4 @@ export { default as Home } from "../Pages/HomePage/Home";
 export { default as ProductDetails } from "../Pages/ProductDetailsPage/ProductDetails";
 export { default as Shop } from "../Pages/ShopPage/Shop";
 export { default as ErrorPage } from "../Pages/ErrorPage/ErrorPage";
+export { default as ThankYou } from "../Pages/ThankYouPage/ThankYou";

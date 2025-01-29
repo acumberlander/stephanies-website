@@ -3,7 +3,18 @@ import {
   _createOrder,
   _createUser,
   _fetchUserByUid,
+  _updateUser,
 } from "../../api/mongoRequests";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  EmailAuthProvider,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
+import { userModel } from "../../Models/User";
+import { setAuth } from "../slices/authSlice";
+import { userTypes } from "../../constants/constants";
 
 /**
  * @param userData
@@ -67,6 +78,82 @@ export const createOrder = createAsyncThunk(
     } catch (err) {
       // Extract and return error message
       return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
+/**
+ * Thunk that authenticates the user with Google
+ */
+export const signOutWithGoogle = createAsyncThunk(
+  "user/signOutWithGoogle",
+  async (_, { getState, rejectWithValue, dispatch }) => {
+    try {
+      // Sign out with google
+      const auth = getAuth();
+      await signOut(auth);
+
+      // return a clear user
+      return { ...userModel };
+    } catch (error) {
+      // Handle provider-already-linked errors and others
+      if (error.message.includes("auth/provider-already-linked")) {
+        console.warn("Provider is already linked");
+        return;
+      }
+
+      // Log errors and reject with proper message
+      console.error("Error signing in with Google: ", error);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+/**
+ * Thunk that authenticates the user with Google
+ */
+export const signInWithGoogle = createAsyncThunk(
+  "user/signInWithGoogle",
+  async (_, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+
+      const result = await signInWithPopup(auth, provider);
+      const googleUser = result.user;
+
+      const { user } = getState(); // Ensure state.user exists
+      if (!user) throw new Error("User state is undefined");
+
+      const firstName = googleUser.displayName.split(" ")[0];
+      const lastName = googleUser.displayName.split(" ")[1];
+
+      const updatedUser = {
+        ...user,
+        oldUid: user.uid,
+        type: userTypes?.google || "google", // Ensure userTypes.google is defined
+        uid: googleUser.uid,
+        firstName,
+        lastName,
+        email: googleUser.email,
+      };
+
+      const userExists = await _fetchUserByUid(user.uid);
+
+      if (userExists) {
+        await _updateUser(user.uid, updatedUser); // Ensure async function is awaited
+      }
+      dispatch(setAuth(true)); // Set isAuthenticated directly as a boolean
+
+      return updatedUser;
+    } catch (error) {
+      if (error.message.includes("auth/provider-already-linked")) {
+        console.warn("Provider is already linked");
+        return rejectWithValue("Provider is already linked.");
+      }
+
+      console.error("Error signing in with Google: ", error);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );

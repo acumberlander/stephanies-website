@@ -10,6 +10,8 @@ import {
   createOrder,
   createUser,
   fetchUserByUid,
+  signInWithGoogle,
+  signOutWithGoogle,
 } from "../userThunks/userThunks";
 import { userModel } from "../../Models/User";
 
@@ -40,6 +42,35 @@ const userSlice = createSlice({
         Object.assign(state, action.payload);
       })
       .addCase(createUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      // signInWithGoogle
+      .addCase(signInWithGoogle.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(signInWithGoogle.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.user = action.payload.user;
+        Object.assign(state, action.payload);
+      })
+      .addCase(signInWithGoogle.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+
+      // signInWithGoogle
+      .addCase(signOutWithGoogle.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(signOutWithGoogle.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.user = action.payload.user;
+        Object.assign(state, action.payload);
+      })
+      .addCase(signOutWithGoogle.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })

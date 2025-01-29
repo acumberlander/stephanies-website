@@ -4,7 +4,7 @@ const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
   category: { type: String, required: true },
   price: { type: Number, required: true },
-  id: { type: String, required: true }, // Or you can let Mongo generate _id
+  id: { type: String, required: true },
   images: [{ type: String }],
   option_groups: {
     sizes: [{ type: String }],

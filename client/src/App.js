@@ -3,9 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeApp } from "./utils/initializeApp";
 import { ToastContainer } from "react-toastify";
+import { useIsMobile, useModal } from "./hooks/hooks";
 import {
   MyNavbar,
   Footer,
+  AuthModal,
   About,
   Cart,
   Checkout,
@@ -13,29 +15,27 @@ import {
   Shop,
   ProductDetails,
   ErrorPage,
+  ThankYou,
 } from "./components";
-import ThankYou from "./Pages/ThankYouPage/ThankYou";
 import "./App.scss";
+import AdminPortal from "./Pages/AdminPortal/AdminPortal";
 
 const App = () => {
-  const dispatch = useDispatch();
-  const [isMobile, setIsMobile] = useState(false);
+  const { isOpen, openModal, closeModal } = useModal();
   const { uid } = useSelector((state) => state.user);
+  const { isMobile } = useIsMobile();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!uid) {
       initializeApp(dispatch);
     }
-    const setResponsiveness = () => {
-      return window.innerWidth < 900 ? setIsMobile(true) : setIsMobile(false);
-    };
-    setResponsiveness();
-    window.addEventListener("resize", () => setResponsiveness());
   }, [uid, dispatch]);
 
   return (
     <Router>
-      <MyNavbar isMobile={isMobile} />
+      <MyNavbar openModal={openModal} />
+      <AuthModal isOpen={isOpen} closeModal={closeModal} />
       {isMobile ? null : (
         <ToastContainer
           position="top-right"
@@ -61,9 +61,10 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/shop/:category" element={<Shop />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout isMobile={isMobile} />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/thank-you" element={<ThankYou />} />
+        <Route path="/admin" element={<AdminPortal />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />

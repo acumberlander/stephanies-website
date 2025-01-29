@@ -25,6 +25,27 @@ export const _fetchUserByUid = async (uid) => {
   return response.data;
 };
 
+/**
+ *
+ * @param {string} uid
+ * @param {userModel} updatedUser
+ * @returns Updates user in mongoDB by uid.
+ */
+export const _updateUser = async (uid, updatedUser) => {
+  try {
+    const response = await axios.put(
+      `${baseUrl}/api/users/${uid}`,
+      updatedUser
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 404) {
+      console.error("User not found, creating a new one...");
+      return await _createUser(updatedUser);
+    }
+  }
+};
+
 /************************************************************************************************************/
 
 /********************************************** Order Request ***********************************************/

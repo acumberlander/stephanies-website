@@ -1,26 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AppBar, Toolbar, Button, Badge, IconButton } from "@mui/material";
 import { ShoppingCart } from "@mui/icons-material";
-import { useSelector } from "react-redux";
-import MobileView from "./Views/MobileView";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
+import MobileView from "./Views/MobileView";
 import myLogo from "../../../assets/logos/logo-white.png";
+import { useIsMobile, useModal } from "../../../hooks/hooks";
+
 import "./MyNavbar.scss";
+import { signOutWithGoogle } from "../../../store/userThunks/userThunks";
 
-const MyNavbar = ({ isMobile }) => {
+const MyNavbar = ({ openModal }) => {
   const totalItems = useSelector((state) => state.user.cart.total_items) || 0;
-  // const [mobileView, setMobileView] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const isMobile = useIsMobile(700);
+  const { isAuthenticated } = useSelector((state) => state.isAuthenticated);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    // const setResponsiveness = () => {
-    //   return window.innerWidth < 900
-    //     ? setMobileView(true)
-    //     : setMobileView(false);
-    // };
-    // setResponsiveness();
-    // window.addEventListener("resize", () => setResponsiveness());
-  }, [totalItems]);
+  const handleSignOut = () => {
+    dispatch(signOutWithGoogle());
+  };
 
   const stephaniesLogo = (
     <RouterLink className="logo-link" to="/">
@@ -84,6 +83,15 @@ const MyNavbar = ({ isMobile }) => {
                   <ShoppingCart className="cart-icon" />
                 </Badge>
               </IconButton>
+              {!isAuthenticated ? (
+                <Button id="login-button" onClick={openModal}>
+                  Login
+                </Button>
+              ) : (
+                <Button id="sign-out-button" onClick={handleSignOut}>
+                  Sign Out
+                </Button>
+              )}
             </span>
           </Toolbar>
         )}

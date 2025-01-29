@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 
-// GET user by uid
+// GET - user by uid
 router.get("/:uid", async (req, res) => {
   try {
     const user = await User.findOne({ uid: req.params.uid });
@@ -13,7 +13,7 @@ router.get("/:uid", async (req, res) => {
   }
 });
 
-// GET user by _id
+// GET - user by _id
 router.get("/:_id", async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.params._id });
@@ -24,10 +24,10 @@ router.get("/:_id", async (req, res) => {
   }
 });
 
-// POST create user
+// POST - create user
 router.post("/", async (req, res) => {
   try {
-    const { uid, isGuest, cart, orders } = req.body;
+    const { uid, type, cart, orders } = req.body;
 
     if (!uid) {
       return res.status(400).json({ error: "UID is required" });
@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
 
     const newUser = new User({
       uid,
-      isGuest: isGuest || true,
+      type: type.guest,
       cart: cart || { cart_items: [], total_items: 0, subtotal: 0 },
       orders: orders || [],
     });
@@ -54,7 +54,31 @@ router.post("/", async (req, res) => {
   }
 });
 
-// PUT add to cart
+// PUT - update user by UID
+router.put("/users/:uid", async (req, res) => {
+  const { uid } = req.params; // Get the user ID from the route parameter
+  const updateData = req.body; // Data to update the user
+
+  try {
+    // Find user by UID and update
+    const updatedUser = await User.findOneAndUpdate(
+      { uid }, // Find user by UID
+      { $set: updateData }, // Update with new data
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(updatedUser); // Respond with the updated user
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// PUT - add to cart
 router.put("/:uid/cart", async (req, res) => {
   try {
     const { cart_items, total_items, subtotal } = req.body;
@@ -76,7 +100,7 @@ router.put("/:uid/cart", async (req, res) => {
   }
 });
 
-// PUT add an order
+// PUT - add an order
 router.put("/:uid/orders", async (req, res) => {
   try {
     const { orderData } = req.body;

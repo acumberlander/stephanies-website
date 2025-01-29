@@ -26,3 +26,10 @@ export const months = [
   "11",
   "12",
 ];
+
+export const userTypes = {
+  google: "google",
+  facebook: "facebook",
+  emailAndPassword: "emailAndPassword",
+  guest: "guest",
+};
