@@ -1,4 +1,5 @@
 require("dotenv").config();
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -9,7 +10,7 @@ const userRoutes = require("./routes/userRoutes");
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
 
 // Connect to Mongo
@@ -25,9 +26,9 @@ mongoose
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 
-// Catch-all for undefined routes (optional but recommended)
-app.use((req, res) => {
-  res.status(404).json({ error: "Endpoint not found" });
+// Catch-all for undefined routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 // Start server

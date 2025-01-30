@@ -18,7 +18,7 @@ import "./ProductDetails.scss";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState(productModel);
-  const [displayedImage, setDisplayedImage] = useState("");
+  const [displayedImage, setDisplayedImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const allProducts = useSelector((state) => state.products);
   const { uid } = useSelector((state) => state.user);

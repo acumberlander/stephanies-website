@@ -1,6 +1,6 @@
-const webpack = require('webpack');
+const webpack = require("webpack");
 
-module.exports = function override(config){
+module.exports = function override(config) {
   const fallback = config.resolve.fallback || {};
   Object.assign(fallback, {
     crypto: require.resolve("crypto-browserify"),
@@ -8,13 +8,13 @@ module.exports = function override(config){
     path: require.resolve("path-browserify"),
     os: require.resolve("os-browserify/browser"),
     process: require.resolve("process"),
-    vm: require.resolve("vm-browserify")
+    vm: require.resolve("vm-browserify"),
   });
   config.resolve.fallback = fallback;
   config.plugins = (config.plugins || []).concat([
     new webpack.ProvidePlugin({
-      process: "process/browser"
-    })
+      process: "process/browser",
+    }),
   ]);
   config.module.rules.unshift({
     test: /\.m?js$/,
@@ -23,4 +23,4 @@ module.exports = function override(config){
     },
   });
   return config;
-}
+};

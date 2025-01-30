@@ -15,14 +15,17 @@ const cartItemSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  uid: { type: String, default: null },
-  isGuest: { type: Boolean, default: true },
+  uid: { type: String, required: true, unique: true },
+  email: { type: String, required: true },
+  firstName: { type: String, default: "" },
+  lastName: { type: String, default: "" },
   cart: {
     cart_items: [cartItemSchema],
     total_items: { type: Number, default: 0 },
     subtotal: { type: Number, default: 0 },
   },
   orders: { type: Array, default: [] },
+  isAuthenticated: { type: Boolean, default: false },
   status: { type: String, default: "idle" },
   error: { type: String, default: null },
 });
