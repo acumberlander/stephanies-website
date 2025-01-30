@@ -12,55 +12,53 @@
 }
 
 .logo {
-  font-family: 'Philosopher', 'sans-serif' !important;
+  font-family: "Philosopher", "sans-serif" !important;
+  font-family: "Philosopher", "sans-serif" !important;
   font-weight: regular;
   font-size: 32;
   text-align: left;
   cursor: pointer;
 }
-
 .logo-link {
   text-decoration: none;
 }
-
 .cart-icon {
   color: #fff;
 }
 
 .nav-button {
-  font-family: 'Philospher', 'sans-serif' !important;
+  font-family: "Philospher", "sans-serif" !important;
+  font-family: "Philospher", "sans-serif" !important;
   font-weight: 700;
   size: 18px;
   margin-left: 20px;
 }
 
 .cart-and-menu-container {
-  display: flex;  
+  display: flex;
+  display: flex;
   justify-content: space-between;
   width: 100%;
   max-width: 80px;
 }
 
 .cart-button {
-  font-family: 'Philospher', 'sans-serif' !important;
+  font-family: "Philospher", "sans-serif" !important;
+  font-family: "Philospher", "sans-serif" !important;
   font-weight: 700;
   size: 18px;
 }
-
 .toolbar {
   display: flex;
   justify-content: space-between;
 }
-
 .drawer-content {
   padding: 20px 30px;
   width: 200px;
 }
-
 .my-navbar {
   background-color: #cc34ab !important;
 }
-
 .menu-item {
   display: flex !important;
   justify-content: center !important;
@@ -73,12 +71,26 @@
   background-color: #b32093 !important;
 }
 
-.login-button {
-  background-color: #cc34ab;
-  color: #fff;
-  margin-top: 25px;
+#cart-and-login-div {
+  display: flex;
+  justify-content: space-between;
+  width: 110px;
 }
 
-.login-button:hover {
-  background-color: rgba(204,52,171, 0.65);
+#login-button {
+  background-color: #cc34ab;
+  color: #fff;
+}
+
+#login-button:hover {
+  background-color: #b32093 !important;
+}
+
+#sign-out-button {
+  background-color: #cc34ab;
+  color: #fff;
+}
+
+#sign-out-button:hover {
+  background-color: #b32093 !important;
 }

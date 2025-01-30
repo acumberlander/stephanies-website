@@ -4,6 +4,7 @@ import {
   _createUser,
   _fetchUserByUid,
 } from "../../api/mongoRequests";
+import { updateGuestUser } from "../slices/userSlice";
 
 /**
  * @param userData
@@ -33,7 +34,7 @@ export const fetchUserByUid = createAsyncThunk(
       return response;
     } catch (err) {
       if (err.response && err.response.status === 404) {
-        return rejectWithValue({ error: "User not found" });
+        console.warn("User not found in MongoDB.");
       }
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -45,27 +46,35 @@ export const fetchUserByUid = createAsyncThunk(
  */
 export const createOrder = createAsyncThunk(
   "user/createOrder",
-  async (orderData, { getState, rejectWithValue }) => {
+  async (orderData, { getState, dispatch, rejectWithValue }) => {
     const { user } = getState();
+
     try {
-      await _createOrder(orderData, user.uid);
+      if (user.isAuthenticated) {
+        // Authenticated users: Store order in MongoDB
+        await _createOrder(orderData, user.uid);
+      } else {
+        // Guest users: Store orders in local storage
+        const guestOrders =
+          JSON.parse(localStorage.getItem("guestOrders")) || [];
+        guestOrders.push(orderData);
+        localStorage.setItem("guestOrders", JSON.stringify(guestOrders));
+      }
 
-      // Create updated orders array
-      const updatedOrders = user.orders
-        ? [...user.orders, orderData]
-        : [orderData];
-
-      // Return updated orders and cart data (for Redux)
-      return {
-        cart: {
-          cart_items: [],
-          total_items: 0,
-          subtotal: 0,
-        },
-        orders: updatedOrders,
+      // Empty the cart after checkout (for both guest and authenticated users)
+      const emptyCart = {
+        cart_items: [],
+        total_items: 0,
+        subtotal: 0,
       };
+
+      if (user.isAuthenticated) {
+        return { cart: emptyCart, orders: [...user.orders, orderData] };
+      } else {
+        dispatch(updateGuestUser({ cart: emptyCart })); // Clear guest cart
+        return { cart: emptyCart };
+      }
     } catch (err) {
-      // Extract and return error message
       return rejectWithValue(err.response?.data || err.message);
     }
   }
