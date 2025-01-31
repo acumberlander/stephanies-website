@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeApp } from "./utils/initializeApp";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import {
   MyNavbar,
   Footer,
@@ -28,6 +28,9 @@ const App = () => {
   useEffect(() => {
     if (!uid) {
       initializeApp(dispatch);
+    }
+    if (uid !== "guest") {
+      closeModal();
     }
   }, [uid, dispatch]);
 

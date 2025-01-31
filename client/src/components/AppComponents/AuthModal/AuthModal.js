@@ -5,8 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   signInWithGoogle,
   signInWithEmail,
+  registerWithEmail,
 } from "../../../store/authThunks/authThunks";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import CancelIcon from "@mui/icons-material/Cancel";
+
+const googleIcon = require("../../../assets/icons/icons8-google-48.png");
 
 const style = {
   position: "absolute",
@@ -36,11 +39,17 @@ const AuthModal = ({ isOpen, closeModal }) => {
 
   const handleAuth = (e) => {
     e.preventDefault();
+    let firstName;
+    let lastName;
     const email = e.target.email.value;
     const password = e.target.password.value;
+    if (!isRegistered) {
+      firstName = e.target.firstName.value;
+      lastName = e.target.lastName.value;
+    }
     isRegistered
-      ? dispatch(signInWithEmail(email, password))
-      : dispatch(createUserWithEmailAndPassword(email, password));
+      ? dispatch(signInWithEmail({ email, password }))
+      : dispatch(registerWithEmail({ email, password, firstName, lastName }));
   };
 
   return (
@@ -49,18 +58,36 @@ const AuthModal = ({ isOpen, closeModal }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
-        <Button id="auth-modal-close-btn" onClick={closeModal}>
-          X
-        </Button>
+      <Box id="modal-container" sx={style}>
+        <CancelIcon onClick={closeModal} id="auth-modal-close-btn" />
         <h2>{isRegistered ? "Sign In" : "Register"}</h2>
-        <Button id="google-btn" onClick={handleGoogleAuth}>
-          Sign in with Google
-        </Button>
+        <div id="google-auth-container">
+          <Button id="google-btn" onClick={handleGoogleAuth}>
+            <img id="google-logo" src={googleIcon} alt="google-logo" />
+            <span>{isRegistered ? "Sign In" : "Sign Up"} with Google</span>
+          </Button>
+        </div>
+        <hr id="modal-divider" />
         <div>
           <h2>{isRegistered ? "Sign In" : "Sign Up"}</h2>
           <form onSubmit={handleAuth}>
             <div id="email-and-password-container">
+              {!isRegistered ? (
+                <>
+                  <Input
+                    type="name"
+                    name="firstName"
+                    placeholder="First Name"
+                    required
+                  />
+                  <Input
+                    type="name"
+                    name="lastName"
+                    placeholder="Last Name"
+                    required
+                  />
+                </>
+              ) : null}
               <Input type="email" name="email" placeholder="Email" required />
               <Input
                 type="password"
