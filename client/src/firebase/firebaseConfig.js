@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInAnonymously } from "firebase/auth";
+import {
+  getAuth,
+  signInAnonymously,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore/lite";
 import { getStorage, ref } from "firebase/storage";
 
@@ -27,6 +33,9 @@ export const auth = getAuth(app);
 // Initialize Database Services
 export const db = getFirestore(app);
 
+// Auth providers
+export const googleProvider = new GoogleAuthProvider();
+export { createUserWithEmailAndPassword, signInWithEmailAndPassword };
 /**
  * Signs user into firebase anonymously.
  */

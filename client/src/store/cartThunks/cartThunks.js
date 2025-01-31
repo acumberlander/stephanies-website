@@ -6,29 +6,30 @@ import {
   _updateProductQuantity,
   _removeProductFromCart,
 } from "../../api/mongoRequests";
+import { updateGuestUser } from "../slices/userSlice";
 
 /**
- * Empties user's cart in the database as well as in redux state
- * @param uid
+ * Empties the user's cart in MongoDB or local storage.
  */
 export const emptyCart = createAsyncThunk(
   "user/emptyCart",
-  async (uid, { rejectWithValue }) => {
+  async (_, { getState, dispatch, rejectWithValue }) => {
     try {
-      const cart = {
+      const { user } = getState();
+      const emptyCart = {
         cart_items: [],
         total_items: 0,
         subtotal: 0,
       };
 
-      // Updates mongoDB
-      await _emptyCart(uid, cart);
+      if (user.isAuthenticated) {
+        await _emptyCart(user.uid, emptyCart); // MongoDB update
+      } else {
+        dispatch(updateGuestUser({ cart: emptyCart })); // Update guest user in Redux
+      }
 
-      // Notification
       toast("Your cart was emptied!");
-
-      // Updates redux user cart state
-      return cart;
+      return emptyCart;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -36,38 +37,28 @@ export const emptyCart = createAsyncThunk(
 );
 
 /**
- * Merges a new product into the cart, or increments its quantity if it's already there.
- * @param uid
- * @param product
+ * Adds a product to the cart in MongoDB or local storage.
  */
 export const addToCart = createAsyncThunk(
   "user/addToCart",
-  async ({ uid, product, quantity }, { getState, rejectWithValue }) => {
+  async ({ product, quantity }, { getState, dispatch, rejectWithValue }) => {
     try {
-      // Get the current user state from Redux
       const { user } = getState();
-      const { cart_items } = user.cart;
+      const currentCart = user.cart.cart_items || [];
 
-      // Clone existing cart items
-      const newCartItems = [...cart_items];
+      // Create a new array of cart items
+      const newCartItems = currentCart.map((item) =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + quantity } // Create a new object for updates
+          : item
+      );
 
-      // Check if this exact product is already in the cart
-      const index = newCartItems.findIndex((item) => {
-        return item.id === product.id;
-      });
-
-      if (index !== -1) {
-        // Already in cart: just bump quantity
-        newCartItems[index] = {
-          ...newCartItems[index],
-          quantity: newCartItems[index].quantity + quantity,
-        };
-      } else {
-        // Not in cart yet: push new item
+      // If product is not in cart, add it
+      if (!newCartItems.find((item) => item.id === product.id)) {
         newCartItems.push({ ...product, quantity });
       }
 
-      // Recalculate totals based on newCartItems
+      // Calculate new totals
       const newTotalItems = newCartItems.reduce(
         (sum, item) => sum + item.quantity,
         0
@@ -77,24 +68,25 @@ export const addToCart = createAsyncThunk(
         0
       );
 
-      const cart = {
+      const updatedCart = {
         cart_items: newCartItems,
         total_items: newTotalItems,
         subtotal: newSubtotal,
       };
 
-      // Update mongoDB cart
-      await _addToCart(user.uid, cart);
-
-      // Notification
-      if (quantity === 1) {
-        toast("Your item has been added to the cart!");
+      if (user.isAuthenticated) {
+        await _addToCart(user.uid, updatedCart); // MongoDB update
       } else {
-        toast("Your items have been added to the cart!");
+        dispatch(updateGuestUser({ cart: updatedCart })); // Local storage update
       }
 
-      // Return the updated cart data
-      return cart;
+      toast(
+        quantity === 1
+          ? "Your item has been added to the cart!"
+          : "Your items have been added!"
+      );
+
+      return updatedCart;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -102,50 +94,33 @@ export const addToCart = createAsyncThunk(
 );
 
 /**
- * @param uid
- * @param productId
- * @param selectedSize
+ * Increments a product's quantity in MongoDB or local storage.
  */
 export const incrementProductQuantity = createAsyncThunk(
   "user/incrementProductQuantity",
-  async (product, { getState, rejectWithValue }) => {
+  async (product, { getState, dispatch, rejectWithValue }) => {
     try {
       const { user } = getState();
-      const newCartItems = [...user.cart.cart_items];
-
-      // Find the product in the cart
-      const index = newCartItems.findIndex((item) => {
-        return item.id === product.id;
-      });
-
-      if (index !== -1) {
-        newCartItems[index] = {
-          ...newCartItems[index],
-          quantity: newCartItems[index].quantity + 1,
-        };
-      }
-
-      // Recalculate totals
-      const total_items = newCartItems.reduce(
-        (acc, item) => acc + item.quantity,
-        0
-      );
-      const subtotal = newCartItems.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0
+      const newCartItems = user.cart.cart_items.map((item) =>
+        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
       );
 
-      const cart = {
+      const updatedCart = {
         cart_items: newCartItems,
-        total_items,
-        subtotal,
+        total_items: newCartItems.reduce((acc, item) => acc + item.quantity, 0),
+        subtotal: newCartItems.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0
+        ),
       };
 
-      // Updates mongoDB cart
-      await _updateProductQuantity(user.uid, cart);
+      if (user.isAuthenticated) {
+        await _updateProductQuantity(user.uid, updatedCart);
+      } else {
+        dispatch(updateGuestUser({ cart: updatedCart }));
+      }
 
-      // Updates redux user cart state
-      return cart;
+      return updatedCart;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -153,58 +128,37 @@ export const incrementProductQuantity = createAsyncThunk(
 );
 
 /**
- * @param uid
- * @param productId
- * @param selectedSize
+ * Decrements a product's quantity in MongoDB or local storage.
  */
 export const decrementProductQuantity = createAsyncThunk(
   "user/decrementProductQuantity",
-  async (product, { getState, rejectWithValue }) => {
+  async (product, { getState, dispatch, rejectWithValue }) => {
     try {
       const { user } = getState();
-      let newCartItems = [...user.cart.cart_items];
+      let newCartItems = user.cart.cart_items
+        .map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0);
 
-      // Find the product in the cart
-      const index = newCartItems.findIndex((item) => {
-        return item.id === product.id;
-      });
-
-      if (index !== -1) {
-        const currentQty = newCartItems[index].quantity;
-        const newQty = currentQty - 1;
-
-        if (newQty > 0) {
-          // Just decrement
-          newCartItems[index] = {
-            ...newCartItems[index],
-            quantity: newQty,
-          };
-        } else {
-          // If quantity goes to zero, remove item from cart
-          newCartItems.splice(index, 1);
-        }
-      }
-
-      // Recalculate totals
-      const total_items = newCartItems.reduce(
-        (acc, item) => acc + item.quantity,
-        0
-      );
-      const subtotal = newCartItems.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0
-      );
-      const cart = {
+      const updatedCart = {
         cart_items: newCartItems,
-        total_items,
-        subtotal,
+        total_items: newCartItems.reduce((acc, item) => acc + item.quantity, 0),
+        subtotal: newCartItems.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0
+        ),
       };
 
-      // Updates mongoDB cart
-      await _updateProductQuantity(user.uid, cart);
+      if (user.isAuthenticated) {
+        await _updateProductQuantity(user.uid, updatedCart);
+      } else {
+        dispatch(updateGuestUser({ cart: updatedCart }));
+      }
 
-      // Updates redux user cart state
-      return cart;
+      return updatedCart;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -212,50 +166,34 @@ export const decrementProductQuantity = createAsyncThunk(
 );
 
 /**
- * Removes a product from the user's cart in database as well as in redux state
- * @param uid
- * @param productId
+ * Removes a product from the cart in MongoDB or local storage.
  */
 export const removeProductFromCart = createAsyncThunk(
   "user/removeFromCart",
-  async (product, { getState, rejectWithValue }) => {
+  async (product, { getState, dispatch, rejectWithValue }) => {
     try {
       const { user } = getState();
-      let newCartItems = [...user.cart.cart_items];
-
-      // Find the product in the cart
-      const index = newCartItems.findIndex((item) => {
-        return item.id === product.id;
-      });
-      // If found, remove it
-      if (index !== -1) {
-        newCartItems.splice(index, 1);
-      }
-
-      // Recalculate totals
-      const total_items = newCartItems.reduce(
-        (acc, item) => acc + item.quantity,
-        0
-      );
-      const subtotal = newCartItems.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0
+      const newCartItems = user.cart.cart_items.filter(
+        (item) => item.id !== product.id
       );
 
-      const cart = {
+      const updatedCart = {
         cart_items: newCartItems,
-        total_items,
-        subtotal,
+        total_items: newCartItems.reduce((acc, item) => acc + item.quantity, 0),
+        subtotal: newCartItems.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0
+        ),
       };
 
-      // Updates mongoDB cart
-      await _removeProductFromCart(user.uid, cart);
+      if (user.isAuthenticated) {
+        await _removeProductFromCart(user.uid, updatedCart);
+      } else {
+        dispatch(updateGuestUser({ cart: updatedCart }));
+      }
 
-      // Notification
-      toast("You removed a product from you cart!");
-
-      // Updates redux user cart state
-      return cart;
+      toast("You removed a product from your cart!");
+      return updatedCart;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }

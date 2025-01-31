@@ -27,10 +27,13 @@ router.get("/:_id", async (req, res) => {
 // POST create user
 router.post("/", async (req, res) => {
   try {
-    const { uid, isGuest, cart, orders } = req.body;
+    const { uid, email, firstName, lastName, cart, orders } = req.body;
 
     if (!uid) {
       return res.status(400).json({ error: "UID is required" });
+    }
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
     }
 
     // Check if user already exists
@@ -41,7 +44,9 @@ router.post("/", async (req, res) => {
 
     const newUser = new User({
       uid,
-      isGuest: isGuest || true,
+      email,
+      firstName: firstName || "Guest",
+      lastName: lastName || "",
       cart: cart || { cart_items: [], total_items: 0, subtotal: 0 },
       orders: orders || [],
     });
