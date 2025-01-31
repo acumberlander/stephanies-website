@@ -1,26 +1,24 @@
 import { useState, useEffect } from "react";
 import { AppBar, Toolbar, Button, Badge, IconButton } from "@mui/material";
 import { ShoppingCart } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MobileView from "./Views/MobileView";
 import { Link as RouterLink } from "react-router-dom";
 import myLogo from "../../../assets/logos/logo-white.png";
 import "./MyNavbar.scss";
+import { signOutUser } from "../../../store/authThunks/authThunks";
+import { useIsMobile } from "../../../hooks/hooks";
 
-const MyNavbar = ({ isMobile }) => {
+const MyNavbar = ({ openModal }) => {
   const totalItems = useSelector((state) => state.user.cart.total_items) || 0;
-  // const [mobileView, setMobileView] = useState(false);
+  const { isAuthenticated } = useSelector((state) => state.user);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const isMobile = useIsMobile(700);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    // const setResponsiveness = () => {
-    //   return window.innerWidth < 900
-    //     ? setMobileView(true)
-    //     : setMobileView(false);
-    // };
-    // setResponsiveness();
-    // window.addEventListener("resize", () => setResponsiveness());
-  }, [totalItems]);
+  const handleSignOut = () => {
+    dispatch(signOutUser());
+  };
 
   const stephaniesLogo = (
     <RouterLink className="logo-link" to="/">
@@ -37,6 +35,9 @@ const MyNavbar = ({ isMobile }) => {
             setDrawerOpen={setDrawerOpen}
             drawerOpen={drawerOpen}
             totalItems={totalItems}
+            isAuthenticated={isAuthenticated}
+            openModal={openModal}
+            handleSignOut={handleSignOut}
           />
         ) : (
           <Toolbar className="toolbar">
@@ -73,7 +74,7 @@ const MyNavbar = ({ isMobile }) => {
               </Button>
             </span>
 
-            <span>
+            <span id="cart-and-login-div">
               <IconButton
                 component={RouterLink}
                 to="/cart"
@@ -84,6 +85,15 @@ const MyNavbar = ({ isMobile }) => {
                   <ShoppingCart className="cart-icon" />
                 </Badge>
               </IconButton>
+              {!isAuthenticated ? (
+                <Button id="login-button" onClick={openModal}>
+                  Login
+                </Button>
+              ) : (
+                <Button id="sign-out-button" onClick={handleSignOut}>
+                  Sign Out
+                </Button>
+              )}
             </span>
           </Toolbar>
         )}

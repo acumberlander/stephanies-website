@@ -11,19 +11,32 @@ import {
   createUser,
   fetchUserByUid,
 } from "../userThunks/userThunks";
+import {
+  signInWithGoogle,
+  signInWithEmail,
+  signOutUser,
+  registerWithEmail,
+} from "../authThunks/authThunks";
 import { userModel } from "../../Models/User";
 
 const userSlice = createSlice({
   name: "user",
   initialState: userModel,
   reducers: {
-    /**
-     * @param state
-     * @param action.payload
-     */
     setUserIds(state, action) {
       state._id = action.payload._id;
       state.uid = action.payload.uid;
+      state.isAuthenticated = true;
+    },
+    setAuthenticated(state, action) {
+      state.isAuthenticated = action.payload;
+    },
+    setGuestUser(state, action) {
+      return { ...state, ...action.payload, isAuthenticated: false };
+    },
+    updateGuestUser(state, action) {
+      Object.assign(state, action.payload);
+      localStorage.setItem("guestUser", JSON.stringify(state)); // Update local storage on state change
     },
   },
   extraReducers: (builder) => {
@@ -44,6 +57,53 @@ const userSlice = createSlice({
         state.error = action.payload;
       })
 
+      // Google Sign In
+      .addCase(signInWithGoogle.fulfilled, (state, action) => {
+        state.isAuthenticated = true;
+        state.user = action.payload;
+      })
+
+      // Register with Email
+      .addCase(registerWithEmail.pending, (state, action) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      // Register with Email
+      .addCase(registerWithEmail.fulfilled, (state, action) => {
+        Object.assign(state, action.payload);
+        state.isAuthenticated = true;
+        state.status = "succeeded";
+      })
+      // Register with Email
+      .addCase(registerWithEmail.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+
+      // Email/password Sign In
+      .addCase(signInWithEmail.pending, (state, action) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      // Email/password Sign In
+      .addCase(signInWithEmail.fulfilled, (state, action) => {
+        Object.assign(state, action.payload);
+        state.isAuthenticated = true;
+        state.status = "succeeded";
+      })
+      // Email/password Sign In
+      .addCase(signInWithEmail.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+
+      // Sign Out
+      .addCase(signOutUser.fulfilled, (state) => {
+        state.isAuthenticated = false;
+        state.uid = null;
+        state._id = null;
+      })
+
       // fetchUser
       .addCase(fetchUserByUid.pending, (state) => {
         state.status = "loading";
@@ -54,7 +114,10 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserByUid.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload.error || action.payload;
+        state.error =
+          action.payload?.error ||
+          action.error?.message ||
+          "Unknown error occurred";
       })
 
       // addToCart
@@ -164,6 +227,7 @@ const userSlice = createSlice({
       });
   },
 });
-export const { setUserIds } = userSlice.actions;
+export const { setUserIds, setAuthenticated, setGuestUser, updateGuestUser } =
+  userSlice.actions;
 
 export default userSlice.reducer;
