@@ -35,6 +35,9 @@ const MyNavbar = ({ openModal }) => {
             setDrawerOpen={setDrawerOpen}
             drawerOpen={drawerOpen}
             totalItems={totalItems}
+            isAuthenticated={isAuthenticated}
+            openModal={openModal}
+            handleSignOut={handleSignOut}
           />
         ) : (
           <Toolbar className="toolbar">
