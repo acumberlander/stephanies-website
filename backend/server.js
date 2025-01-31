@@ -15,6 +15,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://stephanies-website-frontend.onrender.com/",
+      "https://stephanies-website-backend.onrender.com/",
     ],
     credentials: true,
   })
