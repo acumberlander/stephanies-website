@@ -5,7 +5,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const productRoutes = require("./routes/productRoutes");
+const stripeProductRoutes = require("./routes/stripeProductRoutes");
 const userRoutes = require("./routes/userRoutes");
+const checkoutRoutes = require("./routes/checkoutRoutes");
 
 const app = express();
 
@@ -33,6 +35,8 @@ mongoose
 
 // Routes
 app.use("/api/products", productRoutes);
+app.use("/api/stripeProducts", stripeProductRoutes);
+app.use("/api/checkout", checkoutRoutes);
 app.use("/api/users", userRoutes);
 
 // Catch-all for undefined routes

@@ -15,8 +15,6 @@ router.get("/", async (req, res) => {
 // GET single product by `id` field
 router.get("/:id", async (req, res) => {
   try {
-    // If you want to search by Mongo _id, you'd do Product.findById(req.params.id)
-    // But if your "id" field is custom, do:
     const product = await Product.findOne({ id: req.params.id });
     if (!product) {
       return res.status(404).json({ error: "Not Found" });
