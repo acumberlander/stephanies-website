@@ -11,6 +11,7 @@ export { default as ProductDetailsDropdowns } from "./ProductComponents/ProductD
 export { default as About } from "../Pages/AboutPage/About";
 export { default as Cart } from "../Pages/CartPage/Cart";
 export { default as Checkout } from "../Pages/CheckoutPage/Checkout";
+export { default as StripeCheckout } from "../Pages/CheckoutPage/StripeCheckoutPage";
 export { default as Home } from "../Pages/HomePage/Home";
 export { default as ProductDetails } from "../Pages/ProductDetailsPage/ProductDetails";
 export { default as Shop } from "../Pages/ShopPage/Shop";
