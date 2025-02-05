@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
   },
   orders: { type: Array, default: [] },
   isAuthenticated: { type: Boolean, default: false },
+  isAdmin: { type: Boolean, default: false },
   status: { type: String, default: "idle" },
   error: { type: String, default: null },
 });

@@ -9,6 +9,7 @@ import {
   About,
   Cart,
   Checkout,
+  StripeCheckout,
   Home,
   Shop,
   ProductDetails,
@@ -63,7 +64,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/shop/:category" element={<Shop />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout" element={<StripeCheckout />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/thank-you" element={<ThankYou />} />
         <Route path="*" element={<ErrorPage />} />

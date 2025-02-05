@@ -5,7 +5,7 @@ import {
   setAuthenticated,
   setGuestUser,
 } from "../store/slices/userSlice";
-import { fetchAllProducts } from "../store/productThunks/productThunks";
+import { fetchAllStripeProducts } from "../store/productThunks/productThunks";
 import { userModel } from "../Models/User";
 
 /**
@@ -45,5 +45,5 @@ export const initializeApp = async (dispatch) => {
     dispatch(setAuthenticated(false)); // Guest user
   }
 
-  dispatch(fetchAllProducts());
+  dispatch(fetchAllStripeProducts());
 };
