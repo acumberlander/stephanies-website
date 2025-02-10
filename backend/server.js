@@ -8,6 +8,8 @@ const productRoutes = require("./routes/productRoutes");
 const stripeProductRoutes = require("./routes/stripeProductRoutes");
 const userRoutes = require("./routes/userRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
+const thankYouRoutes = require("./routes/thankYouRoutes");
+const webhooksRoutes = require("./routes/webhooksRoutes");
 
 const app = express();
 
@@ -37,6 +39,8 @@ mongoose
 app.use("/api/products", productRoutes);
 app.use("/api/stripeProducts", stripeProductRoutes);
 app.use("/api/checkout", checkoutRoutes);
+app.use("/api/webhooks", webhooksRoutes);
+app.use("/api/thank-you", thankYouRoutes);
 app.use("/api/users", userRoutes);
 
 // Catch-all for undefined routes
