@@ -17,14 +17,14 @@ export const _fetchAllStripeProducts = async () => {
  * @returns Returns Stripe product by id from Stripe database
  */
 export const _fetchStripeProductById = async (id) => {
-  const response = await axios.get(`${baseUrl}/api/stripeProducts/${id}`);
-  return response.data;
+  const { data } = await axios.get(`${baseUrl}/api/stripeProducts/${id}`);
+  return data;
 };
 
 /**
  * @returns Creates a transaction session in Stripe
  */
-export const _stripeCheckout = async (cartItems) => {
+export const _stripeCreatePaymentIntent = async (cartItems) => {
   const response = await axios.post(
     `${baseUrl}/api/checkout/create-payment-intent`,
     {
@@ -32,4 +32,22 @@ export const _stripeCheckout = async (cartItems) => {
     }
   );
   return response.data;
+};
+
+/**
+ * @returns Creates a checkout session in Stripe
+ */
+export const _stripeCheckout = async (cartItems, uid) => {
+  const { data } = await axios.post(
+    `${baseUrl}/api/checkout/create-checkout-session`,
+    { cartItems, uid }
+  );
+  return data;
+};
+
+export const _fetchPaymentStatus = async (sessionId) => {
+  const { data } = await axios.get(
+    `${baseUrl}/api/thank-you/session-status?session_id=${sessionId}`
+  );
+  return data;
 };

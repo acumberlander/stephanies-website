@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// If your cart items match the product shape, you can define a sub-schema
 const cartItemSchema = new mongoose.Schema({
   name: String,
   category: String,
