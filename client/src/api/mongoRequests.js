@@ -44,13 +44,16 @@ export const _createUserOrder = async (orderData, uid) => {
 };
 
 /**
- *
+ * Creates an order object in mongoDB. Generates a uid if the user is a guest.
  * @param {object} orderData
  * @param {string} uid
- * @returns Updates orders in mongoDB
+ * @returns Newly created mongoDB order object
  */
 export const _createOrder = async (sessionId, uid, subtotal) => {
+  // Get items from Stripe order session
   const lineItems = await _fetchSessionLineItems(sessionId);
+
+  // Pass in lineItems to create an order object in mongoDB
   const { data: newOrder } = await axios.post(`${baseUrl}/api/orders`, {
     uid,
     sessionId,

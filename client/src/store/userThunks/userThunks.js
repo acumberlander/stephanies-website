@@ -1,10 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  _createUserOrder,
   _createUser,
   _fetchUserByUid,
+  _createOrder,
 } from "../../api/mongoRequests";
-import { updateGuestUser } from "../slices/userSlice";
 
 /**
  * @param userData
@@ -46,20 +45,14 @@ export const fetchUserByUid = createAsyncThunk(
  */
 export const createOrder = createAsyncThunk(
   "user/createOrder",
-  async (orderData, { getState, dispatch, rejectWithValue }) => {
+  async (sessionId, { getState, rejectWithValue }) => {
     const { user } = getState();
+    const { subtotal } = user.cart;
+    const { uid } = user;
 
     try {
-      if (user.isAuthenticated) {
-        // Authenticated users: Store order in MongoDB
-        await _createUserOrder(orderData, user.uid);
-      } else {
-        // Guest users: Store orders in local storage
-        const guestOrders =
-          JSON.parse(localStorage.getItem("guestOrders")) || [];
-        guestOrders.push(orderData);
-        localStorage.setItem("guestOrders", JSON.stringify(guestOrders));
-      }
+      // Creates an order object in mongoDB
+      const newOrder = await _createOrder(sessionId, uid, subtotal);
 
       // Empty the cart after checkout (for both guest and authenticated users)
       const emptyCart = {
@@ -69,10 +62,22 @@ export const createOrder = createAsyncThunk(
       };
 
       if (user.isAuthenticated) {
-        return { cart: emptyCart, orders: [...user.orders, orderData] };
+        return { cart: emptyCart, orders: [...user.orders, newOrder] };
       } else {
-        dispatch(updateGuestUser({ cart: emptyCart })); // Clear guest cart
-        return { cart: emptyCart };
+        const storedGuestUser = JSON.parse(localStorage.getItem("guestUser"));
+        if (storedGuestUser.cart.cart_items.length > 0) {
+          const guestUserWithEmptyCart = {
+            ...storedGuestUser,
+            uid: storedGuestUser.uid,
+            cart: emptyCart,
+            orders: [...storedGuestUser.orders, newOrder],
+          };
+          localStorage.setItem(
+            "guestUser",
+            JSON.stringify(guestUserWithEmptyCart)
+          );
+        }
+        return { cart: emptyCart, orders: [newOrder] };
       }
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);

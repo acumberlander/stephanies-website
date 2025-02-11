@@ -1,5 +1,9 @@
 import { fetchUserByUid } from "../store/userThunks/userThunks";
-import { getAuth } from "firebase/auth";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 import {
   setUserIds,
   setAuthenticated,
@@ -15,6 +19,15 @@ import { userModel } from "../Models/User";
  */
 export const initializeApp = async (dispatch) => {
   const auth = getAuth();
+
+  try {
+    // Set Firebase authentication persistence to local storage
+    await setPersistence(auth, browserLocalPersistence);
+    console.log("Firebase auth persistence set to local.");
+  } catch (error) {
+    console.error("Error setting Firebase persistence:", error);
+  }
+
   const firebaseUser = auth.currentUser; // Firebase only for authentication
 
   if (firebaseUser) {
@@ -24,7 +37,7 @@ export const initializeApp = async (dispatch) => {
 
       if (user && user._id) {
         dispatch(setUserIds(user));
-        dispatch(setAuthenticated(true)); // Authenticated user
+        dispatch(setAuthenticated(true));
       }
     } catch (error) {
       console.warn("User not found in MongoDB. User must sign up first.");
@@ -33,17 +46,18 @@ export const initializeApp = async (dispatch) => {
     // Handle guest user
     const storedGuestUser = JSON.parse(localStorage.getItem("guestUser"));
 
-    if (!storedGuestUser || !storedGuestUser._id) {
+    if (!storedGuestUser || !storedGuestUser.uid) {
       // Create new guest user
-      const newGuestUser = { ...userModel, _id: "guest", uid: "guest" };
+      const newGuestUser = {
+        ...userModel,
+        uid: `guest-${crypto.randomUUID()}`,
+      };
       localStorage.setItem("guestUser", JSON.stringify(newGuestUser));
       dispatch(setGuestUser(newGuestUser));
     } else {
       dispatch(setGuestUser(storedGuestUser));
     }
-
-    dispatch(setAuthenticated(false)); // Guest user
+    dispatch(setAuthenticated(false));
   }
-
   dispatch(fetchAllStripeProducts());
 };

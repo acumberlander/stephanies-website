@@ -7,7 +7,7 @@ import { Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import { _stripeCheckout } from "../../api/stripeRequests";
+import { _createStripeCheckoutSession } from "../../api/stripeRequests";
 
 export const CheckoutForm = ({
   cartItems,
@@ -31,7 +31,7 @@ export const CheckoutForm = ({
 
   const fetchPaymentIntent = async () => {
     try {
-      const data = await _stripeCheckout(cartItems);
+      const data = await _createStripeCheckoutSession(cartItems);
       setClientSecret(data.clientSecret);
     } catch (error) {
       console.error("Error fetching payment intent:", error);
