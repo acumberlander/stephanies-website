@@ -30,11 +30,7 @@ const ProductDetails = () => {
    * Adds current product to the users cart. Updates the user state in redux
    */
   const handleAddToCart = () => {
-    if (product.option_groups && product.option_groups[0]) {
-      dispatch(addToCart({ uid, product, quantity }));
-    } else {
-      dispatch(addToCart({ uid, product, quantity }));
-    }
+    dispatch(addToCart({ uid, product, quantity }));
     setQuantity(1);
   };
 
