@@ -2,47 +2,40 @@ import { useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./ThankYou.scss";
-import { _fetchPaymentStatus } from "../../api/stripeRequests";
+import {
+  _fetchPaymentStatus,
+  _fetchSessionLineItems,
+} from "../../api/stripeRequests";
+import { _createOrder } from "../../api/mongoRequests";
 
 const ThankYou = () => {
   const [status, setStatus] = useState(null);
-  const [customerEmail, setCustomerEmail] = useState("");
+  const [order, setOrder] = useState(null);
+  const { uid } = useSelector((state) => state.user);
+  const { subtotal } = useSelector((state) => state.user.cart);
   const Navigate = useNavigate();
-
-  // For demonstration, assume you stored the newly created order in Redux
-  const orders = useSelector((state) => state.user.orders);
-
-  // If no orders in Redux, check local storage (guest users)
-  const lastOrder = useMemo(() => {
-    if (orders?.length > 0) {
-      return orders[orders.length - 1]; // Authenticated user order
-    }
-
-    // Check local storage for guest orders
-    const guestOrders = JSON.parse(localStorage.getItem("guestOrders")) || [];
-    return guestOrders.length > 0 ? guestOrders[guestOrders.length - 1] : null;
-  }, [orders]);
 
   useEffect(() => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const sessionId = urlParams.get("session_id");
 
-    console.log("sessionId: ", sessionId);
-
     _fetchPaymentStatus(sessionId).then((data) => {
-      console.log("line_items: ", data.line_items);
       setStatus(data.status);
-      setCustomerEmail(data.customer_email);
     });
-  }, []);
+    if (uid !== null && subtotal !== 0) {
+      _createOrder(sessionId, uid, subtotal).then((data) => {
+        setOrder(data);
+      });
+    }
+  }, [subtotal, uid]);
 
   if (status === "open") {
     return <Navigate to="/checkout" />;
   }
 
   // Destructure lastOrder safely
-  const { id, items, total } = lastOrder || {};
+  const { sessionId, cart_items, total } = order || {};
 
   if (status === "complete") {
     return (
@@ -51,21 +44,21 @@ const ThankYou = () => {
         <p>Your order was successfully placed.</p>
 
         <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-          <strong>Order ID:</strong> {id || "N/A"}
+          <strong>Order ID:</strong> {sessionId || "N/A"}
         </div>
 
         <h2 id="order-summary-header">Order Summary</h2>
         <ul>
-          {items?.map((item) => (
+          {cart_items?.map((item) => (
             <li key={item.id} style={{ marginBottom: "0.5rem" }}>
               {item.name} <br />
-              Quantity: {item.quantity?.toFixed(2)} <br />
-              Price: ${item.price?.toFixed(2)} each
+              Quantity: {item.quantity} <br />
+              Price: ${(item.price / 100)?.toFixed(2)} each
             </li>
           ))}
         </ul>
         <p>
-          <strong>Total:</strong> ${total || "N/A"}
+          <strong>Total:</strong> ${total?.toFixed(2) || "N/A"}
         </p>
 
         <p style={{ marginTop: "2rem" }}>

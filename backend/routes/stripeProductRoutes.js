@@ -6,18 +6,20 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // GET all products from Stripe
 router.get("/", async (req, res) => {
   try {
-    const products = await stripe.products.list({ active: true });
-    const prices = await stripe.prices.list({ active: true });
+    const products = await stripe.products.list({
+      active: true,
+      expand: ["data.default_price"],
+    });
 
     // Map products to include price information
     const productList = products.data.map((product) => {
-      const price = prices.data.find((p) => p.product === product.id);
+      const price = product.default_price;
       return {
         id: product.id,
         name: product.name,
         description: product.description,
-        price: price ? price.unit_amount / 100 : null, // Convert from cents
-        price_id: price ? price.id : null, // Needed for checkout
+        price: price.unit_amount ? price.unit_amount / 100 : null, // Convert from cents
+        price_id: price.id ? price.id : null, // Needed for checkout
         images: product.images,
         category: product.metadata.category || "Uncategorized",
         sizes: product.metadata.sizes ? product.metadata.sizes.split(",") : [],

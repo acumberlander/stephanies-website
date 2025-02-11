@@ -8,6 +8,7 @@ const productRoutes = require("./routes/productRoutes");
 const stripeProductRoutes = require("./routes/stripeProductRoutes");
 const userRoutes = require("./routes/userRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 const thankYouRoutes = require("./routes/thankYouRoutes");
 const webhooksRoutes = require("./routes/webhooksRoutes");
 
@@ -39,6 +40,7 @@ mongoose
 app.use("/api/products", productRoutes);
 app.use("/api/stripeProducts", stripeProductRoutes);
 app.use("/api/checkout", checkoutRoutes);
+app.use("/api/orders", orderRoutes);
 app.use("/api/webhooks", webhooksRoutes);
 app.use("/api/thank-you", thankYouRoutes);
 app.use("/api/users", userRoutes);
