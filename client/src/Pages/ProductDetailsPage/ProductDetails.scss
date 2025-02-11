@@ -12,6 +12,14 @@
   }
 }
 
+.images-list {
+  height: 50px;
+  width: 40px;
+  margin: 10px;
+  border-radius: 0.2rem;
+  cursor: pointer;
+}
+
 .product-and-details {
   display: flex;
   align-items: baseline;
