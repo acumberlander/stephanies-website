@@ -85,13 +85,7 @@ const ProductDetails = () => {
                   className="thumbnail-container"
                 >
                   <img
-                    style={{
-                      height: "50px",
-                      width: "40px",
-                      margin: "10px",
-                      cursor: "pointer",
-                      borderRadius: "0.2rem",
-                    }}
+                    className="images-list"
                     src={imageObj}
                     alt={product.name}
                   />
