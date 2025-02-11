@@ -25,11 +25,12 @@ router.post("/create-checkout-session", async (req, res) => {
         unit_amount: Math.round(item.price * 100), // Convert to cents
       },
       quantity: item.quantity,
+      dynamic_tax_rates: ["txr_1QqzpFGZ9VpDdAnjyMTL3zKV"],
     }));
 
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
-      customer: customer.id,
+      invoice_creation: { enabled: true },
       billing_address_collection: "required",
       shipping_address_collection: {
         allowed_countries: ["US", "CA"],
@@ -67,6 +68,20 @@ router.post("/create-checkout-session", async (req, res) => {
     });
 
     res.send({ clientSecret: session.client_secret });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get cart items from a specific order session
+router.get("/sessions/:id/line_items", async (req, res) => {
+  const { id: sessionId } = req.params;
+
+  try {
+    const { data: lineItems } = await stripe.checkout.sessions.listLineItems(
+      sessionId
+    );
+    res.send(lineItems);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  _createOrder,
+  _createUserOrder,
   _createUser,
   _fetchUserByUid,
 } from "../../api/mongoRequests";
@@ -52,7 +52,7 @@ export const createOrder = createAsyncThunk(
     try {
       if (user.isAuthenticated) {
         // Authenticated users: Store order in MongoDB
-        await _createOrder(orderData, user.uid);
+        await _createUserOrder(orderData, user.uid);
       } else {
         // Guest users: Store orders in local storage
         const guestOrders =

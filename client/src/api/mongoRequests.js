@@ -1,5 +1,6 @@
 import axios from "axios";
 import { userModel } from "../Models/User";
+import { _fetchSessionLineItems } from "./stripeRequests";
 
 const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5000";
 
@@ -33,13 +34,30 @@ export const _fetchUserByUid = async (uid) => {
  *
  * @param {object} orderData
  * @param {string} uid
- * @returns Updates orders in mongoDB
+ * @returns Updates user orders in mongoDB
  */
-export const _createOrder = async (orderData, uid) => {
+export const _createUserOrder = async (orderData, uid) => {
   const response = await axios.put(`${baseUrl}/api/users/${uid}/orders`, {
     orderData,
   });
   return response.data;
+};
+
+/**
+ *
+ * @param {object} orderData
+ * @param {string} uid
+ * @returns Updates orders in mongoDB
+ */
+export const _createOrder = async (sessionId, uid, subtotal) => {
+  const lineItems = await _fetchSessionLineItems(sessionId);
+  const { data: newOrder } = await axios.post(`${baseUrl}/api/orders`, {
+    uid,
+    sessionId,
+    lineItems,
+    subtotal,
+  });
+  return newOrder;
 };
 
 /************************************************************************************************************/

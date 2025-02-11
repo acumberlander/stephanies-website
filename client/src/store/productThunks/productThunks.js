@@ -36,6 +36,7 @@ export const fetchAllStripeProducts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await _fetchAllStripeProducts();
+      console.log("products: ", response);
       return response;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);

@@ -9,8 +9,7 @@ router.get("/session-status", async (req, res) => {
       req.query.session_id
     );
     res.send({
-      status: session.status,
-      customer_email: session.customer_details.email,
+      ...session,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });

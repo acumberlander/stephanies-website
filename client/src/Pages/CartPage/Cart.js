@@ -4,6 +4,7 @@ import { emptyCart } from "../../store/cartThunks/cartThunks";
 import { Link } from "react-router-dom";
 
 import CartItem from "../../components/CartComponents/CartItem/CartItem";
+import { GROUND_SHIPPING } from "../../constants/constants";
 import "./Cart.scss";
 
 const Cart = () => {
@@ -17,6 +18,14 @@ const Cart = () => {
 
   const handleEmptyCart = () => {
     dispatch(emptyCart(uid));
+  };
+
+  const calculateTax = () => {
+    return subtotal * 0.0975;
+  };
+
+  const calculateTotal = () => {
+    return calculateTax() + subtotal + GROUND_SHIPPING;
   };
 
   const EmptyCart = () => (
@@ -69,12 +78,18 @@ const Cart = () => {
         <Typography>Subtotal</Typography>
         <Typography>{subtotal.toFixed(2)}</Typography>
       </div>
-      <Typography>Estimate Shipping</Typography>
+      <div className="shipping-container">
+        <Typography>Shipping</Typography>
+        <Typography>5.00</Typography>
+      </div>
+      <div className="tax-container">
+        <Typography>Tax (9.75%)</Typography>
+        <Typography>{calculateTax().toFixed(2)}</Typography>
+      </div>
       <Divider className="divider" />
       <div className="total-container">
         <Typography>Total</Typography>
-        {/* TODO Need to add logic that accounts for shipping and other costs/discounts (taxes or discount codes) */}
-        <Typography>{subtotal.toFixed(2)}</Typography>
+        <Typography>{calculateTotal().toFixed(2)}</Typography>
       </div>
       <div className="checkout-button-container">
         <Button
