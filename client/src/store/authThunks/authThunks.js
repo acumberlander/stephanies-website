@@ -107,8 +107,6 @@ export const registerWithEmail = createAsyncThunk(
         password
       );
 
-      console.log("user: ", user);
-
       // Prepare user data for MongoDB
       const userData = {
         uid: user.uid,
@@ -136,7 +134,7 @@ export const signOutUser = createAsyncThunk(
     await signOut(auth);
     localStorage.setItem(
       "guestUser",
-      JSON.stringify({ ...userModel, _id: "guest", uid: "guest" })
+      JSON.stringify({ ...userModel, _id: null, uid: null })
     );
     dispatch(setUserIds({ _id: null, uid: null }));
     dispatch(setAuthenticated(false));

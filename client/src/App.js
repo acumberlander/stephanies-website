@@ -30,7 +30,7 @@ const App = () => {
     if (!uid) {
       initializeApp(dispatch);
     }
-    if (uid !== "guest") {
+    if (uid !== null) {
       closeModal();
     }
   }, [uid, dispatch]);

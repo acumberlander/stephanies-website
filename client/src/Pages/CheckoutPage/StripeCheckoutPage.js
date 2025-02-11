@@ -10,7 +10,7 @@ import {
 } from "@stripe/react-stripe-js";
 
 import "./Checkout.scss";
-import { _stripeCheckout } from "../../api/stripeRequests";
+import { _createStripeCheckoutSession } from "../../api/stripeRequests";
 
 const stripePromise = loadStripe(
   "pk_test_51IXc8UGZ9VpDdAnjJiDCqNr2ZPX3juuFegGBPhKzMZuBpYHm8MW74hE2gbGPR89LttRRd98zXmOSgbyjcbiqOasb00lMKjHDhN"
@@ -21,7 +21,7 @@ const CheckoutPage = ({ isMobile }) => {
   const uid = useSelector((state) => state.user.uid);
   const fetchClientSecret = useCallback(async () => {
     // Create a Checkout Session
-    const data = await _stripeCheckout(cartItems, uid);
+    const data = await _createStripeCheckoutSession(cartItems, uid);
     return data.clientSecret;
   }, [cartItems]);
 
