@@ -1,10 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  _createOrder,
-  _createUser,
-  _fetchUserByUid,
-} from "../../api/mongoRequests";
-import { updateGuestUser } from "../slices/userSlice";
+import { _createUser, _fetchUserByUid } from "../../api/mongoRequests";
 
 /**
  * @param userData
@@ -36,45 +31,6 @@ export const fetchUserByUid = createAsyncThunk(
       if (err.response && err.response.status === 404) {
         console.warn("User not found in MongoDB.");
       }
-      return rejectWithValue(err.response?.data || err.message);
-    }
-  }
-);
-
-/**
- * @param orderData
- */
-export const createOrder = createAsyncThunk(
-  "user/createOrder",
-  async (orderData, { getState, dispatch, rejectWithValue }) => {
-    const { user } = getState();
-
-    try {
-      if (user.isAuthenticated) {
-        // Authenticated users: Store order in MongoDB
-        await _createOrder(orderData, user.uid);
-      } else {
-        // Guest users: Store orders in local storage
-        const guestOrders =
-          JSON.parse(localStorage.getItem("guestOrders")) || [];
-        guestOrders.push(orderData);
-        localStorage.setItem("guestOrders", JSON.stringify(guestOrders));
-      }
-
-      // Empty the cart after checkout (for both guest and authenticated users)
-      const emptyCart = {
-        cart_items: [],
-        total_items: 0,
-        subtotal: 0,
-      };
-
-      if (user.isAuthenticated) {
-        return { cart: emptyCart, orders: [...user.orders, orderData] };
-      } else {
-        dispatch(updateGuestUser({ cart: emptyCart })); // Clear guest cart
-        return { cart: emptyCart };
-      }
-    } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
   }

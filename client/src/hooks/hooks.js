@@ -26,3 +26,19 @@ export const useIsMobile = (breakpoint = 900) => {
 
   return isMobile;
 };
+
+export const useErrorBoundary = () => {
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const errorHandler = (event) => {
+      setError(event.error);
+      event.preventDefault(); // Prevents default error logging
+    };
+
+    window.addEventListener("error", errorHandler);
+    return () => window.removeEventListener("error", errorHandler);
+  }, []);
+
+  return { error, setError };
+};

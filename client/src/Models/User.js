@@ -7,7 +7,6 @@ export const userModel = {
     total_items: 0,
     subtotal: 0,
   },
-  orders: [],
   status: "idle",
   error: null,
 };

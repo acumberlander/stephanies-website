@@ -4,8 +4,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const productRoutes = require("./routes/productRoutes");
+const stripeRoutes = require("./routes/stripeRoutes");
 const userRoutes = require("./routes/userRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 
@@ -41,8 +42,9 @@ mongoose
   .catch((err) => console.error("Mongo connection error:", err));
 
 // Routes
-app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/stripe", stripeRoutes);
 
 // Catch-all for undefined routes
 app.get("*", (req, res) => {

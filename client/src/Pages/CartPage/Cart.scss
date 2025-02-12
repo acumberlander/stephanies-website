@@ -11,6 +11,16 @@
   }
 }
 
+.shipping-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tax-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .cart-items-container {
   width: 65%;
   margin-right: 50;

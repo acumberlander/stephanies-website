@@ -13,22 +13,26 @@ import { updateGuestUser } from "../slices/userSlice";
  */
 export const emptyCart = createAsyncThunk(
   "user/emptyCart",
-  async (_, { getState, dispatch, rejectWithValue }) => {
+  async (isOrder = false, { getState, dispatch, rejectWithValue }) => {
     try {
       const { user } = getState();
+      const { isAuthenticated, uid } = user;
       const emptyCart = {
         cart_items: [],
         total_items: 0,
         subtotal: 0,
       };
 
-      if (user.isAuthenticated) {
-        await _emptyCart(user.uid, emptyCart); // MongoDB update
+      if (isAuthenticated) {
+        await _emptyCart(uid, emptyCart); // MongoDB update
       } else {
         dispatch(updateGuestUser({ cart: emptyCart })); // Update guest user in Redux
       }
-
-      toast("Your cart was emptied!");
+      if (isOrder) {
+        toast("Your order was successful!");
+      } else {
+        toast("Your cart was emptied!");
+      }
       return emptyCart;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);

@@ -1,60 +1,40 @@
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrder } from "../../store/orderThunks/orderThunks";
+import { useNavigate } from "react-router-dom";
 import "./ThankYou.scss";
 
 const ThankYou = () => {
-  // For demonstration, assume you stored the newly created order in Redux
-  const orders = useSelector((state) => state.user.orders);
+  const user = useSelector((state) => state.user);
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const sessionId = urlParams.get("session_id");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // If no orders in Redux, check local storage (guest users)
-  const lastOrder = useMemo(() => {
-    if (orders?.length > 0) {
-      return orders[orders.length - 1]; // Authenticated user order
+  const goBackHome = () => {
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
+  };
+
+  useEffect(() => {
+    if (sessionId && user.uid) {
+      dispatch(createOrder(sessionId))
+        .unwrap()
+        .then(() => {
+          goBackHome();
+        })
+        .catch((error) => {
+          console.error("There was a problem creating your order... ", error);
+        });
     }
-
-    // Check local storage for guest orders
-    const guestOrders = JSON.parse(localStorage.getItem("guestOrders")) || [];
-    return guestOrders.length > 0 ? guestOrders[guestOrders.length - 1] : null;
-  }, [orders]);
-
-  // If there's no order, show an error or placeholder
-  if (!lastOrder) {
-    return (
-      <div
-        id="no-order-container"
-        style={{ padding: "2rem", minHeight: "500px" }}
-      >
-        <h1 id="no-order-header">No Order Found</h1>
-        <p>It looks like you haven’t placed an order yet!</p>
-      </div>
-    );
-  }
-
-  // Destructure lastOrder safely
-  const { id, items, total } = lastOrder || {};
+  }, [sessionId, dispatch, user.uid]);
 
   return (
     <div className="thank-you-container">
       <h1 id="thank-you-header">Thank You For Your Order!</h1>
       <p>Your order was successfully placed.</p>
-
-      <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-        <strong>Order ID:</strong> {id || "N/A"}
-      </div>
-
-      <h2 id="order-summary-header">Order Summary</h2>
-      <ul>
-        {items?.map((item) => (
-          <li key={item.id} style={{ marginBottom: "0.5rem" }}>
-            {item.name} <br />
-            Quantity: {item.quantity?.toFixed(2)} <br />
-            Price: ${item.price?.toFixed(2)} each
-          </li>
-        ))}
-      </ul>
-      <p>
-        <strong>Total:</strong> ${total || "N/A"}
-      </p>
 
       <p style={{ marginTop: "2rem" }}>
         We appreciate your business and hope to serve you again soon!

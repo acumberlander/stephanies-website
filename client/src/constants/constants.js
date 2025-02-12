@@ -26,3 +26,5 @@ export const months = [
   "11",
   "12",
 ];
+
+export const GROUND_SHIPPING = 5;
