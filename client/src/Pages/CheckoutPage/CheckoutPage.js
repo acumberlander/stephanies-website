@@ -9,14 +9,13 @@ import {
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
 
-import "./Checkout.scss";
 import { _createStripeCheckoutSession } from "../../api/stripeRequests";
 
 config();
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_TEST_API_KEY);
 
-const CheckoutPage = ({ isMobile }) => {
+const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.user.cart.cart_items);
   const uid = useSelector((state) => state.user.uid);
   const fetchClientSecret = useCallback(async () => {
