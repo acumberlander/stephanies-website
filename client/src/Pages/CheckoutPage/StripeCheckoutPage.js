@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { config } from "dotenv";
 
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -12,9 +12,9 @@ import {
 import "./Checkout.scss";
 import { _createStripeCheckoutSession } from "../../api/stripeRequests";
 
-const stripePromise = loadStripe(
-  "pk_test_51IXc8UGZ9VpDdAnjJiDCqNr2ZPX3juuFegGBPhKzMZuBpYHm8MW74hE2gbGPR89LttRRd98zXmOSgbyjcbiqOasb00lMKjHDhN"
-);
+config();
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_TEST_API_KEY);
 
 const CheckoutPage = ({ isMobile }) => {
   const cartItems = useSelector((state) => state.user.cart.cart_items);
