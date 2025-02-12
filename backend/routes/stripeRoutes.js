@@ -62,7 +62,7 @@ router.post("/create-checkout-session", async (req, res) => {
       mode: "payment",
       ui_mode: "embedded",
       return_url: `${
-        process.env.CLIENT_URL || "http://localhost:3000"
+        process.env.FRONTEND_URL || "http://localhost:3000"
       }/thank-you?session_id={CHECKOUT_SESSION_ID}`, // Where user lands after payment
     });
 
