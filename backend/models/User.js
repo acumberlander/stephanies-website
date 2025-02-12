@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema({
     total_items: { type: Number, default: 0 },
     subtotal: { type: Number, default: 0 },
   },
-  orders: { type: Array, default: [] },
   isAuthenticated: { type: Boolean, default: false },
   isAdmin: { type: Boolean, default: false },
   status: { type: String, default: "idle" },

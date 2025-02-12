@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import CartItem from "../../components/CartComponents/CartItem/CartItem";
 import { GROUND_SHIPPING } from "../../constants/constants";
 import "./Cart.scss";
+import { copyToClipboard } from "../../helpers/helpers";
 
 const Cart = () => {
-  const { uid } = useSelector((state) => state.user);
   const { subtotal, cart_items } = useSelector((state) => state.user.cart);
   const dispatch = useDispatch();
 
@@ -17,7 +17,7 @@ const Cart = () => {
   }
 
   const handleEmptyCart = () => {
-    dispatch(emptyCart(uid));
+    dispatch(emptyCart());
   };
 
   const calculateTax = () => {
@@ -99,6 +99,7 @@ const Cart = () => {
           size="large"
           type="button"
           variant="contained"
+          onClick={copyToClipboard}
         >
           Checkout
         </Button>

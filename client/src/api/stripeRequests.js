@@ -36,7 +36,7 @@ export const _createStripeCheckoutSession = async (cartItems) => {
 /**
  *
  * @param {string} sessionId
- * @returns {Promise<productModel[]>} An array of items purchased within a order session/transaction
+ * @returns {Promise<product[]>} An array of items purchased within a order session/transaction
  */
 export const _fetchSessionLineItems = async (sessionId) => {
   const { data } = await axios.get(

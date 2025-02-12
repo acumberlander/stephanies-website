@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AppBar, Toolbar, Button, Badge, IconButton } from "@mui/material";
 import { ShoppingCart } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
