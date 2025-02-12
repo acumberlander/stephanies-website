@@ -40,7 +40,7 @@ const MyNavbar = ({ openModal }) => {
             handleSignOut={handleSignOut}
           />
         ) : (
-          <Toolbar style={{ minHeight: "40px" }} className="toolbar">
+          <Toolbar style={{ minHeight: "55px" }} className="toolbar">
             {stephaniesLogo}
             <span>
               <Button
