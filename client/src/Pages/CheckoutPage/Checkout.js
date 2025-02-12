@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
-import { createOrder } from "../../store/userThunks/userThunks";
+import { createOrder } from "../../store/orderThunks/orderThunks";
 import { useNavigate } from "react-router-dom";
 import { ShippingInfo } from "./CheckoutSteps/ShippingInfo";
 import { PaymentInfo } from "./CheckoutSteps/PaymentInfo";

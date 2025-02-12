@@ -10,6 +10,7 @@ import {
   setGuestUser,
 } from "../store/slices/userSlice";
 import { fetchAllStripeProducts } from "../store/productThunks/productThunks";
+import { fetchOrdersByUid } from "../store/orderThunks/orderThunks";
 import { userModel } from "../Models/User";
 
 /**
@@ -23,7 +24,6 @@ export const initializeApp = async (dispatch) => {
   try {
     // Set Firebase authentication persistence to local storage
     await setPersistence(auth, browserLocalPersistence);
-    console.log("Firebase auth persistence set to local.");
   } catch (error) {
     console.error("Error setting Firebase persistence:", error);
   }
@@ -38,6 +38,7 @@ export const initializeApp = async (dispatch) => {
       if (user && user._id) {
         dispatch(setUserIds(user));
         dispatch(setAuthenticated(true));
+        dispatch(fetchOrdersByUid(uid));
       }
     } catch (error) {
       console.warn("User not found in MongoDB. User must sign up first.");
@@ -54,10 +55,14 @@ export const initializeApp = async (dispatch) => {
       };
       localStorage.setItem("guestUser", JSON.stringify(newGuestUser));
       dispatch(setGuestUser(newGuestUser));
+      dispatch(fetchOrdersByUid(newGuestUser.uid));
     } else {
       dispatch(setGuestUser(storedGuestUser));
+      dispatch(fetchOrdersByUid(storedGuestUser.uid));
     }
     dispatch(setAuthenticated(false));
   }
+
+  // Load up all the products
   dispatch(fetchAllStripeProducts());
 };

@@ -31,23 +31,21 @@ export const _fetchUserByUid = async (uid) => {
 /********************************************** Order Request ***********************************************/
 
 /**
- *
- * @param {object} orderData
+ * Returns an array of all the orders the user has made.
  * @param {string} uid
- * @returns Updates user orders in mongoDB
+ * @returns {Promise<orderObject[]>} An array of order objects.
  */
-export const _createUserOrder = async (orderData, uid) => {
-  const response = await axios.put(`${baseUrl}/api/users/${uid}/orders`, {
-    orderData,
-  });
-  return response.data;
+export const _fetchOrdersByUid = async (uid) => {
+  const { data } = await axios.get(`${baseUrl}/api/orders/${uid}`);
+  return data;
 };
 
 /**
  * Creates an order object in mongoDB. Generates a uid if the user is a guest.
- * @param {object} orderData
+ * @param {string} sessionId
  * @param {string} uid
- * @returns Newly created mongoDB order object
+ * @param {number} subtotal
+ * @returns {orderObject} Newly created mongoDB order object
  */
 export const _createOrder = async (sessionId, uid, subtotal) => {
   // Get items from Stripe order session
@@ -84,6 +82,7 @@ export const _emptyCart = async (uid) => {
 /**
  *
  * @param {string} uid
+ * @param {object} cart
  * @returns Adds products to user's mongoDB cart
  */
 export const _addToCart = async (uid, cart) => {
@@ -110,32 +109,6 @@ export const _updateProductQuantity = async (uid, cart) => {
  */
 export const _removeProductFromCart = async (uid, cart) => {
   const response = await axios.put(`${baseUrl}/api/users/${uid}/cart`, cart);
-  return response.data;
-};
-
-/************************************************************************************************************/
-
-/********************************************** Product Requests ***********************************************/
-
-/**
- *
- * @param {string} uid
- * @param {object} cart
- * @returns Returns all the products in mongoDB
- */
-export const _fetchAllProducts = async () => {
-  const response = await axios.get(`${baseUrl}/api/products`);
-  return response.data;
-};
-
-/**
- *
- * @param {string} uid
- * @param {object} cart
- * @returns Returns all the products in mongoDB
- */
-export const _fetchProductById = async (productId) => {
-  const response = await axios.get(`${baseUrl}/api/product/${productId}`);
   return response.data;
 };
 

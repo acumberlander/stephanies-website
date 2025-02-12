@@ -12,9 +12,12 @@ router.post("/", async (req, res) => {
     return {
       name: item.description,
       id: item.id,
-      price: item.price.unit_amount,
-      total: item.amount_total,
-      quantity: item.quantity,
+      price: (item.price.unit_amount / 100).toFixed(2),
+      quantity: item.quantity.toFixed(0),
+      subtotal: (
+        (item.price.unit_amount / 100) *
+        item.quantity.toFixed(0)
+      ).toFixed(2),
     };
   });
 
@@ -27,14 +30,23 @@ router.post("/", async (req, res) => {
     const newOrder = new Order({
       uid: uid,
       sessionId: sessionId,
-      cart_items: formattedLineItemsStructure,
-      total: orderTotal(),
+      items: formattedLineItemsStructure,
+      total: orderTotal().toFixed(2),
     });
 
     const savedOrder = await newOrder.save();
     res.status(201).json(savedOrder);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-    res.send({ savedOrder });
+// Get orders by uid
+router.get("/:uid", async (req, res) => {
+  const { uid } = req.params;
+  try {
+    const orders = await Order.find({ uid });
+    res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
