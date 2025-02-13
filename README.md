@@ -74,10 +74,9 @@ This should spin up both the backend server as well as the client side server.
 
 - React
 - Redux
-- MongoDB (users and products)
 - Stripe API
-- Express
-- Node
+- Node/Express
+- MongoDB (orders and users)
 - Firebase Storage (images)
 
 ## Future Updates
