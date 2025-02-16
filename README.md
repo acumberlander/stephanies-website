@@ -84,7 +84,6 @@ This should spin up both the backend server as well as the client side server.
 Future updates will include:
 
 - Stripe api integration for payment options ✅
-- Separating "orders" from the User model.
-  - More efficient to separate orders into their own collections in mongoDB.
-- Some kind of email notification api that will send a confirmation receipt to user’s email
+- Separating "orders" from the User model. ✅
+- Some kind of email notification api that will send a confirmation receipt to user’s email. progress
 - Create admin portal that will allow client/site owner to add new products and update the current products.
