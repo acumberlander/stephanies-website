@@ -79,8 +79,6 @@ export const addToCart = createAsyncThunk(
         subtotal: newSubtotal,
       };
 
-      console.log("cart: ", cart);
-
       // Update mongoDB cart
       await _addToCart(user.uid, cart);
 
