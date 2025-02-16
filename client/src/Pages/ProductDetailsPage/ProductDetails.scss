@@ -6,6 +6,10 @@
 .content-container {
   display: flex;
   justify-content: center;
+  padding-top: 70px;
+  @media (max-width: 760px) {
+    padding-top: 0;
+  }
 }
 
 .product-and-details {
@@ -24,6 +28,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  h5 {
+    color: #cc34ab;
+    font-family: "Philosopher", "sans-serif";
+    margin-bottom: 20px;
+  }
 }
 
 .product-details-name {
@@ -58,7 +67,12 @@
 
 .product-details-text {
   max-width: 450px;
-  font-family: 'Philosopher', 'sans-serif';
+  font-family: "Philosopher", "sans-serif";
+  margin-bottom: 50px !important;
+  @media (max-width: 760px) {
+    padding: 0;
+    margin-bottom: 0;
+  }
 }
 
 .right-section {
@@ -69,23 +83,24 @@
   max-width: 450px;
   padding: 0 30px;
   @media (max-width: 760px) {
-    padding: 0
+    padding: 0;
+    margin-bottom: 50px;
   }
 }
 
 .price-header {
   margin-top: 20px;
-  font-family: 'Philosopher', 'sans-serif';
+  font-family: "Philosopher", "sans-serif";
 }
 
 .size-header {
   margin-top: 20px;
-  font-family: 'Philosopher', 'sans-serif';
+  font-family: "Philosopher", "sans-serif";
 }
 
 .quantity-header {
   margin-top: 20px;
-  font-family: 'Philosopher', 'sans-serif';
+  font-family: "Philosopher", "sans-serif";
 }
 
 .quantity-container {
@@ -131,5 +146,5 @@
 
 .color-header {
   margin-top: 20px;
-  font-family: 'Philosopher', 'sans-serif';
+  font-family: "Philosopher", "sans-serif";
 }

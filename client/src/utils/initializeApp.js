@@ -1,48 +1,68 @@
-import { createUser, fetchUserByUid } from "../store/userThunks/userThunks";
-import { createFirebaseUid } from "../firebase/firebaseAuth";
+import { fetchUserByUid } from "../store/userThunks/userThunks";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
+import {
+  setUserIds,
+  setAuthenticated,
+  setGuestUser,
+} from "../store/slices/userSlice";
+import { fetchAllStripeProducts } from "../store/productThunks/productThunks";
+import { fetchOrdersByUid } from "../store/orderThunks/orderThunks";
 import { userModel } from "../Models/User";
-import { setUserIds } from "../store/slices/userSlice";
-import { fetchAllProducts } from "../store/productThunks/productThunks";
 
 /**
- * Fetches user from mongodb that has a matching uid and then sets
- * mongo's _id property value to the user redux state. If there is no
- * user with a matching uid, then a new user will be created in mongoDB.
+ * Initializes the app:
+ * - If a user is authenticated via Firebase, fetch user from MongoDB.
+ * - If no user is authenticated, load or create a guest user in local storage.
  */
 export const initializeApp = async (dispatch) => {
-  let uid;
+  const auth = getAuth();
+
   try {
-    uid = await createFirebaseUid();
-
-    // Attempt to fetch the user from MongoDB
-    const user = await dispatch(fetchUserByUid(uid)).unwrap();
-
-    if (user && user.uid && user._id) {
-      // User exists, set _id in Redux
-      dispatch(setUserIds(user));
-    }
+    // Set Firebase authentication persistence to local storage
+    await setPersistence(auth, browserLocalPersistence);
   } catch (error) {
-    if (error.error === "User not found") {
-      // User doesn't exist, create a new one
-      const userData = {
-        ...userModel,
-        uid,
-      };
-
-      try {
-        const newMongoUser = await dispatch(createUser(userData)).unwrap();
-        if (newMongoUser && newMongoUser._id && newMongoUser.uid) {
-          dispatch(setUserIds(newMongoUser));
-        }
-      } catch (createUserError) {
-        console.error("Error creating user:", createUserError);
-      }
-    } else {
-      // Handle other errors
-      console.error("Error fetching user:", error);
-    }
-  } finally {
-    // Optionally, fetch all products regardless of user status
-    dispatch(fetchAllProducts());
+    console.error("Error setting Firebase persistence:", error);
   }
+
+  const firebaseUser = auth.currentUser; // Firebase only for authentication
+
+  if (firebaseUser) {
+    try {
+      const uid = firebaseUser.uid;
+      const user = await dispatch(fetchUserByUid(uid)).unwrap();
+
+      if (user && user._id) {
+        dispatch(setUserIds(user));
+        dispatch(setAuthenticated(true));
+        dispatch(fetchOrdersByUid(uid));
+      }
+    } catch (error) {
+      console.warn("User not found in MongoDB. User must sign up first.");
+    }
+  } else {
+    // Handle guest user
+    const storedGuestUser = JSON.parse(localStorage.getItem("guestUser"));
+
+    if (!storedGuestUser || !storedGuestUser.uid) {
+      // Create new guest user
+      const newGuestUser = {
+        ...userModel,
+        uid: `guest-${crypto.randomUUID()}`,
+      };
+      localStorage.setItem("guestUser", JSON.stringify(newGuestUser));
+      dispatch(setGuestUser(newGuestUser));
+      dispatch(fetchOrdersByUid(newGuestUser.uid));
+    } else {
+      dispatch(setGuestUser(storedGuestUser));
+      dispatch(fetchOrdersByUid(storedGuestUser.uid));
+    }
+    dispatch(setAuthenticated(false));
+  }
+
+  // Load up all the products
+  dispatch(fetchAllStripeProducts());
 };

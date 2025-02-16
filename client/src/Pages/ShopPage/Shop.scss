@@ -1,46 +1,55 @@
- .shop-container {
-  height: auto;
- }
+.shop-container {
+  margin-bottom: 100px;
+  @media (max-width: 760px) {
+    margin-bottom: 50px;
+  }
+}
 
- .header {
-  font-family: 'Philosohper', 'sans-serif' !important;
+.header {
+  font-family: "Philosohper", "sans-serif" !important;
   color: #cc34ab !important;
- }
+}
 
- .shop-header {
+.shop-header {
   padding: 50px 0 50px;
- }
+}
 
- .hero-buttons {
+.hero-buttons {
   margin-top: 10px;
- }
+}
 
- .card-grid {
+.card-grid {
   padding-top: 10px;
   padding-bottom: 10px;
   display: flex;
   justify-content: space-evenly;
   min-height: 100vh;
- }
+}
 
- .grid-item {
+.grid-item {
   margin: 5px;
- }
+}
 
- .card {
+.card {
   display: flex;
   flex-direction: column;
- }
+}
 
- .card-media {
+.card-media {
   padding-top: 56.25%;
- }
+}
 
- .card-content {
+.card-content {
   flex-grow: 1;
- }
+}
 
- .footer {
+.footer {
   background-color: whitesmoke;
   padding: 15px;
- }
+}
+
+.page-loading {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}

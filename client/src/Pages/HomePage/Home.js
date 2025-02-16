@@ -1,4 +1,3 @@
-import React from "react";
 import { Fade, Typography, Input, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import HomeCardList from "../../components/HomeComponents/HomeCardList/HomeCardList";
@@ -27,7 +26,9 @@ const Home = () => {
           10% OFF YOUR FIRST ORDER
         </Typography>
         <div className="input-and-button">
+          <label htmlFor="email-input"></label>
           <Input
+            id="email-input"
             className="email-input"
             placeholder="Enter your email here*"
             disableUnderline={true}

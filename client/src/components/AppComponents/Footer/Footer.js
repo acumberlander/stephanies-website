@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import instaIcon from "../../../assets/socialMedia/instagram-5-256.png";
-import facebookIcon from "../../../assets/socialMedia/facebook-4-256.png";
-import trademark from "../../../assets/icons8-trademark-52.png";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useState } from "react";
+import instaIcon from "../../../assets/icons/socialMedia/instagram-5-256.png";
+import facebookIcon from "../../../assets/icons/socialMedia/facebook-4-256.png";
+import trademark from "../../../assets/icons/icons8-trademark-52.png";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import logo from "../../../assets/logos/logo-2.png";
-import './Footer.scss';
+import "./Footer.scss";
 
 const Footer = () => {
   const [backToTop, setBackToTop] = useState("hidden");
@@ -34,11 +34,7 @@ const Footer = () => {
           rel="noopener noreferrer"
           href="https://www.facebook.com/Sexes-Custom-Brand-149443252511629"
         >
-          <img
-            className="social-icon"
-            src={facebookIcon}
-            alt="facebook"
-          />
+          <img className="social-icon" src={facebookIcon} alt="facebook" />
         </a>
         <a
           className="footer-link"

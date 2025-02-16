@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { addToCart } from "../../store/cartThunks/cartThunks";
 import {
   Container,
-  Select,
   Typography,
-  MenuItem,
-  FormControl,
-  FormHelperText,
   Button,
   CircularProgress,
   Fade,
@@ -22,7 +18,7 @@ import "./ProductDetails.scss";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState(productModel);
-  const [displayedImage, setDisplayedImage] = useState("");
+  const [displayedImage, setDisplayedImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const allProducts = useSelector((state) => state.products);
   const { uid } = useSelector((state) => state.user);
@@ -55,7 +51,7 @@ const ProductDetails = () => {
     if (window.scrollY !== 0) {
       window.scrollTo(0, 0);
     }
-  }, [params, allProducts]);
+  }, [params, allProducts, dispatch]);
 
   return (
     <Container className="container">
@@ -114,7 +110,7 @@ const ProductDetails = () => {
           </div>
           {/* Right Section */}
           <div className="right-section">
-            <Typography className="price-header">{product.price}</Typography>
+            <Typography className="price-header">${product.price}</Typography>
 
             <Typography className="quantity-header">Quantity</Typography>
 

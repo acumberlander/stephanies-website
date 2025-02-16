@@ -1,9 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  _createOrder,
-  _createUser,
-  _fetchUserByUid,
-} from "../../api/mongoRequests";
+import { _createUser, _fetchUserByUid } from "../../api/mongoRequests";
 
 /**
  * @param userData
@@ -33,39 +29,8 @@ export const fetchUserByUid = createAsyncThunk(
       return response;
     } catch (err) {
       if (err.response && err.response.status === 404) {
-        return rejectWithValue({ error: "User not found" });
+        console.warn("User not found in MongoDB.");
       }
-      return rejectWithValue(err.response?.data || err.message);
-    }
-  }
-);
-
-/**
- * @param orderData
- */
-export const createOrder = createAsyncThunk(
-  "user/createOrder",
-  async (orderData, { getState, rejectWithValue }) => {
-    const { user } = getState();
-    try {
-      await _createOrder(orderData, user.uid);
-
-      // Create updated orders array
-      const updatedOrders = user.orders
-        ? [...user.orders, orderData]
-        : [orderData];
-
-      // Return updated orders and cart data (for Redux)
-      return {
-        cart: {
-          cart_items: [],
-          total_items: 0,
-          subtotal: 0,
-        },
-        orders: updatedOrders,
-      };
-    } catch (err) {
-      // Extract and return error message
       return rejectWithValue(err.response?.data || err.message);
     }
   }

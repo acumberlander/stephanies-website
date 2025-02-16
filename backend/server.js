@@ -1,15 +1,26 @@
 require("dotenv").config();
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const productRoutes = require("./routes/productRoutes");
+const stripeRoutes = require("./routes/stripeRoutes");
 const userRoutes = require("./routes/userRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://stephanies-website-frontend.onrender.com/",
+      "https://stephanies-website-backend.onrender.com/",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Connect to Mongo
@@ -22,12 +33,13 @@ mongoose
   .catch((err) => console.error("Mongo connection error:", err));
 
 // Routes
-app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/stripe", stripeRoutes);
 
-// Catch-all for undefined routes (optional but recommended)
-app.use((req, res) => {
-  res.status(404).json({ error: "Endpoint not found" });
+// Catch-all for undefined routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 // Start server
