@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const Stripe = require("stripe");
@@ -30,6 +31,7 @@ router.post("/create-checkout-session", async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
       invoice_creation: { enabled: true },
+      receipt_email: null,
       billing_address_collection: "required",
       shipping_address_collection: {
         allowed_countries: ["US", "CA"],
