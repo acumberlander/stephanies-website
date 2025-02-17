@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// If your cart items match the product shape, you can define a sub-schema
 const cartItemSchema = new mongoose.Schema({
   name: String,
   category: String,
@@ -24,8 +23,8 @@ const userSchema = new mongoose.Schema({
     total_items: { type: Number, default: 0 },
     subtotal: { type: Number, default: 0 },
   },
-  orders: { type: Array, default: [] },
   isAuthenticated: { type: Boolean, default: false },
+  isAdmin: { type: Boolean, default: false },
   status: { type: String, default: "idle" },
   error: { type: String, default: null },
 });

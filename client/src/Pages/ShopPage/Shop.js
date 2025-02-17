@@ -5,6 +5,7 @@ import { CircularProgress, Container, Typography, Fade } from "@mui/material";
 import { useSelector } from "react-redux";
 import Product from "../../components/ProductComponents/Product/Product.js";
 import "./Shop.scss";
+import ErrorPage from "../ErrorPage/ErrorPage.js";
 
 export default function Shop() {
   const allProducts = useSelector((state) => state.products);
@@ -62,28 +63,24 @@ export default function Shop() {
         <div className="page-loading">
           <CircularProgress size={80} />
         </div>
-      ) :
-      (<Grid className="card-grid" container spacing={4}>
-        {products?.map((product) => (
-          <Fade
-            key={product.id}
-            in={product !== null}
-            style={{ transformOrigin: "0 0 0" }}
-            {...(product !== null ? { timeout: 1500 } : {})}
-          >
-            <Grid
-              className="grid-item"
-              xs={12}
-              sm={6}
-              md={4}
-              lg={4}
-              xl={3}
+      ) : products.length > 0 ? (
+        <Grid className="card-grid" container spacing={4}>
+          {products?.map((product) => (
+            <Fade
+              key={product.id}
+              in={product !== null}
+              style={{ transformOrigin: "0 0 0" }}
+              {...(product !== null ? { timeout: 1500 } : {})}
             >
-              <Product product={product} className="card" />
-            </Grid>
-          </Fade>
-        ))}
-      </Grid>)}
+              <Grid className="grid-item" xs={12} sm={6} md={4} lg={4} xl={3}>
+                <Product product={product} className="card" />
+              </Grid>
+            </Fade>
+          ))}
+        </Grid>
+      ) : (
+        <ErrorPage />
+      )}
     </div>
   );
 }

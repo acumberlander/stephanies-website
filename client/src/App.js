@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeApp } from "./utils/initializeApp";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import {
   MyNavbar,
   Footer,
   About,
   Cart,
-  Checkout,
   Home,
   Shop,
   ProductDetails,
   ErrorPage,
   AuthModal,
+  CheckoutPage,
 } from "./components";
 import ThankYou from "./Pages/ThankYouPage/ThankYou";
 import { useIsMobile, useModal } from "./hooks/hooks";
@@ -29,7 +29,7 @@ const App = () => {
     if (!uid) {
       initializeApp(dispatch);
     }
-    if (uid !== "guest") {
+    if (uid !== null) {
       closeModal();
     }
   }, [uid, dispatch]);
@@ -41,7 +41,7 @@ const App = () => {
       {isMobile ? null : (
         <ToastContainer
           position="top-right"
-          autoClose={3000}
+          autoClose={1500}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick={false}
@@ -63,7 +63,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/shop/:category" element={<Shop />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/thank-you" element={<ThankYou />} />
         <Route path="*" element={<ErrorPage />} />

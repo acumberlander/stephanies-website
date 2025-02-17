@@ -8,6 +8,9 @@ import {
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore/lite";
 import { getStorage, ref } from "firebase/storage";
+import { config } from "dotenv";
+
+config();
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

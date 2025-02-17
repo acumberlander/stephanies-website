@@ -6,11 +6,7 @@ import {
   incrementProductQuantity,
   removeProductFromCart,
 } from "../cartThunks/cartThunks";
-import {
-  createOrder,
-  createUser,
-  fetchUserByUid,
-} from "../userThunks/userThunks";
+import { createUser, fetchUserByUid } from "../userThunks/userThunks";
 import {
   signInWithGoogle,
   signInWithEmail,
@@ -207,21 +203,6 @@ const userSlice = createSlice({
         };
       })
       .addCase(removeProductFromCart.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      })
-
-      // createOrder
-      .addCase(createOrder.pending, (state, action) => {
-        state.status = "loading";
-        state.error = action.payload;
-      })
-      .addCase(createOrder.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.cart = action.payload.cart;
-        state.orders = action.payload.orders;
-      })
-      .addCase(createOrder.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
