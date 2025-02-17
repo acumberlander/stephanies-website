@@ -22,7 +22,7 @@ const MyNavbar = ({ openModal }) => {
 
   const stephaniesLogo = (
     <RouterLink className="logo-link" to="/">
-      <img style={{ height: 50, width: 50 }} src={myLogo} alt="logo" />
+      <img id="logo-link-image" src={myLogo} alt="logo" />
     </RouterLink>
   );
 

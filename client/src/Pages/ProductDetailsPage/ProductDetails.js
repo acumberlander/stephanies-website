@@ -30,11 +30,7 @@ const ProductDetails = () => {
    * Adds current product to the users cart. Updates the user state in redux
    */
   const handleAddToCart = () => {
-    if (product.option_groups && product.option_groups[0]) {
-      dispatch(addToCart({ uid, product, quantity }));
-    } else {
-      dispatch(addToCart({ uid, product, quantity }));
-    }
+    dispatch(addToCart({ uid, product, quantity }));
     setQuantity(1);
   };
 
@@ -89,13 +85,7 @@ const ProductDetails = () => {
                   className="thumbnail-container"
                 >
                   <img
-                    style={{
-                      height: "50px",
-                      width: "40px",
-                      margin: "10px",
-                      cursor: "pointer",
-                      borderRadius: "0.2rem",
-                    }}
+                    className="images-list"
                     src={imageObj}
                     alt={product.name}
                   />
