@@ -1,5 +1,6 @@
-import { useCallback, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useCallback, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { config } from "dotenv";
 
 import { loadStripe } from "@stripe/stripe-js";
@@ -25,6 +26,13 @@ const CheckoutPage = () => {
   }, [cartItems]);
 
   const options = { fetchClientSecret };
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (uid === null) {
+      navigate("/");
+    }
+  }, [uid]);
 
   return (
     <div id="checkout">

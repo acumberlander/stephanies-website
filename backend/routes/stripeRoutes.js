@@ -31,7 +31,7 @@ router.post("/create-checkout-session", async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
       invoice_creation: { enabled: true },
-      receipt_email: null,
+      allow_promotion_codes: true,
       billing_address_collection: "required",
       shipping_address_collection: {
         allowed_countries: ["US", "CA"],
@@ -58,9 +58,6 @@ router.post("/create-checkout-session", async (req, res) => {
           },
         },
       ],
-      // automatic_tax: {
-      //   enabled: true,
-      // },
       mode: "payment",
       ui_mode: "embedded",
       return_url: `${

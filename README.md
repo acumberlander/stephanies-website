@@ -85,5 +85,6 @@ Future updates will include:
 
 - Stripe api integration for payment options ✅
 - Separating "orders" from the User model. ✅
-- Some kind of email notification api that will send a confirmation receipt to user’s email. progress
+- Some kind of email notification api that will send a confirmation receipt to user’s email. ✅
+  - It works when not in test mode. Otherwise you have to send an email receipt manually.
 - Create admin portal that will allow client/site owner to add new products and update the current products.
