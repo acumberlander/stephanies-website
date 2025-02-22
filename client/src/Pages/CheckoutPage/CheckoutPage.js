@@ -11,6 +11,7 @@ import {
 } from "@stripe/react-stripe-js";
 
 import { _createStripeCheckoutSession } from "../../api/stripeRequests";
+import "./CheckoutPage.scss";
 
 config();
 
