@@ -6,31 +6,6 @@ import {
 } from "../../api/stripeRequests";
 
 // Thunk to fetch all products
-export const fetchAllProducts = createAsyncThunk(
-  "products/fetchAllProducts",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await _fetchAllStripeProducts();
-      return response;
-    } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
-    }
-  }
-);
-
-// Thunk to fetch all products
-export const fetchProductById = createAsyncThunk(
-  "products/fetchProductById",
-  async ({ productId }, { rejectWithValue }) => {
-    try {
-      const response = await _fetchStripeProductById(productId);
-      return response;
-    } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
-    }
-  }
-);
-// Thunk to fetch all products
 export const fetchAllStripeProducts = createAsyncThunk(
   "products/fetchAllStripeProducts",
   async (_, { rejectWithValue }) => {
@@ -38,7 +13,7 @@ export const fetchAllStripeProducts = createAsyncThunk(
       const response = await _fetchAllStripeProducts();
       return response;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue("Unable to fetch products at this time");
     }
   }
 );
@@ -51,7 +26,7 @@ export const fetchStripeProductById = createAsyncThunk(
       const response = await _fetchStripeProductById(productId);
       return response;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue("Unable to fetch product at this time");
     }
   }
 );

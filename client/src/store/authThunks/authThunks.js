@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 // Google Sign-In
 export const signInWithGoogle = createAsyncThunk(
   "auth/signInWithGoogle",
-  async (_, { dispatch, getState, rejectWithValue }) => {
+  async (_, { dispatch, getState }) => {
     let name;
     try {
       // Authenticate with Google
@@ -73,14 +73,14 @@ export const signInWithGoogle = createAsyncThunk(
         });
     } catch (error) {
       console.error("Google Sign-In Error:", error);
-      return rejectWithValue(error.message);
+      return { error: "Unable to sign in with Google at this time." };
     }
   }
 );
 
 export const signInWithEmail = createAsyncThunk(
   "user/signInWithEmail",
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password }) => {
     try {
       // Authenticate with Firebase
       const { user } = await signInWithEmailAndPassword(auth, email, password);
@@ -91,14 +91,20 @@ export const signInWithEmail = createAsyncThunk(
       toast(`Welcome back, ${user.firstName}!`);
       return response;
     } catch (error) {
-      return rejectWithValue(error.message);
+      if (error.code === "auth/user-not-found") {
+        return { error: "No account found with this email." };
+      } else if (error.code === "auth/invalid-credential") {
+        return { error: "Invalid credentials." };
+      }
+
+      return { error: "Unable to sign in with email at this time." };
     }
   }
 );
 // Email & Password registration
 export const registerWithEmail = createAsyncThunk(
   "auth/registerWithEmail",
-  async ({ email, password, firstName, lastName }, { rejectWithValue }) => {
+  async ({ email, password, firstName, lastName }) => {
     try {
       // Create user in Firebase
       const { user } = await createUserWithEmailAndPassword(
@@ -122,7 +128,10 @@ export const registerWithEmail = createAsyncThunk(
 
       return mongoUser;
     } catch (error) {
-      return rejectWithValue(error.message);
+      if (error.code === "auth/email-already-in-use") {
+        return { error: "An account already exists with this email." };
+      }
+      return { error: "Unable to register with email at this time." };
     }
   }
 );

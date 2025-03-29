@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal, Box, Input } from "@mui/material";
 import "./AuthModal.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   signInWithGoogle,
   signInWithEmail,
@@ -31,25 +31,37 @@ const style = {
 const AuthModal = ({ isOpen, closeModal }) => {
   const dispatch = useDispatch();
   const [isRegistered, setIsRegistered] = useState(true);
+  const [authError, setAuthError] = useState("");
 
   const handleGoogleAuth = () => {
     closeModal();
     dispatch(signInWithGoogle());
   };
 
-  const handleAuth = (e) => {
+  const handleAuth = async (e) => {
     e.preventDefault();
-    let firstName;
-    let lastName;
+    let firstName, lastName;
     const email = e.target.email.value;
     const password = e.target.password.value;
+
     if (!isRegistered) {
       firstName = e.target.firstName.value;
       lastName = e.target.lastName.value;
     }
-    isRegistered
+
+    const action = isRegistered
       ? dispatch(signInWithEmail({ email, password }))
       : dispatch(registerWithEmail({ email, password, firstName, lastName }));
+
+    const actionResult = await action.unwrap();
+
+    if (actionResult.error) {
+      // Show custom message from thunk or fallback
+      setAuthError(actionResult.error);
+    } else {
+      setAuthError("");
+      closeModal();
+    }
   };
 
   return (
@@ -105,6 +117,8 @@ const AuthModal = ({ isOpen, closeModal }) => {
             className="toggle-link"
             onClick={() => setIsRegistered(!isRegistered)}
           >
+            {authError && <p className="auth-error">{authError}</p>}
+
             {isRegistered
               ? "Don't have an account? Register"
               : "Already have an account? Sign In"}
