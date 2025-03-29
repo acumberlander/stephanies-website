@@ -14,6 +14,7 @@ import {
   ErrorPage,
   AuthModal,
   CheckoutPage,
+  AdminPage,
 } from "./components";
 import ThankYou from "./Pages/ThankYouPage/ThankYou";
 import { useIsMobile, useModal } from "./hooks/hooks";
@@ -23,7 +24,8 @@ const App = () => {
   const { isOpen, openModal, closeModal } = useModal();
   const dispatch = useDispatch();
   const { isMobile } = useIsMobile();
-  const { uid } = useSelector((state) => state.user);
+  const { uid, isAdmin } = useSelector((state) => state.user);
+  const onAdminPage = window.location.pathname === "/admin";
 
   useEffect(() => {
     if (!uid) {
@@ -60,6 +62,7 @@ const App = () => {
       )}
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/shop/:category" element={<Shop />} />
         <Route path="/cart" element={<Cart />} />
@@ -68,7 +71,7 @@ const App = () => {
         <Route path="/thank-you" element={<ThankYou />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
-      <Footer />
+      {onAdminPage ? null : <Footer />}
     </Router>
   );
 };

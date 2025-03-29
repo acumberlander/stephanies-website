@@ -6,6 +6,9 @@ export { default as HomeCard } from "./HomeComponents/HomeCard/HomeCard";
 export { default as MyGallery } from "./HomeComponents/MyGallery/MyGallery";
 export { default as Product } from "./ProductComponents/Product/Product";
 export { default as ProductDetailsDropdowns } from "./ProductComponents/ProductDetailsDropdowns/ProductDetailsDropdowns";
+export { default as ProductForm } from "./AdminComponents/ProductForm";
+export { default as ProductList } from "./AdminComponents/ProductList";
+export { default as TransactionList } from "./AdminComponents/TransactionList";
 
 // Pages
 export { default as About } from "../Pages/AboutPage/About";
@@ -15,3 +18,4 @@ export { default as Home } from "../Pages/HomePage/Home";
 export { default as ProductDetails } from "../Pages/ProductDetailsPage/ProductDetails";
 export { default as Shop } from "../Pages/ShopPage/Shop";
 export { default as ErrorPage } from "../Pages/ErrorPage/ErrorPage";
+export { default as AdminPage } from "../Pages/AdminPage/AdminPage";
