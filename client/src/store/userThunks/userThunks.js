@@ -16,7 +16,7 @@ export const createUser = createAsyncThunk(
       if (err.response && err.response.data) {
         return rejectWithValue(err.response.data);
       }
-      return rejectWithValue(err.message);
+      return rejectWithValue("Unable to create user at this time.");
     }
   }
 );
@@ -31,7 +31,7 @@ export const fetchUserByUid = createAsyncThunk(
       if (err.response && err.response.status === 404) {
         console.warn("User not found in MongoDB.");
       }
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue("Unable to fetch user at this time.");
     }
   }
 );

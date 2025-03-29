@@ -33,9 +33,9 @@ mongoose
   .catch((err) => console.error("Mongo connection error:", err));
 
 // Routes
-app.use("/api/users", userRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/stripe", stripeRoutes);
+app.use("/users", userRoutes);
+app.use("/orders", orderRoutes);
+app.use("/stripe", stripeRoutes);
 
 // Catch-all for undefined routes
 app.get("*", (req, res) => {
@@ -43,7 +43,7 @@ app.get("*", (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

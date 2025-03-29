@@ -48,7 +48,7 @@ export const createOrder = createAsyncThunk(
       // Updates the cart in redux state
       return { orders: [...oldOrders, newOrder] };
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue("Unable to create order at this time.");
     }
   }
 );
@@ -64,7 +64,7 @@ export const fetchOrdersByUid = createAsyncThunk(
       const userOrders = await _fetchOrdersByUid(uid);
       return userOrders;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue("Unable to fetch orders at this time.");
     }
   }
 );

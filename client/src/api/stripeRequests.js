@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5000";
+const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5001";
 
 /**
  *
  * @returns Returns all the products in Stripe database
  */
 export const _fetchAllStripeProducts = async () => {
-  const response = await axios.get(`${baseUrl}/api/stripe/products`);
+  const response = await axios.get(`${baseUrl}/stripe/products`);
   return response.data;
 };
 
@@ -16,7 +16,7 @@ export const _fetchAllStripeProducts = async () => {
  * @returns Returns Stripe product by id from Stripe database
  */
 export const _fetchStripeProductById = async (id) => {
-  const { data } = await axios.get(`${baseUrl}/api/stripe/product/${id}`);
+  const { data } = await axios.get(`${baseUrl}/stripe/product/${id}`);
   return data;
 };
 
@@ -27,7 +27,7 @@ export const _fetchStripeProductById = async (id) => {
  */
 export const _createStripeCheckoutSession = async (cartItems) => {
   const { data } = await axios.post(
-    `${baseUrl}/api/stripe/create-checkout-session`,
+    `${baseUrl}/stripe/create-checkout-session`,
     { cartItems }
   );
   return data;
@@ -40,7 +40,7 @@ export const _createStripeCheckoutSession = async (cartItems) => {
  */
 export const _fetchSessionLineItems = async (sessionId) => {
   const { data } = await axios.get(
-    `${baseUrl}/api/stripe/sessions/${sessionId}/line_items`
+    `${baseUrl}/stripe/sessions/${sessionId}/line_items`
   );
   return data;
 };

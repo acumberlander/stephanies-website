@@ -35,7 +35,7 @@ export const emptyCart = createAsyncThunk(
       }
       return emptyCart;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue("Unable to empty cart at this time.");
     }
   }
 );
@@ -92,7 +92,7 @@ export const addToCart = createAsyncThunk(
 
       return updatedCart;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue("Unable to add to cart at this time.");
     }
   }
 );
@@ -126,7 +126,7 @@ export const incrementProductQuantity = createAsyncThunk(
 
       return updatedCart;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue("Unable to increment product quantity at this time.");
     }
   }
 );
@@ -164,7 +164,7 @@ export const decrementProductQuantity = createAsyncThunk(
 
       return updatedCart;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue("Unable to decrement product quantity at this time.");
     }
   }
 );
@@ -199,7 +199,7 @@ export const removeProductFromCart = createAsyncThunk(
       toast("You removed a product from your cart!");
       return updatedCart;
     } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
+      return rejectWithValue("Unable to remove product from cart at this time.");
     }
   }
 );

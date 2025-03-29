@@ -11,6 +11,7 @@ export default function Shop() {
   const allProducts = useSelector((state) => state.products);
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
 
   if (window.scrollY !== 0) {
     window.scrollTo(0, 0);
@@ -26,7 +27,7 @@ export default function Shop() {
   useEffect(() => {
     if (allProducts.status === "failed") {
       setIsLoading(false);
-      throw new Error("There was a problem loading products...");
+      setError(allProducts.error);
     }
 
     if (allProducts.status === "succeeded") {
@@ -63,7 +64,7 @@ export default function Shop() {
         <div className="page-loading">
           <CircularProgress size={80} />
         </div>
-      ) : products.length > 0 ? (
+      ) : products.length > 0 && !error ? (
         <Grid className="card-grid" container spacing={4}>
           {products?.map((product) => (
             <Fade
@@ -79,7 +80,7 @@ export default function Shop() {
           ))}
         </Grid>
       ) : (
-        <ErrorPage />
+        <ErrorPage error={error} />
       )}
     </div>
   );
