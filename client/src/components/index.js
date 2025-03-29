@@ -1,3 +1,4 @@
+export { default as MainLayout } from "./AppComponents/MainLayout/MainLayout";
 export { default as MyNavbar } from "./AppComponents/MyNavbar/MyNavbar";
 export { default as Footer } from "./AppComponents/Footer/Footer";
 export { default as AuthModal } from "./AppComponents/AuthModal/AuthModal";
