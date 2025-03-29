@@ -18,7 +18,7 @@ import { userModel } from "../Models/User";
  * - If a user is authenticated via Firebase, fetch user from MongoDB.
  * - If no user is authenticated, load or create a guest user in local storage.
  */
-export const initializeApp = async (dispatch) => {
+export const initializeApp = async (dispatch, navigate) => {
   const auth = getAuth();
 
   try {

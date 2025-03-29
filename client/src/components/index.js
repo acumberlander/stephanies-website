@@ -1,3 +1,4 @@
+export { default as MainLayout } from "./AppComponents/MainLayout/MainLayout";
 export { default as MyNavbar } from "./AppComponents/MyNavbar/MyNavbar";
 export { default as Footer } from "./AppComponents/Footer/Footer";
 export { default as AuthModal } from "./AppComponents/AuthModal/AuthModal";
@@ -19,3 +20,5 @@ export { default as ProductDetails } from "../Pages/ProductDetailsPage/ProductDe
 export { default as Shop } from "../Pages/ShopPage/Shop";
 export { default as ErrorPage } from "../Pages/ErrorPage/ErrorPage";
 export { default as AdminPage } from "../Pages/AdminPage/AdminPage";
+export { default as ThankYou } from "../Pages/ThankYouPage/ThankYou";
+export { default as LoadingPage } from "../Pages/LoadingPage/LoadingPage";

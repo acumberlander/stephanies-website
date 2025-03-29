@@ -4,7 +4,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5001";
 
 /**
  *
- * @returns Returns all the products in Stripe database
+ * @returns {Promise<product[]>} Returns all the products in Stripe database
  */
 export const _fetchAllStripeProducts = async () => {
   const response = await axios.get(`${baseUrl}/stripe/products`);
@@ -13,7 +13,7 @@ export const _fetchAllStripeProducts = async () => {
 
 /**
  * @param {string} id
- * @returns Returns Stripe product by id from Stripe database
+ * @returns {Promise<product>} Returns Stripe product by id from Stripe database
  */
 export const _fetchStripeProductById = async (id) => {
   const { data } = await axios.get(`${baseUrl}/stripe/product/${id}`);
