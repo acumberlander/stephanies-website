@@ -1,0 +1,14 @@
+.loading-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.loading-text {
+  color: #cc34ab;
+  font-family: 'Philosopher, sans-serif';
+  margin-bottom: 2rem;
+}

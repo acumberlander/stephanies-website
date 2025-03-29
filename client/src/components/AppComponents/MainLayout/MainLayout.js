@@ -1,20 +1,22 @@
-import React from "react";
-import { ToastContainer } from "react-toastify";
-import { useIsMobile, useModal } from "../../../hooks/hooks";
-import { MyNavbar, AuthModal, Footer } from "../../../components";
+import React, { useState, useEffect } from "react";
 import "./MainLayout.scss";
+import { MyNavbar, AuthModal, Footer } from "../../../components";
+import { useModal } from "../../../hooks/hooks";
 
 const MainLayout = ({ children }) => {
   const { isOpen, openModal, closeModal } = useModal();
-  const { isMobile } = useIsMobile();
+  const [onAdminPage, setOnAdminPage] = useState(false);
+
+  useEffect(() => {
+    setOnAdminPage(window.location.pathname === "/admin");
+  }, []);
 
   return (
     <>
       <MyNavbar openModal={openModal} />
       <AuthModal isOpen={isOpen} closeModal={closeModal} />
-      {!isMobile && <ToastContainer className="toast-container" />}
       {children}
-      <Footer />
+      {!onAdminPage && <Footer />}
     </>
   );
 };
