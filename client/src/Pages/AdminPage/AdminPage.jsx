@@ -25,6 +25,18 @@ const AdminPage = () => {
     setEditingProduct(null)
   }
 
+  const handleProductEdit = (product) => {
+    setEditingProduct(product)
+    setTabValue(1)
+  };
+
+  const handleProductSave = () => {
+    setEditingProduct(null);
+    dispatch(fetchAllStripeProducts());
+    setTabValue(0);
+  }
+
+
   // if (isAdmin) {
   //   return (
   //     <Container>
@@ -41,7 +53,7 @@ const AdminPage = () => {
         Admin Dashboard
       </Typography>
 
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
         <Tabs value={tabValue} onChange={handleTabChange}>
           <Tab label="Products" />
           <Tab label={editingProduct ? "Edit Product" : "Add Product"} />
@@ -50,31 +62,20 @@ const AdminPage = () => {
       </Box>
 
       {tabValue === 0 && (
-        <ProductList 
-          products={products} 
-          onEdit={(product) => {
-            setEditingProduct(product)
-            setTabValue(1)
-          }}
+        <ProductList
+          products={products}
+          onEdit={handleProductEdit}
+          onProductUpdate={() => dispatch(fetchAllStripeProducts())}
         />
       )}
 
       {tabValue === 1 && (
-        <ProductForm 
-          product={editingProduct} 
-          onSave={() => {
-            setEditingProduct(null)
-            dispatch(fetchAllStripeProducts())
-            setTabValue(0)
-          }}
-        />
+        <ProductForm product={editingProduct} onSave={handleProductSave} />
       )}
 
-      {tabValue === 2 && (
-        <TransactionList />
-      )}
+      {tabValue === 2 && <TransactionList />}
     </Container>
-  )
+  );
 }
 
 export default AdminPage

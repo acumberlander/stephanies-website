@@ -1,6 +1,8 @@
 const Stripe = require("stripe");
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+/***************************************** Stripe Checkout Session Controller Requests ********************************************/
+
 const createCheckoutSession = async (req, res) => {
   const { cartItems } = req.body;
 
@@ -67,6 +69,18 @@ const createCheckoutSession = async (req, res) => {
   }
 };
 
+const getCheckoutSession = async (req, res) => {
+  const { id: sessionId } = req.params;
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    res.send({
+      ...session,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const getCartItems = async (req, res) => {
   const { id: sessionId } = req.params;
 
@@ -80,22 +94,11 @@ const getCartItems = async (req, res) => {
   }
 };
 
-const getCheckoutSession = async (req, res) => {
-  const { id: sessionId } = req.params;
-  try {
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
-    res.send({
-      ...session,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+/***************************************** Stripe Product Controller Requests ********************************************/
 
-const fetchStripeProducts = async (req, res) => {
+const fetchAllStripeProducts = async (req, res) => {
   try {
     const products = await stripe.products.list({
-      active: true,
       expand: ["data.default_price"],
     });
 
@@ -111,6 +114,7 @@ const fetchStripeProducts = async (req, res) => {
         images: product.images,
         category: product.metadata.category || "Uncategorized",
         sizes: product.metadata.sizes ? product.metadata.sizes.split(",") : [],
+        active: product.active,
       };
     });
 
@@ -121,8 +125,9 @@ const fetchStripeProducts = async (req, res) => {
 };
 
 const fetchStripeProductById = async (req, res) => {
+  const { id } = req.params;
   try {
-    const product = await stripe.products.retrieve(req.params.id);
+    const product = await stripe.products.retrieve(id);
     const prices = await stripe.prices.list({
       product: product.id,
       active: true,
@@ -143,10 +148,174 @@ const fetchStripeProductById = async (req, res) => {
   }
 };
 
+const createStripeProduct = async (req, res) => {
+  const { name, description, price, category, sizes } = req.body;
+
+  try {
+    const product = await stripe.products.create({
+      name,
+      description,
+      metadata: {
+        category,
+        sizes: sizes.join(","),
+      },
+    });
+
+    const priceObj = await stripe.prices.create({
+      currency: "usd",
+      unit_amount: price,
+      product: product.id,
+    });
+
+    await stripe.products.update(product.id, {
+      default_price: priceObj.id,
+    });
+
+    res.json({ product, price: priceObj });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const updateStripeProduct = async (req, res) => {
+  const { id } = req.params;
+  const { name, description, price, category, sizes, images } = req.body;
+
+  try {
+    // 1. Get the current product + its default_price expanded
+    const currentProduct = await stripe.products.retrieve(id, {
+      expand: ["default_price"],
+    });
+
+    const existingPriceCents = currentProduct.default_price?.unit_amount;
+
+    // 2. Update the product metadata
+    const updatedProduct = await stripe.products.update(id, {
+      name,
+      description,
+      images,
+      metadata: {
+        category,
+        sizes: sizes.join(","),
+      },
+    });
+
+    let updatedPrice = currentProduct.default_price;
+
+    // 3. If price has changed, create a new one and update default_price
+    if (existingPriceCents !== price) {
+      updatedPrice = await stripe.prices.create({
+        currency: "usd",
+        unit_amount: price, // price is already in cents
+        product: id,
+      });
+
+      await stripe.products.update(id, {
+        default_price: updatedPrice.id,
+      });
+
+      // (Optional) Deactivate the old price
+      if (currentProduct.default_price?.id) {
+        await stripe.prices.update(currentProduct.default_price.id, {
+          active: false,
+        });
+      }
+    }
+
+    res.json({ ...updatedProduct, price: updatedPrice });
+  } catch (err) {
+    console.error("Stripe Update Error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+const toggleActiveStatus = async (req, res) => {
+  const { id } = req.params;
+  const { active } = req.body;
+  try {
+    const product = await stripe.products.update(id, {
+      active,
+    });
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const deleteStripeProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await stripe.products.del(id);
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+/***************************************** Stripe Coupon Controller Requests ********************************************/
+
+const createStripeCoupon = async (req, res) => {
+  const { name, percent_off, duration } = req.body;
+  try {
+    const coupon = await stripe.coupons.create({
+      name,
+      percent_off,
+      duration,
+    });
+    res.json(coupon);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const fetchStripeCoupons = async (req, res) => {
+  try {
+    const coupons = await stripe.coupons.list();
+    res.json(coupons);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const deleteStripeCoupon = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const coupon = await stripe.coupons.del(id);
+    res.json(coupon);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const editStripeCoupon = async (req, res) => {
+  const { id } = req.params;
+  const { name, percent_off, duration } = req.body;
+  try {
+    const coupon = await stripe.coupons.update(id, {
+      name,
+      percent_off,
+      duration,
+    });
+    res.json(coupon);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   createCheckoutSession,
   getCartItems,
   getCheckoutSession,
-  fetchStripeProducts,
+  fetchAllStripeProducts,
   fetchStripeProductById,
+  createStripeProduct,
+  updateStripeProduct,
+  toggleActiveStatus,
+  deleteStripeProduct,
+  createStripeCoupon,
+  fetchStripeCoupons,
+  deleteStripeCoupon,
+  editStripeCoupon,
 };
