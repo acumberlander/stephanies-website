@@ -98,6 +98,11 @@ const userSlice = createSlice({
         state.isAuthenticated = false;
         state.uid = null;
         state._id = null;
+        state.cart = {
+          cart_items: [],
+          total_items: 0,
+          subtotal: 0,
+        };
       })
 
       // fetchUser
