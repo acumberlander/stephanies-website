@@ -37,6 +37,9 @@ export const signInWithGoogle = createAsyncThunk(
         orders: [],
       };
 
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
+
       dispatch(fetchUserByUid(googleUser.uid))
         .unwrap()
         .then((existingUser) => {
@@ -85,10 +88,13 @@ export const signInWithEmail = createAsyncThunk(
       // Authenticate with Firebase
       const { user } = await signInWithEmailAndPassword(auth, email, password);
 
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
+
       // Fetch user from MongoDB
       const response = await _fetchUserByUid(user.uid);
 
-      toast(`Welcome back, ${user.firstName}!`);
+      toast(`Welcome back, ${response.firstName || 'User'}!`);
       return response;
     } catch (error) {
       if (error.code === "auth/user-not-found") {
@@ -121,6 +127,9 @@ export const registerWithEmail = createAsyncThunk(
         lastName,
       };
 
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
+
       // Send data to backend
       const mongoUser = await _createUser(userData);
 
@@ -140,14 +149,44 @@ export const registerWithEmail = createAsyncThunk(
 export const signOutUser = createAsyncThunk(
   "auth/signOutUser",
   async (_, { dispatch }) => {
-    await signOut(auth);
-    localStorage.setItem(
-      "guestUser",
-      JSON.stringify({ ...userModel, _id: null, uid: null })
-    );
-    dispatch(setUserIds({ _id: null, uid: null }));
-    dispatch(setAuthenticated(false));
-    toast("See you next time!");
-    return null;
+    try {
+      await signOut(auth);
+      
+      // Create empty cart state
+      const emptyCart = {
+        cart_items: [],
+        total_items: 0,
+        subtotal: 0
+      };
+      
+      // Set up guest user with empty cart
+      localStorage.setItem(
+        "guestUser",
+        JSON.stringify({ 
+          ...userModel, 
+          _id: null, 
+          uid: null,
+          cart: emptyCart 
+        })
+      );
+      
+      // Update Redux state - reset user and empty cart
+      dispatch(setUserIds({ 
+        _id: null, 
+        uid: null,
+        cart: emptyCart
+      }));
+      dispatch(setAuthenticated(false));
+      
+      toast("See you next time!");
+
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000);
+      return null;
+    } catch (error) {
+      console.error("Sign-Out Error:", error);
+      return { error: "Unable to sign out at this time." };
+    }
   }
 );
