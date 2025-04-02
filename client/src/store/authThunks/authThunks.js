@@ -4,13 +4,15 @@ import {
   signInWithEmailAndPassword,
   signOut,
   createUserWithEmailAndPassword,
+  updateProfile
 } from "firebase/auth";
-import { auth, googleProvider } from "../../firebase/firebaseConfig";
+import { auth, googleProvider, db } from "../../firebase/firebaseConfig";
 import { createUser, fetchUserByUid } from "../userThunks/userThunks";
 import { setUserIds, setAuthenticated } from "../slices/userSlice";
 import { userModel } from "../../Models/User";
-import { _createUser, _fetchUserByUid } from "../../api/mongoRequests";
+import { _createUser, _fetchUserByUid, _createStripeCustomer } from "../../api/mongoRequests";
 import { toast } from "react-toastify";
+import { doc, updateDoc } from "firebase/firestore";
 
 // Google Sign-In
 export const signInWithGoogle = createAsyncThunk(
@@ -37,6 +39,9 @@ export const signInWithGoogle = createAsyncThunk(
         orders: [],
       };
 
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
+
       dispatch(fetchUserByUid(googleUser.uid))
         .unwrap()
         .then((existingUser) => {
@@ -58,17 +63,29 @@ export const signInWithGoogle = createAsyncThunk(
         .catch((err) => {
           // if user not found in mongoDB
           if (err) {
-            // create the user in mongoDB
-            dispatch(createUser(googleUser))
-              .unwrap()
-              .then((newUser) => {
-                // Step 2: Set Redux state
-                dispatch(setUserIds(newUser));
-                dispatch(setAuthenticated(true));
-                toast(`Welcome back, ${name.split(" ")[0]}!`);
+            // Create Stripe customer
+            _createStripeCustomer({
+              email: googleUser.email,
+              name: `${googleUser.firstName} ${googleUser.lastName}`.trim()
+            }).then(stripeCustomer => {
+              // Add stripeCustomerId to user data
+              const userWithStripe = {
+                ...googleUser,
+                stripeCustomerId: stripeCustomer.id
+              };
+              
+              // create the user in mongoDB
+              dispatch(createUser(userWithStripe))
+                .unwrap()
+                .then((newUser) => {
+                  // Step 2: Set Redux state
+                  dispatch(setUserIds(newUser));
+                  dispatch(setAuthenticated(true));
+                  toast(`Welcome back, ${name.split(" ")[0]}!`);
 
-                return newUser;
-              });
+                  return newUser;
+                });
+            });
           }
         });
     } catch (error) {
@@ -85,10 +102,13 @@ export const signInWithEmail = createAsyncThunk(
       // Authenticate with Firebase
       const { user } = await signInWithEmailAndPassword(auth, email, password);
 
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
+
       // Fetch user from MongoDB
       const response = await _fetchUserByUid(user.uid);
 
-      toast(`Welcome back, ${user.firstName}!`);
+      toast(`Welcome back, ${response.firstName || 'User'}!`);
       return response;
     } catch (error) {
       if (error.code === "auth/user-not-found") {
@@ -113,13 +133,23 @@ export const registerWithEmail = createAsyncThunk(
         password
       );
 
+      // Create Stripe customer
+      const stripeCustomer = await _createStripeCustomer({
+        email,
+        name: `${firstName} ${lastName}`.trim()
+      });
+
       // Prepare user data for MongoDB
       const userData = {
         uid: user.uid,
         email,
         firstName,
         lastName,
+        stripeCustomerId: stripeCustomer.id
       };
+
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
 
       // Send data to backend
       const mongoUser = await _createUser(userData);
@@ -149,5 +179,43 @@ export const signOutUser = createAsyncThunk(
     dispatch(setAuthenticated(false));
     toast("See you next time!");
     return null;
+  }
+);
+
+// Update User Profile
+export const updateUserProfile = createAsyncThunk(
+  "auth/updateUserProfile",
+  async (userData, { getState }) => {
+    try {
+      const { user } = getState();
+      const currentUser = auth.currentUser;
+      
+      if (!currentUser) {
+        throw new Error("No authenticated user found");
+      }
+      
+      // Update Firebase profile
+      await updateProfile(currentUser, {
+        displayName: userData.displayName || user.displayName
+      });
+      
+      // Update Firestore document
+      const userRef = doc(db, "users", user._id);
+      await updateDoc(userRef, {
+        displayName: userData.displayName || user.displayName,
+        phoneNumber: userData.phoneNumber || user.phoneNumber
+      });
+      
+      toast.success("Profile updated successfully");
+      
+      return {
+        displayName: userData.displayName || user.displayName,
+        phoneNumber: userData.phoneNumber || user.phoneNumber
+      };
+    } catch (error) {
+      console.error("Profile Update Error:", error);
+      toast.error("Failed to update profile");
+      throw error;
+    }
   }
 );

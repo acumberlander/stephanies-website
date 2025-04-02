@@ -32,9 +32,6 @@ router.put("/product/:id", stripeController.updateStripeProduct);
 // PUT set a product to active or inactive in Stripe (archive/unarchive)
 router.put("/product/:id/status", stripeController.toggleActiveStatus);
 
-// DELETE a product from Stripe
-router.delete("/product/:id", stripeController.deleteStripeProduct);
-
 
 /***************************************** Stripe Coupon Routes ********************************************/
 
@@ -49,6 +46,12 @@ router.delete("/coupons/:id", stripeController.deleteStripeCoupon);
 
 // PUT update a coupon in Stripe
 router.put("/coupons/:id", stripeController.editStripeCoupon);
+
+
+/***************************************** Stripe Customer Routes ********************************************/
+
+// POST create a new customer in Stripe
+router.post("/customers", stripeController.createStripeCustomer);
 
 
 module.exports = router;

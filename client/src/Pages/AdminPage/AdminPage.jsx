@@ -13,6 +13,7 @@ const AdminPage = () => {
   const dispatch = useDispatch()
   const products = useSelector(state => state.products.items)
   const productsStatus = useSelector(state => state.products.status)
+  const { isAdmin } = useSelector(state => state.user)
 
   useEffect(() => {
     if (productsStatus === 'idle') {
@@ -35,17 +36,6 @@ const AdminPage = () => {
     dispatch(fetchAllStripeProducts());
     setTabValue(0);
   }
-
-
-  // if (isAdmin) {
-  //   return (
-  //     <Container>
-  //       <Typography variant="h4" sx={{ my: 4, textAlign: 'center' }}>
-  //         You don't have permission to access this page
-  //       </Typography>
-  //     </Container>
-  //   )
-  // }
 
   return (
     <Container className="admin-page">

@@ -38,7 +38,11 @@ export default function Shop() {
       });
 
       if (!data.length) {
-        setProducts(allProducts.items);
+        if (params.category === "all-products") {
+          setProducts(allProducts.items);
+          return;
+        }
+        setError("No products found for this category.");
       } else {
         setProducts(data);
       }
@@ -62,7 +66,7 @@ export default function Shop() {
       </div>
       {isLoading ? (
         <div className="page-loading">
-          <CircularProgress size={80} />
+          <CircularProgress size={80} sx={{ color: "#cc34ab" }} />
         </div>
       ) : products.length > 0 && !error ? (
         <Grid className="card-grid" container spacing={4}>

@@ -1,22 +1,21 @@
-import React, { useEffect, Suspense, lazy, useState } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeApp } from "./utils/initializeApp";
 import { ToastContainer } from "react-toastify";
-import { MainLayout, LoadingPage, Footer } from "./components";
+import { MainLayout, LoadingPage, Home } from "./components";
 import { useIsMobile, useModal } from "./hooks/hooks";
 import { ErrorBoundary } from "react-error-boundary";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 import "./App.scss";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { isMobile } = useIsMobile();
   const { uid } = useSelector((state) => state.user);
   const { closeModal } = useModal();
 
   // Lazy Loaded Pages
-  const Home = lazy(() => import("./Pages/HomePage/Home"));
   const Shop = lazy(() => import("./Pages/ShopPage/Shop"));
   const Cart = lazy(() => import("./Pages/CartPage/Cart"));
   const About = lazy(() => import("./Pages/AboutPage/About"));
@@ -27,14 +26,17 @@ const App = () => {
   const ProductDetails = lazy(() =>
     import("./Pages/ProductDetailsPage/ProductDetails")
   );
+  const AccountSettings = lazy(() => import("./Pages/AccountPage/AccountSettings"));
 
   useEffect(() => {
-    if (uid === null) {
-      initializeApp(dispatch);
-    } else {
+    initializeApp(dispatch);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (uid !== null) {
       closeModal();
     }
-  }, [uid, dispatch, closeModal]);
+  }, [uid, closeModal]);
 
   return (
     <ErrorBoundary
@@ -44,35 +46,30 @@ const App = () => {
       <Suspense fallback={<LoadingPage />}>
         <Router>
           <MainLayout>
-            {isMobile ? null : (
-              <ToastContainer
-                position="top-right"
-                autoClose={1500}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-                style={{
-                  marginTop: "60px",
-                  maxHeight: "40px",
-                  zIndex: "1",
-                }}
-              />
-            )}
-
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/admin" element={<AdminPage />} />
+              <Route 
+                path="/admin" 
+                element={
+                  <ProtectedRoute requireAdmin={true}>
+                    <AdminPage />
+                  </ProtectedRoute>
+                } 
+              />
               <Route path="/about" element={<About />} />
               <Route path="/shop/:category" element={<Shop />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/thank-you" element={<ThankYou />} />
+              <Route 
+                path="/account" 
+                element={
+                  <ProtectedRoute>
+                    <AccountSettings />
+                  </ProtectedRoute>
+                } 
+              />
               <Route path="*" element={<ErrorPage />} />
             </Routes>
           </MainLayout>

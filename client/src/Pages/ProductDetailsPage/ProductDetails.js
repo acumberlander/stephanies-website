@@ -14,6 +14,8 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import ProductDetailsDropdowns from "../../components/ProductComponents/ProductDetailsDropdowns/ProductDetailsDropdowns";
 import productModel from "../../Models/Product";
+import { motion } from "framer-motion";
+
 import "./ProductDetails.scss";
 
 const ProductDetails = () => {
@@ -60,7 +62,7 @@ const ProductDetails = () => {
             </Typography>
             <div className="display-container">
               {!product ? (
-                <CircularProgress size={80} />
+                <CircularProgress size={80} sx={{ color: "#cc34ab" }} />
               ) : (
                 <Fade
                   in={product !== null}
@@ -79,23 +81,33 @@ const ProductDetails = () => {
             {/* Images List */}
             <div style={{ display: "flex", margin: "10px 0" }}>
               {product.images.map((imageObj, i) => (
-                <div
+                <motion.div
                   key={imageObj + i}
-                  onClick={(e) => setDisplayedImage(e.target.src)}
+                  onClick={() => setDisplayedImage(imageObj)}
                   className="thumbnail-container"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  style={{ cursor: "pointer" }}
                 >
                   <img
                     className="images-list"
                     src={imageObj}
                     alt={product.name}
+                    style={{
+                      border:
+                        displayedImage === imageObj
+                          ? "1px solid #cc34ab"
+                          : "1px solid transparent",
+                      borderRadius: "4px",
+                      padding: "2px",
+                    }}
                   />
-                </div>
+                </motion.div>
               ))}
             </div>
 
             <Typography className="product-details-text">
-              {product.name} - Lorem ipsum dolor sit amet consectetur
-              adipisicing elit.
+              {product.description}
             </Typography>
           </div>
           {/* Right Section */}
