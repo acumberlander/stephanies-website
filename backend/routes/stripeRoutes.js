@@ -48,4 +48,10 @@ router.delete("/coupons/:id", stripeController.deleteStripeCoupon);
 router.put("/coupons/:id", stripeController.editStripeCoupon);
 
 
+/***************************************** Stripe Customer Routes ********************************************/
+
+// POST create a new customer in Stripe
+router.post("/customers", stripeController.createStripeCustomer);
+
+
 module.exports = router;

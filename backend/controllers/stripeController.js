@@ -21,7 +21,8 @@ const createCheckoutSession = async (req, res) => {
         unit_amount: Math.round(item.price * 100), // Convert to cents
       },
       quantity: item.quantity,
-      dynamic_tax_rates: ["txr_1QqzpFGZ9VpDdAnjyMTL3zKV"],
+      // dynamic_tax_rates: ["txr_1QqzpFGZ9VpDdAnjyMTL3zKV"],
+      tax_rates: ["txr_1R9Vjp2f37aim8QKGOFM0Mge"],
     }));
 
     const session = await stripe.checkout.sessions.create({
@@ -53,13 +54,11 @@ const createCheckoutSession = async (req, res) => {
           },
         },
       ],
-      // automatic_tax: {
-      //   enabled: true,
-      // },
       mode: "payment",
       ui_mode: "embedded",
       return_url: `${
-        process.env.FRONTEND_URL || "http://localhost:3000"
+        // process.env.FRONTEND_URL || "http://localhost:3000"
+        "http://localhost:3000"
       }/thank-you?session_id={CHECKOUT_SESSION_ID}`, // Where user lands after payment
     });
 
@@ -149,7 +148,7 @@ const fetchStripeProductById = async (req, res) => {
 };
 
 const createStripeProduct = async (req, res) => {
-  const { name, description, price, category, sizes } = req.body;
+  const { name, description, price, category, sizes, images } = req.body;
 
   try {
     const product = await stripe.products.create({
@@ -157,7 +156,8 @@ const createStripeProduct = async (req, res) => {
       description,
       metadata: {
         category,
-        sizes: sizes.join(","),
+        sizes: JSON.stringify(sizes || []),
+        images: JSON.stringify(images || [])
       },
     });
 
@@ -229,8 +229,6 @@ const updateStripeProduct = async (req, res) => {
   }
 };
 
-
-
 const toggleActiveStatus = async (req, res) => {
   const { id } = req.params;
   const { active } = req.body;
@@ -244,6 +242,19 @@ const toggleActiveStatus = async (req, res) => {
   }
 };
 
+/***************************************** Stripe Transaction Controller Requests ********************************************/
+
+const fetchAllStripeTransactions = async (req, res) => {
+  try {
+    const transactions = await stripe.treasury.transactions.list({
+      limit: 100,
+      expand: ["data.customer"],
+    });
+    res.json(transactions);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 /***************************************** Stripe Coupon Controller Requests ********************************************/
 
@@ -295,6 +306,28 @@ const editStripeCoupon = async (req, res) => {
   }
 };
 
+/***************************************** Stripe Customer Controller Requests ********************************************/
+
+const createStripeCustomer = async (req, res) => {
+  const { email, name } = req.body;
+
+  try {
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    const customer = await stripe.customers.create({
+      email,
+      name: name || undefined,
+    });
+
+    res.json(customer);
+  } catch (err) {
+    console.error("Error creating Stripe customer:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   createCheckoutSession,
   getCartItems,
@@ -304,9 +337,10 @@ module.exports = {
   createStripeProduct,
   updateStripeProduct,
   toggleActiveStatus,
-  deleteStripeProduct,
+  fetchAllStripeTransactions,
   createStripeCoupon,
   fetchStripeCoupons,
   deleteStripeCoupon,
   editStripeCoupon,
+  createStripeCustomer,
 };

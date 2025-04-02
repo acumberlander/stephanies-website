@@ -84,10 +84,6 @@ const ProductForm = ({ product, onSave }) => {
       const uploadedUrls = await Promise.all(uploadPromises);
 
       setImageUrls((prev) => [...prev, ...uploadedUrls]);
-      setFormData((prev) => ({
-        ...prev,
-        images: [...prev.images, ...uploadedUrls],
-      }));
     } catch (error) {
       console.error("Error uploading images:", error);
       setError("Failed to upload images. Please try again.");
@@ -98,10 +94,6 @@ const ProductForm = ({ product, onSave }) => {
 
   const handleRemoveImage = (urlToRemove) => {
     setImageUrls(imageUrls.filter((url) => url !== urlToRemove));
-    setFormData({
-      ...formData,
-      images: formData.images.filter((url) => url !== urlToRemove),
-    });
   };
 
   const handleSubmit = async (e) => {
@@ -114,7 +106,10 @@ const ProductForm = ({ product, onSave }) => {
         id: product?.id || null,
         ...formData,
         price: parseFloat(formData.price) * 100, // Convert to cents for Stripe
+        images: imageUrls,
       };
+
+      console.log("productData: ", productData);
 
       if (product?.id) {
         // Update existing product
@@ -247,7 +242,7 @@ const ProductForm = ({ product, onSave }) => {
             <label htmlFor="image-upload">
               <Button variant="outlined" component="span" disabled={loading}>
                 Upload Images
-                {loading && <CircularProgress size={24} sx={{ ml: 1 }} />}
+                {loading && <CircularProgress size={24} sx={{ ml: 1, color: "#cc34ab" }} />}
               </Button>
             </label>
 
@@ -279,10 +274,12 @@ const ProductForm = ({ product, onSave }) => {
                       position: "absolute",
                       top: 0,
                       right: 0,
-                      minWidth: "30px",
-                      width: "30px",
-                      height: "30px",
+                      minWidth: "22px",
+                      width: "22px",
+                      height: "22px",
                       p: 0,
+                      borderRadius: "50%",
+                      margin: "5px",
                     }}
                     onClick={() => handleRemoveImage(url)}
                   >
@@ -302,7 +299,7 @@ const ProductForm = ({ product, onSave }) => {
               sx={{ mr: 2 }}
             >
               {loading ? (
-                <CircularProgress size={24} />
+                <CircularProgress size={24} sx={{ color: "#cc34ab" }} />
               ) : product ? (
                 "Update Product"
               ) : (

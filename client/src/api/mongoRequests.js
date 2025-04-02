@@ -113,3 +113,13 @@ export const _removeProductFromCart = async (uid, cart) => {
 };
 
 /************************************************************************************************************/
+
+/**
+ * Creates a Stripe customer
+ * @param {Object} customerData - Customer data including email and name
+ * @returns {Promise<Object>} Stripe customer object
+ */
+export const _createStripeCustomer = async (customerData) => {
+  const response = await axios.post(`${baseUrl}/stripe/customers`, customerData);
+  return response.data;
+};

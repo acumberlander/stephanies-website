@@ -70,7 +70,7 @@ const TransactionList = () => {
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <CircularProgress />
+        <CircularProgress sx={{ color: "#cc34ab" }} />
       </Box>
     )
   }

@@ -5,8 +5,9 @@ import {
   Drawer,
   Link,
   MenuItem,
+  Divider,
 } from "@mui/material";
-import { ShoppingCart, Menu } from "@mui/icons-material";
+import { ShoppingCart, Menu as MenuIcon } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 
 const MobileView = ({
@@ -17,6 +18,7 @@ const MobileView = ({
   isAuthenticated,
   openModal,
   handleSignOut,
+  email,
 }) => {
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);
@@ -48,6 +50,7 @@ const MobileView = ({
             <ShoppingCart className="cart-icon" />
           </Badge>
         </IconButton>
+        
         <IconButton
           edge="start"
           color="inherit"
@@ -55,7 +58,7 @@ const MobileView = ({
           aria-haspopup="true"
           onClick={handleDrawerOpen}
         >
-          <Menu className="menu-button" />
+          <MenuIcon className="menu-button" />
         </IconButton>
       </div>
 
@@ -71,10 +74,23 @@ const MobileView = ({
               Login
             </MenuItem>
           ) : (
-            <MenuItem onClick={handleLogOut} className="menu-item">
-              Sign Out
-            </MenuItem>
+            <>
+              <Link
+                component={RouterLink}
+                onClick={toggleDrawer}
+                to="/account"
+                color="inherit"
+                style={{ textDecoration: "none" }}
+                key="Account"
+              >
+                <MenuItem className="menu-item">Account Settings</MenuItem>
+              </Link>
+              <MenuItem onClick={handleLogOut} className="menu-item">
+                Sign Out
+              </MenuItem>
+            </>
           )}
+          <Divider sx={{ my: 1 }} />
           <Link
             component={RouterLink}
             onClick={toggleDrawer}

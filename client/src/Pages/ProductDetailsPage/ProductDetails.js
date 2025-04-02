@@ -62,7 +62,7 @@ const ProductDetails = () => {
             </Typography>
             <div className="display-container">
               {!product ? (
-                <CircularProgress size={80} />
+                <CircularProgress size={80} sx={{ color: "#cc34ab" }} />
               ) : (
                 <Fade
                   in={product !== null}
@@ -96,9 +96,10 @@ const ProductDetails = () => {
                     style={{
                       border:
                         displayedImage === imageObj
-                          ? "2px solid black"
+                          ? "1px solid #cc34ab"
                           : "1px solid transparent",
                       borderRadius: "4px",
+                      padding: "2px",
                     }}
                   />
                 </motion.div>

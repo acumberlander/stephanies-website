@@ -18,7 +18,7 @@ const AdminBar = () => {
         color: "#000",
       }}
     >
-      ADMIN DASHBOARD
+      ADMIN
     </div>
   );
 }
