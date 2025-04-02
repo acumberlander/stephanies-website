@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-import "./MainLayout.scss";
 import { MyNavbar, AuthModal, Footer } from "../../../components";
 import { useModal } from "../../../hooks/hooks";
+import { useLocation } from "react-router-dom";
+import "./MainLayout.scss";
 
 const MainLayout = ({ children }) => {
   const { isOpen, openModal, closeModal } = useModal();
-  const [onAdminPage, setOnAdminPage] = useState(false);
+  const location = useLocation();
 
-  useEffect(() => {
-    setOnAdminPage(window.location.pathname === "/admin");
-  }, []);
+  const onAdminPage = location.pathname === "/admin";
 
   return (
     <>

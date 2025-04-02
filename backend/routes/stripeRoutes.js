@@ -32,9 +32,6 @@ router.put("/product/:id", stripeController.updateStripeProduct);
 // PUT set a product to active or inactive in Stripe (archive/unarchive)
 router.put("/product/:id/status", stripeController.toggleActiveStatus);
 
-// DELETE a product from Stripe
-router.delete("/product/:id", stripeController.deleteStripeProduct);
-
 
 /***************************************** Stripe Coupon Routes ********************************************/
 

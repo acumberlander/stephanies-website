@@ -19,7 +19,6 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
-  _deleteProduct,
   _archiveProduct,
   _unarchiveProduct,
   _fetchStripeProductById,
@@ -54,21 +53,6 @@ const ProductList = ({ products, onEdit, onProductUpdate }) => {
   const handleDeleteClick = (product) => {
     setProductToDelete(product);
     setDeleteDialogOpen(true);
-  };
-
-  const handleDeleteConfirm = async () => {
-    try {
-      await _deleteProduct(productToDelete.id);
-      setDeleteDialogOpen(false);
-      onProductUpdate();
-    } catch (error) {
-      console.error("Error deleting product:", error);
-    }
-  };
-
-  const handleDeleteCancel = () => {
-    setDeleteDialogOpen(false);
-    setProductToDelete(null);
   };
 
   return (
@@ -157,26 +141,12 @@ const ProductList = ({ products, onEdit, onProductUpdate }) => {
                   >
                     {product.active ? <ArchiveIcon /> : <UnarchiveIcon />}
                   </IconButton>
-                  <IconButton
-                    onClick={() => handleDeleteClick(product)}
-                    title="Delete"
-                    color="error"
-                  >
-                    <DeleteIcon />
-                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-
-      <DeleteConfirmationModal
-        deleteDialogOpen={deleteDialogOpen}
-        handleDeleteCancel={handleDeleteCancel}
-        handleDeleteConfirm={handleDeleteConfirm}
-        productToDelete={productToDelete}
-      />
     </div>
   );
 };

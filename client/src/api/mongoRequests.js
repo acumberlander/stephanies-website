@@ -9,7 +9,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5001";
 /**
  *
  * @param {userModel} userData
- * @returns {userModel} Returns the newly created user document
+ * @returns {Promise<userModel>} Returns the newly created user document
  */
 export const _createUser = async (userData) => {
   const response = await axios.post(`${baseUrl}/users`, userData);

@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import MobileView from "./Views/MobileView";
 import { Link as RouterLink } from "react-router-dom";
 import myLogo from "../../../assets/logos/logo-white.png";
-import "./MyNavbar.scss";
 import { signOutUser } from "../../../store/authThunks/authThunks";
 import { useIsMobile } from "../../../hooks/hooks";
+import "./MyNavbar.scss";
+import AdminBar from "../../AdminComponents/AdminBar";
 
 const MyNavbar = ({ openModal }) => {
   const totalItems = useSelector((state) => state.user.cart.total_items) || 0;
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const { isAuthenticated, isAdmin } = useSelector((state) => state.user);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isMobile = useIsMobile(700);
   const dispatch = useDispatch();
@@ -97,6 +98,7 @@ const MyNavbar = ({ openModal }) => {
             </span>
           </Toolbar>
         )}
+        {isAdmin && <AdminBar />}
       </AppBar>
     </nav>
   );

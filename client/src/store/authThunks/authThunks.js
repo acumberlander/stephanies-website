@@ -37,6 +37,9 @@ export const signInWithGoogle = createAsyncThunk(
         orders: [],
       };
 
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
+
       dispatch(fetchUserByUid(googleUser.uid))
         .unwrap()
         .then((existingUser) => {
@@ -85,10 +88,13 @@ export const signInWithEmail = createAsyncThunk(
       // Authenticate with Firebase
       const { user } = await signInWithEmailAndPassword(auth, email, password);
 
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
+
       // Fetch user from MongoDB
       const response = await _fetchUserByUid(user.uid);
 
-      toast(`Welcome back, ${user.firstName}!`);
+      toast(`Welcome back, ${response.firstName || 'User'}!`);
       return response;
     } catch (error) {
       if (error.code === "auth/user-not-found") {
@@ -120,6 +126,9 @@ export const registerWithEmail = createAsyncThunk(
         firstName,
         lastName,
       };
+
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
 
       // Send data to backend
       const mongoUser = await _createUser(userData);

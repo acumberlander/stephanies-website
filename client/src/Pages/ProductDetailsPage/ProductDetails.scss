@@ -23,7 +23,7 @@
 .product-and-details {
   display: flex;
   align-items: baseline;
-  justify-content: space-evenly;
+  justify-content: center;
   @media (max-width: 760px) {
     // justify-content: center;
     flex-direction: column;
@@ -48,7 +48,7 @@
 }
 
 .display-container {
-  max-width: 450px;
+  width: 450px;
   height: 500px;
   display: flex;
   justify-content: center;
@@ -67,10 +67,6 @@
     max-width: 350px;
     height: 500px;
   }
-}
-
-.thumbnail-container:hover {
-  border: 2px solid lightblue;
 }
 
 .product-details-text {

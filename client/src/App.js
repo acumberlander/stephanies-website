@@ -1,9 +1,9 @@
-import React, { useEffect, Suspense, lazy, useState } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeApp } from "./utils/initializeApp";
 import { ToastContainer } from "react-toastify";
-import { MainLayout, LoadingPage, Footer } from "./components";
+import { MainLayout, LoadingPage, Home } from "./components";
 import { useIsMobile, useModal } from "./hooks/hooks";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -16,7 +16,7 @@ const App = () => {
   const { closeModal } = useModal();
 
   // Lazy Loaded Pages
-  const Home = lazy(() => import("./Pages/HomePage/Home"));
+  // const Home = lazy(() => import("./Pages/HomePage/Home"));
   const Shop = lazy(() => import("./Pages/ShopPage/Shop"));
   const Cart = lazy(() => import("./Pages/CartPage/Cart"));
   const About = lazy(() => import("./Pages/AboutPage/About"));
@@ -29,12 +29,14 @@ const App = () => {
   );
 
   useEffect(() => {
-    if (uid === null) {
-      initializeApp(dispatch);
-    } else {
+    initializeApp(dispatch);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (uid) {
       closeModal();
     }
-  }, [uid, dispatch, closeModal]);
+  }, [uid, closeModal]);
 
   return (
     <ErrorBoundary

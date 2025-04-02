@@ -244,15 +244,6 @@ const toggleActiveStatus = async (req, res) => {
   }
 };
 
-const deleteStripeProduct = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const product = await stripe.products.del(id);
-    res.json(product);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
 
 /***************************************** Stripe Coupon Controller Requests ********************************************/
 

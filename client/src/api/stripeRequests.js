@@ -75,16 +75,6 @@ export const _unarchiveProduct = async (productId) => {
   return data;
 };
 
-/**
- *
- * @param {string} id
- * @returns {Promise<product>} Returns deleted product
- */
-export const _deleteProduct = async (id) => {
-  const { data } = await axios.delete(`${baseUrl}/stripe/product/${id}`);
-  return data;
-};
-
 /********************************************** Checkout Request ***********************************************/
 
 /**
