@@ -9,9 +9,9 @@ import {
   setAuthenticated,
   setGuestUser,
 } from "../store/slices/userSlice";
-import { fetchAllStripeProducts } from "../store/productThunks/productThunks";
 import { fetchOrdersByUid } from "../store/orderThunks/orderThunks";
 import { userModel } from "../Models/User";
+import { fetchAllStripeProducts } from "../store/productThunks/productThunks";
 
 /**
  * Initializes the app:

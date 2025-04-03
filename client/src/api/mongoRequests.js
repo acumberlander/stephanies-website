@@ -9,7 +9,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5001";
 /**
  *
  * @param {userModel} userData
- * @returns {userModel} Returns the newly created user document
+ * @returns {Promise<userModel>} Returns the newly created user document
  */
 export const _createUser = async (userData) => {
   const response = await axios.post(`${baseUrl}/users`, userData);
@@ -25,8 +25,6 @@ export const _fetchUserByUid = async (uid) => {
   const response = await axios.get(`${baseUrl}/users/${uid}`);
   return response.data;
 };
-
-/************************************************************************************************************/
 
 /********************************************** Order Request ***********************************************/
 
@@ -60,8 +58,6 @@ export const _createOrder = async (sessionId, uid, subtotal) => {
   });
   return newOrder;
 };
-
-/************************************************************************************************************/
 
 /********************************************** Cart Requests ***********************************************/
 
@@ -111,5 +107,3 @@ export const _removeProductFromCart = async (uid, cart) => {
   const response = await axios.put(`${baseUrl}/users/${uid}/cart`, cart);
   return response.data;
 };
-
-/************************************************************************************************************/

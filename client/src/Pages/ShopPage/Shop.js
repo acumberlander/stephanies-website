@@ -12,7 +12,7 @@ export default function Shop() {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
-
+  
   if (window.scrollY !== 0) {
     window.scrollTo(0, 0);
   }
@@ -34,11 +34,15 @@ export default function Shop() {
       setIsLoading(false);
 
       const data = allProducts.items.filter((product) => {
-        return params.category.includes(product.category);
+        return params.category.includes(product.category) && product.active;
       });
 
       if (!data.length) {
-        setProducts(allProducts.items);
+        if (params.category === "all-products") {
+          setProducts(allProducts.items);
+          return;
+        }
+        setError("No products found for this category.");
       } else {
         setProducts(data);
       }
@@ -62,7 +66,7 @@ export default function Shop() {
       </div>
       {isLoading ? (
         <div className="page-loading">
-          <CircularProgress size={80} />
+          <CircularProgress size={80} sx={{ color: "#cc34ab" }} />
         </div>
       ) : products.length > 0 && !error ? (
         <Grid className="card-grid" container spacing={4}>

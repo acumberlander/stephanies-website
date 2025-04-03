@@ -113,11 +113,11 @@ const AuthModal = ({ isOpen, closeModal }) => {
               {isRegistered ? "Sign In" : "Sign Up"}
             </Button>
           </form>
+          {authError && <p className="auth-error">{authError}</p>}
           <p
             className="toggle-link"
             onClick={() => setIsRegistered(!isRegistered)}
           >
-            {authError && <p className="auth-error">{authError}</p>}
 
             {isRegistered
               ? "Don't have an account? Register"

@@ -4,13 +4,15 @@ import {
   signInWithEmailAndPassword,
   signOut,
   createUserWithEmailAndPassword,
+  updateProfile
 } from "firebase/auth";
-import { auth, googleProvider } from "../../firebase/firebaseConfig";
-import { createUser, fetchUserByUid } from "../userThunks/userThunks";
-import { setUserIds, setAuthenticated } from "../slices/userSlice";
+import { auth, googleProvider, db } from "../../firebase/firebaseConfig";
+import { setUserIds, setAuthenticated, setAdmin } from "../slices/userSlice";
 import { userModel } from "../../Models/User";
 import { _createUser, _fetchUserByUid } from "../../api/mongoRequests";
+import { _createStripeCustomer } from "../../api/stripeRequests";
 import { toast } from "react-toastify";
+import { doc, updateDoc } from "firebase/firestore";
 
 // Google Sign-In
 export const signInWithGoogle = createAsyncThunk(
@@ -35,13 +37,14 @@ export const signInWithGoogle = createAsyncThunk(
         lastName: user.displayName.split(" ")[1] || "",
         cart: guestCart,
         orders: [],
+        isAuthenticatied: true,
+        isAdmin: false,
       };
 
       // Remove guest user from localStorage when authenticated
       localStorage.removeItem("guestUser");
 
-      dispatch(fetchUserByUid(googleUser.uid))
-        .unwrap()
+      _fetchUserByUid(googleUser.uid)
         .then((existingUser) => {
           // Step 2: Set Redux state
           dispatch(
@@ -51,6 +54,11 @@ export const signInWithGoogle = createAsyncThunk(
             })
           );
           dispatch(setAuthenticated(true));
+          if (existingUser.isAdmin === "true") {
+            dispatch(setAdmin(true));
+          } else {
+            dispatch(setAdmin(false));
+          }
           toast(`Welcome back, ${name.split(" ")[0]}!`);
 
           return {
@@ -61,17 +69,28 @@ export const signInWithGoogle = createAsyncThunk(
         .catch((err) => {
           // if user not found in mongoDB
           if (err) {
-            // create the user in mongoDB
-            dispatch(createUser(googleUser))
-              .unwrap()
-              .then((newUser) => {
-                // Step 2: Set Redux state
-                dispatch(setUserIds(newUser));
-                dispatch(setAuthenticated(true));
-                toast(`Welcome back, ${name.split(" ")[0]}!`);
+            // Create Stripe customer
+            _createStripeCustomer({
+              email: googleUser.email,
+              name: `${googleUser.firstName} ${googleUser.lastName}`.trim()
+            }).then(stripeCustomer => {
+              // Add stripeCustomerId to user data
+              const userWithStripe = {
+                ...googleUser,
+                stripeCustomerId: stripeCustomer.id
+              };
+              
+              // create the user in mongoDB
+              _createUser(userWithStripe)
+                .then((newUser) => {
+                  // Step 2: Set Redux state
+                  dispatch(setUserIds(newUser));
+                  dispatch(setAuthenticated(true));
+                  toast(`Welcome, ${name.split(" ")[0]}!`);
 
-                return newUser;
-              });
+                  return newUser;
+                });
+            });
           }
         });
     } catch (error) {
@@ -91,9 +110,13 @@ export const signInWithEmail = createAsyncThunk(
       // Remove guest user from localStorage when authenticated
       localStorage.removeItem("guestUser");
 
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
+
       // Fetch user from MongoDB
       const response = await _fetchUserByUid(user.uid);
 
+      toast(`Welcome back, ${response.firstName || 'User'}!`);
       toast(`Welcome back, ${response.firstName || 'User'}!`);
       return response;
     } catch (error) {
@@ -119,13 +142,23 @@ export const registerWithEmail = createAsyncThunk(
         password
       );
 
+      // Create Stripe customer
+      const stripeCustomer = await _createStripeCustomer({
+        email,
+        name: `${firstName} ${lastName}`.trim()
+      });
+
       // Prepare user data for MongoDB
       const userData = {
         uid: user.uid,
         email,
         firstName,
         lastName,
+        stripeCustomerId: stripeCustomer.id
       };
+
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
 
       // Remove guest user from localStorage when authenticated
       localStorage.removeItem("guestUser");
@@ -149,44 +182,52 @@ export const registerWithEmail = createAsyncThunk(
 export const signOutUser = createAsyncThunk(
   "auth/signOutUser",
   async (_, { dispatch }) => {
-    try {
-      await signOut(auth);
-      
-      // Create empty cart state
-      const emptyCart = {
-        cart_items: [],
-        total_items: 0,
-        subtotal: 0
-      };
-      
-      // Set up guest user with empty cart
-      localStorage.setItem(
-        "guestUser",
-        JSON.stringify({ 
-          ...userModel, 
-          _id: null, 
-          uid: null,
-          cart: emptyCart 
-        })
-      );
-      
-      // Update Redux state - reset user and empty cart
-      dispatch(setUserIds({ 
-        _id: null, 
-        uid: null,
-        cart: emptyCart
-      }));
-      dispatch(setAuthenticated(false));
-      
-      toast("See you next time!");
+    await signOut(auth);
+    localStorage.setItem(
+      "guestUser",
+      JSON.stringify({ ...userModel, _id: null, uid: null })
+    );
+    dispatch(setUserIds({ _id: null, uid: null }));
+    dispatch(setAuthenticated(false));
+    toast("See you next time!");
+    return null;
+  }
+);
 
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 2000);
-      return null;
+// Update User Profile
+export const updateUserProfile = createAsyncThunk(
+  "auth/updateUserProfile",
+  async (userData, { getState }) => {
+    try {
+      const { user } = getState();
+      const currentUser = auth.currentUser;
+      
+      if (!currentUser) {
+        throw new Error("No authenticated user found");
+      }
+      
+      // Update Firebase profile
+      await updateProfile(currentUser, {
+        displayName: userData.displayName || user.displayName
+      });
+      
+      // Update Firestore document
+      const userRef = doc(db, "users", user._id);
+      await updateDoc(userRef, {
+        displayName: userData.displayName || user.displayName,
+        phoneNumber: userData.phoneNumber || user.phoneNumber
+      });
+      
+      toast.success("Profile updated successfully");
+      
+      return {
+        displayName: userData.displayName || user.displayName,
+        phoneNumber: userData.phoneNumber || user.phoneNumber
+      };
     } catch (error) {
-      console.error("Sign-Out Error:", error);
-      return { error: "Unable to sign out at this time." };
+      console.error("Profile Update Error:", error);
+      toast.error("Failed to update profile");
+      throw error;
     }
   }
 );

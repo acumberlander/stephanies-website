@@ -30,7 +30,7 @@ const Product = ({ product }) => {
     <div className="product-container">
       <Link to={`/product/${product.id}`}>
         <div className={loadingClass}>
-          <CircularProgress size={80} />
+          <CircularProgress size={80} sx={{ color: "#cc34ab" }} />
         </div>
         <img
           onLoad={setPicture}

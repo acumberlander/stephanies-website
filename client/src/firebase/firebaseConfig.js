@@ -25,10 +25,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize Storage
-const storage = getStorage(app);
-
-// Storage reference that points to the root directory of firebase storage service
-export const storageRef = ref(storage);
+export const storage = getStorage(app);
 
 // Initialize Authorization Services
 export const auth = getAuth(app);

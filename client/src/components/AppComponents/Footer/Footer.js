@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import instaIcon from "../../../assets/icons/socialMedia/instagram-5-256.png";
 import facebookIcon from "../../../assets/icons/socialMedia/facebook-4-256.png";
 import trademark from "../../../assets/icons/icons8-trademark-52.png";
@@ -8,18 +8,24 @@ import "./Footer.scss";
 
 const Footer = () => {
   const [backToTop, setBackToTop] = useState("hidden");
+  
   const scrollToTop = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
 
-  window.addEventListener("scroll", () => {
-    let top = window.scrollY;
-    if (top > 500) {
-      setBackToTop("back-to-top");
-    } else {
-      setBackToTop("hidden");
-    }
-  });
+  useEffect(() => {
+    const handleScroll = () => {
+      const top = window.scrollY;
+      if (top > 500) {
+        setBackToTop("back-to-top");
+      } else {
+        setBackToTop("hidden");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll); // Clean up
+  }, []);
 
   return (
     <footer className="footer-container">

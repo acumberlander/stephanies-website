@@ -12,6 +12,7 @@ import {
   signInWithEmail,
   signOutUser,
   registerWithEmail,
+  updateUserProfile,
 } from "../authThunks/authThunks";
 import { userModel } from "../../Models/User";
 
@@ -33,6 +34,9 @@ const userSlice = createSlice({
     updateGuestUser(state, action) {
       Object.assign(state, action.payload);
       localStorage.setItem("guestUser", JSON.stringify(state)); // Update local storage on state change
+    },
+    setAdmin(state, action) {
+      state.isAdmin = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -96,12 +100,14 @@ const userSlice = createSlice({
       // Sign Out
       .addCase(signOutUser.fulfilled, (state) => {
         state.isAuthenticated = false;
+        state.isAdmin = false; // Reset admin status
         state.uid = null;
         state._id = null;
+        // Reset cart state
         state.cart = {
           cart_items: [],
           total_items: 0,
-          subtotal: 0,
+          subtotal: 0
         };
       })
 
@@ -210,10 +216,19 @@ const userSlice = createSlice({
       .addCase(removeProductFromCart.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+      })
+
+      // Add this to the extraReducers
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.displayName = action.payload.displayName;
+        state.phoneNumber = action.payload.phoneNumber;
+      })
+      .addCase(updateUserProfile.rejected, (state) => {
+        state.status = 'failed';
       });
   },
 });
-export const { setUserIds, setAuthenticated, setGuestUser, updateGuestUser } =
+export const { setUserIds, setAuthenticated, setGuestUser, updateGuestUser, setAdmin } =
   userSlice.actions;
 
 export default userSlice.reducer;
