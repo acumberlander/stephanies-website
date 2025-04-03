@@ -110,9 +110,13 @@ export const signInWithEmail = createAsyncThunk(
       // Remove guest user from localStorage when authenticated
       localStorage.removeItem("guestUser");
 
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
+
       // Fetch user from MongoDB
       const response = await _fetchUserByUid(user.uid);
 
+      toast(`Welcome back, ${response.firstName || 'User'}!`);
       toast(`Welcome back, ${response.firstName || 'User'}!`);
       return response;
     } catch (error) {
@@ -152,6 +156,9 @@ export const registerWithEmail = createAsyncThunk(
         lastName,
         stripeCustomerId: stripeCustomer.id
       };
+
+      // Remove guest user from localStorage when authenticated
+      localStorage.removeItem("guestUser");
 
       // Remove guest user from localStorage when authenticated
       localStorage.removeItem("guestUser");

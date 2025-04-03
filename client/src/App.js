@@ -2,9 +2,8 @@ import React, { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeApp } from "./utils/initializeApp";
-import { ToastContainer } from "react-toastify";
 import { MainLayout, LoadingPage, Home } from "./components";
-import { useIsMobile, useModal } from "./hooks/hooks";
+import { useModal } from "./hooks/hooks";
 import { ErrorBoundary } from "react-error-boundary";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
