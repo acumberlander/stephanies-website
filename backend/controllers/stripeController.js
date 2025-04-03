@@ -21,8 +21,8 @@ const createCheckoutSession = async (req, res) => {
         unit_amount: Math.round(item.price * 100), // Convert to cents
       },
       quantity: item.quantity,
-      // dynamic_tax_rates: ["txr_1QqzpFGZ9VpDdAnjyMTL3zKV"],
-      tax_rates: ["txr_1R9Vjp2f37aim8QKGOFM0Mge"],
+      dynamic_tax_rates: ["txr_1QqzpFGZ9VpDdAnjyMTL3zKV"],
+      // tax_rates: ["txr_1R9Vjp2f37aim8QKGOFM0Mge"],
     }));
 
     const session = await stripe.checkout.sessions.create({
@@ -57,8 +57,7 @@ const createCheckoutSession = async (req, res) => {
       mode: "payment",
       ui_mode: "embedded",
       return_url: `${
-        // process.env.FRONTEND_URL || "http://localhost:3000"
-        "http://localhost:3000"
+        process.env.FRONTEND_URL || "http://localhost:3000"
       }/thank-you?session_id={CHECKOUT_SESSION_ID}`, // Where user lands after payment
     });
 
@@ -118,8 +117,8 @@ const fetchAllStripeProducts = async (req, res) => {
         id: product.id,
         name: product.name,
         description: product.description,
-        price: price.unit_amount ? price.unit_amount / 100 : null, // Convert from cents
-        price_id: price.id ? price.id : null, // Needed for checkout
+        price: price?.unit_amount ? price.unit_amount / 100 : null, // Convert from cents
+        price_id: price?.id ? price.id : null, // Needed for checkout
         images: product.images,
         category: product.metadata.category || "Uncategorized",
         sizes: product.metadata.sizes ? JSON.parse(product.metadata.sizes) : [],

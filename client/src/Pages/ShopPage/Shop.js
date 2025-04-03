@@ -34,12 +34,17 @@ export default function Shop() {
       setIsLoading(false);
 
       const data = allProducts.items.filter((product) => {
-        return params.category.includes(product.category) && product.active;
+        return params.category.includes(product.category) && product.active === true;
       });
 
       if (!data.length) {
         if (params.category === "all-products") {
-          setProducts(allProducts.items);
+          const allActiveProducts = allProducts.items.filter((product) => {
+            return (
+              product.active === true
+            );
+          });
+          setProducts(allActiveProducts);
           return;
         }
         setError("No products found for this category.");
