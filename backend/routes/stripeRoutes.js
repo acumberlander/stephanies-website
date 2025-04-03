@@ -14,6 +14,8 @@ router.get("/sessions/:id/line_items", stripeController.getCartItems);
 // Get checkout session object by the sessionId in the request param
 router.get("/session/:id", stripeController.getCheckoutSession);
 
+// Get all checkout sessions
+router.get("/sessions", stripeController.fetchAllCheckoutSessions);
 
 /***************************************** Stripe Product Routes ********************************************/
 
@@ -31,6 +33,23 @@ router.put("/product/:id", stripeController.updateStripeProduct);
 
 // PUT set a product to active or inactive in Stripe (archive/unarchive)
 router.put("/product/:id/status", stripeController.toggleActiveStatus);
+
+
+/***************************************** Stripe Payment Intent Routes ********************************************/
+
+// GET all payment intents from Stripe
+router.get("/paymentIntents", stripeController.fetchAllStripePaymentIntents);
+
+// GET a single payment intent from Stripe
+router.get("/paymentIntents/:id", stripeController.fetchStripePaymentIntentById);
+
+/***************************************** Stripe Invoice Routes ********************************************/
+
+// GET all invoices from Stripe
+router.get("/invoices", stripeController.fetchAllInvoices);
+
+// GET a single invoice from Stripe
+router.get("/invoices/:id", stripeController.fetchInvoiceById);
 
 
 /***************************************** Stripe Coupon Routes ********************************************/

@@ -26,8 +26,6 @@ export const _fetchUserByUid = async (uid) => {
   return response.data;
 };
 
-/************************************************************************************************************/
-
 /********************************************** Order Request ***********************************************/
 
 /**
@@ -60,8 +58,6 @@ export const _createOrder = async (sessionId, uid, subtotal) => {
   });
   return newOrder;
 };
-
-/************************************************************************************************************/
 
 /********************************************** Cart Requests ***********************************************/
 
@@ -109,17 +105,5 @@ export const _updateProductQuantity = async (uid, cart) => {
  */
 export const _removeProductFromCart = async (uid, cart) => {
   const response = await axios.put(`${baseUrl}/users/${uid}/cart`, cart);
-  return response.data;
-};
-
-/************************************************************************************************************/
-
-/**
- * Creates a Stripe customer
- * @param {Object} customerData - Customer data including email and name
- * @returns {Promise<Object>} Stripe customer object
- */
-export const _createStripeCustomer = async (customerData) => {
-  const response = await axios.post(`${baseUrl}/stripe/customers`, customerData);
   return response.data;
 };

@@ -6,6 +6,7 @@ import {
   Link,
   MenuItem,
   Divider,
+  Avatar,
 } from "@mui/material";
 import { ShoppingCart, Menu as MenuIcon } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
@@ -16,9 +17,10 @@ const MobileView = ({
   drawerOpen,
   totalItems,
   isAuthenticated,
+  isAdmin,
   openModal,
   handleSignOut,
-  email,
+  getAvatarLetter,
 }) => {
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);
@@ -50,16 +52,23 @@ const MobileView = ({
             <ShoppingCart className="cart-icon" />
           </Badge>
         </IconButton>
-        
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          aria-haspopup="true"
-          onClick={handleDrawerOpen}
-        >
-          <MenuIcon className="menu-button" />
-        </IconButton>
+        {isAuthenticated ? (
+          <IconButton onClick={handleDrawerOpen} className="avatar-button">
+            <Avatar sx={{ width: 32, height: 32, bgcolor: "secondary.main" }}>
+              {getAvatarLetter()}
+            </Avatar>
+          </IconButton>
+        ) : (
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            aria-haspopup="true"
+            onClick={handleDrawerOpen}
+          >
+            <MenuIcon className="menu-button" />
+          </IconButton>
+        )}
       </div>
 
       <Drawer
@@ -85,6 +94,18 @@ const MobileView = ({
               >
                 <MenuItem className="menu-item">Account Settings</MenuItem>
               </Link>
+              {isAdmin && (
+                <Link
+                  component={RouterLink}
+                  onClick={toggleDrawer}
+                  to="/admin"
+                  color="inherit"
+                  style={{ textDecoration: "none" }}
+                  key="Account"
+                >
+                  <MenuItem className="menu-item">Admin Dashboard</MenuItem>
+                </Link>
+              )}
               <MenuItem onClick={handleLogOut} className="menu-item">
                 Sign Out
               </MenuItem>

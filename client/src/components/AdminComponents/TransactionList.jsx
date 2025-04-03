@@ -1,102 +1,94 @@
-import React, { useState, useEffect } from 'react'
-import { 
-  Table, TableBody, TableCell, TableContainer, TableHead, 
-  TableRow, Paper, TextField, InputAdornment, Typography,
-  CircularProgress, Chip, Button, Box
-} from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import axios from 'axios'
+import React, { useState, useEffect, useMemo } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TextField,
+  InputAdornment,
+  Typography,
+  CircularProgress,
+  Button,
+  Box,
+  useMediaQuery,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+
+import { _fetchAllPaymentIntents } from "../../api/stripeRequests";
+import DetailsModal from "../../modals/DetailsModal";
+import { renderMobileCard, renderDesktopRow } from "../../utils/statusFunctions";
 
 const TransactionList = () => {
-  const [transactions, setTransactions] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [searchTerm, setSearchTerm] = useState('')
-  const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5001"
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
+  const isMobile = useMediaQuery("(max-width:800px)");
 
   useEffect(() => {
-    fetchTransactions()
-  }, [])
+    const fetchTransactions = async () => {
+      setLoading(true);
+      try {
+        const response = await _fetchAllPaymentIntents();
+        setTransactions(response);
+      } catch (err) {
+        console.error("Error fetching transactions:", err);
+        setError("Failed to load transactions. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTransactions();
+  }, []);
 
-  const fetchTransactions = async () => {
-    setLoading(true)
-    try {
-      const response = await axios.get(`${baseUrl}/stripe/transactions`)
-      setTransactions(response.data)
-    } catch (error) {
-      console.error('Error fetching transactions:', error)
-      setError('Failed to load transactions. Please try again.')
-    } finally {
-      setLoading(false)
-    }
-  }
+  const filteredTransactions = useMemo(
+    () =>
+      transactions.filter(
+        (tx) =>
+          tx.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          tx.shipping?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          tx.shipping?.email
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          tx.receipt_email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          tx.status?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          tx.amount?.toString().includes(searchTerm) ||
+          tx.created?.toString().includes(searchTerm)
+      ),
+    [transactions, searchTerm]
+  );
 
-  const filteredTransactions = transactions.filter(transaction => 
-    transaction.id.includes(searchTerm) || 
-    (transaction.customer?.email && transaction.customer.email.includes(searchTerm))
-  )
+  const openDetails = (index) => setSelectedIndex(index);
+  const closeDetails = () => setSelectedIndex(null);
+  const next = () =>
+    setSelectedIndex((i) => Math.min(i + 1, filteredTransactions.length - 1));
+  const prev = () => setSelectedIndex((i) => Math.max(i - 1, 0));
 
-  const formatDate = (timestamp) => {
-    return new Date(timestamp * 1000).toLocaleString()
-  }
-
-  const getStatusChip = (status) => {
-    let color = 'default'
-    
-    switch(status) {
-      case 'succeeded':
-        color = 'success'
-        break
-      case 'pending':
-        color = 'warning'
-        break
-      case 'failed':
-        color = 'error'
-        break
-      default:
-        color = 'default'
-    }
-    
-    return (
-      <Chip 
-        label={status.charAt(0).toUpperCase() + status.slice(1)} 
-        color={color} 
-        size="small"
-      />
-    )
-  }
-
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <CircularProgress sx={{ color: "#cc34ab" }} />
-      </Box>
-    )
-  }
-
-  if (error) {
-    return (
-      <Box sx={{ mt: 2 }}>
-        <Typography color="error">{error}</Typography>
-        <Button 
-          variant="contained" 
-          onClick={fetchTransactions} 
-          sx={{ mt: 2 }}
-        >
-          Try Again
-        </Button>
-      </Box>
-    )
-  }
+  const selectedTransaction =
+    selectedIndex !== null ? filteredTransactions[selectedIndex] : null;
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          justifyContent: "space-between",
+          alignItems: isMobile ? "stretch" : "center",
+          gap: 2,
+          mb: 3,
+        }}
+      >
         <Typography variant="h6">Transaction History</Typography>
         <TextField
-          placeholder="Search by ID or email..."
+          placeholder="Search by ID or name..."
           size="small"
+          fullWidth={isMobile}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           InputProps={{
@@ -107,57 +99,60 @@ const TransactionList = () => {
             ),
           }}
         />
-      </div>
+      </Box>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Transaction ID</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Customer</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredTransactions.map((transaction) => (
-              <TableRow key={transaction.id}>
-                <TableCell>{transaction.id}</TableCell>
-                <TableCell>{formatDate(transaction.created)}</TableCell>
-                <TableCell>
-                  {transaction.customer?.email || 'Guest'}
-                </TableCell>
-                <TableCell>
-                  ${(transaction.amount / 100).toFixed(2)}
-                </TableCell>
-                <TableCell>
-                  {getStatusChip(transaction.status)}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    size="small"
-                    startIcon={<VisibilityIcon />}
-                    onClick={() => window.open(`${baseUrl}/stripe/transactions/${transaction.id}`, '_blank')}
-                  >
-                    View
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-            {filteredTransactions.length === 0 && (
+      {loading ? (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <CircularProgress sx={{ color: "#cc34ab" }} />
+        </Box>
+      ) : error ? (
+        <Box mt={2}>
+          <Typography color="error">{error}</Typography>
+          <Button
+            variant="contained"
+            onClick={() => window.location.reload()}
+            sx={{ mt: 2 }}
+          >
+            Try Again
+          </Button>
+        </Box>
+      ) : filteredTransactions.length === 0 ? (
+        <Typography align="center" mt={2}>
+          No transactions found
+        </Typography>
+      ) : isMobile ? (
+        <Box sx={{ maxHeight: 400, overflow: "auto" }}>
+          {filteredTransactions.map((tx, index) => renderMobileCard(tx, index, openDetails))}
+        </Box>
+      ) : (
+        <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
+          <Table>
+            <TableHead>
               <TableRow>
-                <TableCell colSpan={6} align="center">
-                  No transactions found
-                </TableCell>
+                <TableCell>Transaction ID</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Customer</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
-  )
-}
+            </TableHead>
+            <TableBody>{filteredTransactions.map((tx, index) => renderDesktopRow(tx, index, openDetails))}</TableBody>
+          </Table>
+        </TableContainer>
+      )}
 
-export default TransactionList
+      <DetailsModal
+        selectedIndex={selectedIndex}
+        closeDetails={closeDetails}
+        next={next}
+        prev={prev}
+        selectedTransaction={selectedTransaction}
+        filteredTransactions={filteredTransactions}
+        isMobile={isMobile}
+      />
+    </Box>
+  );
+};
+
+export default TransactionList;

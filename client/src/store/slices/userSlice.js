@@ -35,6 +35,9 @@ const userSlice = createSlice({
       Object.assign(state, action.payload);
       localStorage.setItem("guestUser", JSON.stringify(state)); // Update local storage on state change
     },
+    setAdmin(state, action) {
+      state.isAdmin = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -225,7 +228,7 @@ const userSlice = createSlice({
       });
   },
 });
-export const { setUserIds, setAuthenticated, setGuestUser, updateGuestUser } =
+export const { setUserIds, setAuthenticated, setGuestUser, updateGuestUser, setAdmin } =
   userSlice.actions;
 
 export default userSlice.reducer;
