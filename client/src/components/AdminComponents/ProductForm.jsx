@@ -109,8 +109,6 @@ const ProductForm = ({ product, onSave }) => {
         images: imageUrls,
       };
 
-      console.log("productData: ", productData);
-
       if (product?.id) {
         // Update existing product
         await _updateProduct(productData);

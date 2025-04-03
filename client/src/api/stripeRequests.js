@@ -90,6 +90,54 @@ export const _createStripeCheckoutSession = async (cartItems) => {
   return data;
 };
 
+/**
+ *
+ * @param {string} sessionId
+ * @returns {Promise<sessionObject>} A stripe sessionObject
+ */
+export const _fetchCheckoutSession = async (sessionId) => {
+  const { data } = await axios.get(
+    `${baseUrl}/stripe/session/${sessionId}`
+  );
+  return data.data;
+};
+
+/**
+ *
+ * @returns {Promise<sessionObject[]>} An array of all stripe sessionObjects
+ */
+export const _fetchAllCheckoutSessions = async () => {
+  const { data } = await axios.get(`${baseUrl}/stripe/sessions`);
+  return data.data;
+};
+
+/********************************************** Payment Intent Request ***********************************************/
+
+export const _fetchAllPaymentIntents = async () => {
+  const { data } = await axios.get(`${baseUrl}/stripe/paymentIntents`);
+  return data.data;
+};
+
+export const _fetchPaymentIntentById = async (id) => {
+  const { data } = await axios.get(`${baseUrl}/stripe/paymentIntents/${id}`);
+  return data.data;
+};
+
+
+/********************************************** Invoice Request ***********************************************/
+
+
+export const _fetchInvoiceById = async (id) => {
+  const { data } = await axios.get(`${baseUrl}/stripe/invoices/${id}`);
+  return data;
+};
+
+export const _fetchAllInvoices = async () => {
+  const { data } = await axios.get(`${baseUrl}/stripe/invoices`);
+  return data;
+};
+
+
 /********************************************** Order Session Request ***********************************************/
 
 /**
@@ -101,7 +149,7 @@ export const _fetchSessionLineItems = async (sessionId) => {
   const { data } = await axios.get(
     `${baseUrl}/stripe/sessions/${sessionId}/line_items`
   );
-  return data;
+  return data.data;
 };
 
 /********************************************** Coupon Requests ***********************************************/
@@ -124,4 +172,16 @@ export const _deleteCoupon = async (id) => {
 export const _editCoupon = async (id, coupon) => {
   const { data } = await axios.put(`${baseUrl}/stripe/coupons/${id}`, coupon);
   return data;
+};
+
+/********************************************** Customer Requests ***********************************************/
+
+/**
+ * Creates a Stripe customer
+ * @param {Object} customerData - Customer data including email and name
+ * @returns {Promise<Object>} Stripe customer object
+ */
+export const _createStripeCustomer = async (customerData) => {
+  const response = await axios.post(`${baseUrl}/stripe/customers`, customerData);
+  return response.data;
 };

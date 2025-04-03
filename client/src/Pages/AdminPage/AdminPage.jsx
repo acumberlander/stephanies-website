@@ -13,7 +13,6 @@ const AdminPage = () => {
   const dispatch = useDispatch()
   const products = useSelector(state => state.products.items)
   const productsStatus = useSelector(state => state.products.status)
-  const { isAdmin } = useSelector(state => state.user)
 
   useEffect(() => {
     if (productsStatus === 'idle') {

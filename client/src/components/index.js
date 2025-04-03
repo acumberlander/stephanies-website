@@ -10,6 +10,7 @@ export { default as ProductDetailsDropdowns } from "./ProductComponents/ProductD
 export { default as ProductForm } from "./AdminComponents/ProductForm";
 export { default as ProductList } from "./AdminComponents/ProductList";
 export { default as TransactionList } from "./AdminComponents/TransactionList";
+export { default as AdminBar } from "./AdminComponents/AdminTab/AdminTab";
 
 // Pages
 export { default as About } from "../Pages/AboutPage/About";

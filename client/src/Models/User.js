@@ -9,4 +9,5 @@ export const userModel = {
   },
   status: "idle",
   error: null,
+  isAdmin: false,
 };

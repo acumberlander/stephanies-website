@@ -7,10 +7,10 @@ import {
   updateProfile
 } from "firebase/auth";
 import { auth, googleProvider, db } from "../../firebase/firebaseConfig";
-import { createUser, fetchUserByUid } from "../userThunks/userThunks";
-import { setUserIds, setAuthenticated } from "../slices/userSlice";
+import { setUserIds, setAuthenticated, setAdmin } from "../slices/userSlice";
 import { userModel } from "../../Models/User";
-import { _createUser, _fetchUserByUid, _createStripeCustomer } from "../../api/mongoRequests";
+import { _createUser, _fetchUserByUid } from "../../api/mongoRequests";
+import { _createStripeCustomer } from "../../api/stripeRequests";
 import { toast } from "react-toastify";
 import { doc, updateDoc } from "firebase/firestore";
 
@@ -37,13 +37,14 @@ export const signInWithGoogle = createAsyncThunk(
         lastName: user.displayName.split(" ")[1] || "",
         cart: guestCart,
         orders: [],
+        isAuthenticatied: true,
+        isAdmin: false,
       };
 
       // Remove guest user from localStorage when authenticated
       localStorage.removeItem("guestUser");
 
-      dispatch(fetchUserByUid(googleUser.uid))
-        .unwrap()
+      _fetchUserByUid(googleUser.uid)
         .then((existingUser) => {
           // Step 2: Set Redux state
           dispatch(
@@ -53,6 +54,11 @@ export const signInWithGoogle = createAsyncThunk(
             })
           );
           dispatch(setAuthenticated(true));
+          if (existingUser.isAdmin === "true") {
+            dispatch(setAdmin(true));
+          } else {
+            dispatch(setAdmin(false));
+          }
           toast(`Welcome back, ${name.split(" ")[0]}!`);
 
           return {
@@ -75,13 +81,12 @@ export const signInWithGoogle = createAsyncThunk(
               };
               
               // create the user in mongoDB
-              dispatch(createUser(userWithStripe))
-                .unwrap()
+              _createUser(userWithStripe)
                 .then((newUser) => {
                   // Step 2: Set Redux state
                   dispatch(setUserIds(newUser));
                   dispatch(setAuthenticated(true));
-                  toast(`Welcome back, ${name.split(" ")[0]}!`);
+                  toast(`Welcome, ${name.split(" ")[0]}!`);
 
                   return newUser;
                 });

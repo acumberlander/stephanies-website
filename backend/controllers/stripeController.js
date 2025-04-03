@@ -72,9 +72,7 @@ const getCheckoutSession = async (req, res) => {
   const { id: sessionId } = req.params;
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
-    res.send({
-      ...session,
-    });
+    res.send(session);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -90,6 +88,18 @@ const getCartItems = async (req, res) => {
     res.send(lineItems);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+const fetchAllCheckoutSessions = async (req, res) => {
+  try {
+    const sessions = await stripe.checkout.sessions.list({
+      limit: 100,
+      expand: ["data.line_items"],
+    });
+    res.json(sessions);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -112,7 +122,7 @@ const fetchAllStripeProducts = async (req, res) => {
         price_id: price.id ? price.id : null, // Needed for checkout
         images: product.images,
         category: product.metadata.category || "Uncategorized",
-        sizes: product.metadata.sizes ? product.metadata.sizes.split(",") : [],
+        sizes: product.metadata.sizes ? JSON.parse(product.metadata.sizes) : [],
         active: product.active,
       };
     });
@@ -154,10 +164,10 @@ const createStripeProduct = async (req, res) => {
     const product = await stripe.products.create({
       name,
       description,
+      images,
       metadata: {
         category,
         sizes: JSON.stringify(sizes || []),
-        images: JSON.stringify(images || [])
       },
     });
 
@@ -196,7 +206,7 @@ const updateStripeProduct = async (req, res) => {
       images,
       metadata: {
         category,
-        sizes: sizes.join(","),
+        sizes: JSON.stringify(sizes || []),
       },
     });
 
@@ -242,15 +252,53 @@ const toggleActiveStatus = async (req, res) => {
   }
 };
 
-/***************************************** Stripe Transaction Controller Requests ********************************************/
+/***************************************** Stripe Invoice Controller Requests ********************************************/
 
-const fetchAllStripeTransactions = async (req, res) => {
+/**
+ * Retrieves a list of invoices.
+ */
+const fetchAllInvoices = async (req, res) => {
   try {
-    const transactions = await stripe.treasury.transactions.list({
+    const invoices = await stripe.invoices.list({
       limit: 100,
-      expand: ["data.customer"],
     });
-    res.json(transactions);
+    res.json(invoices);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+/**
+ * Retrieves the invoice with the given ID.
+ */
+const fetchInvoiceById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const invoice = await stripe.invoices.retrieve(id);
+    res.json(invoice);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+/***************************************** Stripe Payment Intent Controller Requests ********************************************/
+
+const fetchAllStripePaymentIntents = async (req, res) => {
+  try {
+    const paymentIntents = await stripe.paymentIntents.list({
+      limit: 100,
+    });
+    res.json(paymentIntents);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const fetchStripePaymentIntentById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const paymentIntent = await stripe.paymentIntents.retrieve(id);
+    res.json(paymentIntent);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -332,12 +380,16 @@ module.exports = {
   createCheckoutSession,
   getCartItems,
   getCheckoutSession,
+  fetchAllCheckoutSessions,
   fetchAllStripeProducts,
   fetchStripeProductById,
   createStripeProduct,
   updateStripeProduct,
   toggleActiveStatus,
-  fetchAllStripeTransactions,
+  fetchAllStripePaymentIntents,
+  fetchStripePaymentIntentById,
+  fetchAllInvoices,
+  fetchInvoiceById,
   createStripeCoupon,
   fetchStripeCoupons,
   deleteStripeCoupon,

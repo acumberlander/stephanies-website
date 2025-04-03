@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { MyNavbar, AuthModal, Footer } from "../../../components";
+import { useSelector } from "react-redux";
+import { MyNavbar, AuthModal, Footer, AdminBar } from "../../../components";
 import { useModal, useIsMobile } from "../../../hooks/hooks";
 import { useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -9,12 +10,14 @@ const MainLayout = ({ children }) => {
   const { isOpen, openModal, closeModal } = useModal();
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { isAdmin } = useSelector((state) => state.user);
 
   const onAdminPage = location.pathname === "/admin";
 
   return (
     <>
       <MyNavbar openModal={openModal} />
+      {isAdmin && <AdminBar />}
       <AuthModal isOpen={isOpen} closeModal={closeModal} />
       {isMobile ? null : (
         <ToastContainer

@@ -1,0 +1,23 @@
+.admin-tab-container {
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-tab {
+  background-color: #98fb98;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 0.75rem;
+  color: #000;
+  max-width: 20%;
+  padding: 3px 7px;
+  border-radius: 0 0 10px 10px;
+  @media (max-width: 700px) {
+    display: none;
+  }
+}
