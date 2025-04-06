@@ -143,6 +143,13 @@ const MyNavbar = ({ openModal }) => {
                     >
                       Account Settings
                     </MenuItem>
+                    <MenuItem
+                      component={RouterLink}
+                      to="/orders"
+                      onClick={handleMenuClose}
+                    >
+                      Orders
+                    </MenuItem>
                     {isAdmin && (
                       <MenuItem
                         component={RouterLink}

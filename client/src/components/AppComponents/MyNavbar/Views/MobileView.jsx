@@ -101,7 +101,7 @@ const MobileView = ({
                   to="/admin"
                   color="inherit"
                   style={{ textDecoration: "none" }}
-                  key="Account"
+                  key="Admin"
                 >
                   <MenuItem className="menu-item">Admin Dashboard</MenuItem>
                 </Link>

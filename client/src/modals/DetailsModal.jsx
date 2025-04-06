@@ -7,7 +7,6 @@ import {
   Button,
   IconButton,
   Box,
-  Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -60,7 +59,7 @@ const DetailsModal = ({
         </IconButton>
       </DialogTitle>
 
-      <Box display="flex" gap={0} sx={{ padding:  "15px"}}>
+      <Box display="flex" gap={0} sx={{ padding: "15px" }}>
         <Button
           size="small"
           variant="outlined"
@@ -117,6 +116,9 @@ const DetailsModal = ({
           onClick={prev}
           disabled={selectedIndex <= 0}
           startIcon={<ArrowBackIosNewIcon />}
+          style={{
+            color: selectedIndex <= 0 ? "InactiveCaptionText" : "#cc34ab",
+          }}
         >
           Previous
         </Button>
@@ -124,6 +126,12 @@ const DetailsModal = ({
           onClick={next}
           disabled={selectedIndex >= filteredTransactions.length - 1}
           endIcon={<ArrowForwardIosIcon />}
+          style={{
+            color:
+              selectedIndex >= filteredTransactions.length - 1
+                ? "InactiveCaptionText"
+                : "#cc34ab",
+          }}
         >
           Next
         </Button>

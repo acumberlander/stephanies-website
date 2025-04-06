@@ -9,6 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { formatStripeAmount } from "./formatFunctions/formatStripeAmounts";
 
 export const getStatusChip = (status) => {
   const colors = {
@@ -26,7 +27,7 @@ export const getStatusChip = (status) => {
       label={status.charAt(0).toUpperCase() + status.slice(1).replace("_", " ")}
       color={colors[status] || "default"}
       size="small"
-      sx={{ maxWidth: "200px"}}
+      sx={{ maxWidth: "200px" }}
     />
   );
 };
@@ -60,7 +61,7 @@ export const renderMobileCard = (transaction, index, openDetails) => (
       <strong>Customer:</strong> {transaction.shipping?.name || "Guest"}
     </Typography>
     <Typography>
-      <strong>Amount:</strong> ${(transaction.amount / 100).toFixed(2)}
+      <strong>Amount:</strong> ${formatStripeAmount(transaction.amount)}
     </Typography>
     <Box mt={1} display="flex" justifyContent="space-between">
       {getStatusChip(transaction.status)}
@@ -83,7 +84,7 @@ export const renderDesktopRow = (transaction, index, openDetails) => (
     <TableCell>{`${transaction.id.slice(0, 20)}...`}</TableCell>
     <TableCell>{formatDate(transaction.created)}</TableCell>
     <TableCell>{transaction.shipping?.name || "Guest"}</TableCell>
-    <TableCell>${(transaction.amount / 100).toFixed(2)}</TableCell>
+    <TableCell>${formatStripeAmount(transaction.amount)}</TableCell>
     <TableCell>{getStatusChip(transaction.status)}</TableCell>
     <TableCell>
       <Button

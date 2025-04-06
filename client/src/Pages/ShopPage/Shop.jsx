@@ -3,16 +3,16 @@ import Grid from "@mui/material/Grid2";
 import { useParams } from "react-router-dom";
 import { CircularProgress, Container, Typography, Fade } from "@mui/material";
 import { useSelector } from "react-redux";
-import Product from "../../components/ProductComponents/Product/Product.js";
+import Product from "../../components/ProductComponents/Product/Product.jsx";
 import "./Shop.scss";
-import ErrorPage from "../ErrorPage/ErrorPage.js";
+import ErrorPage from "../ErrorPage/ErrorPage.jsx";
 
 export default function Shop() {
   const allProducts = useSelector((state) => state.products);
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
-  
+
   if (window.scrollY !== 0) {
     window.scrollTo(0, 0);
   }

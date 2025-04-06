@@ -5,7 +5,7 @@ import {
   browserLocalPersistence,
 } from "firebase/auth";
 import {
-  setUserIds,
+  setUser,
   setAuthenticated,
   setGuestUser,
 } from "../store/slices/userSlice";
@@ -18,7 +18,7 @@ import { fetchAllStripeProducts } from "../store/productThunks/productThunks";
  * - If a user is authenticated via Firebase, fetch user from MongoDB.
  * - If no user is authenticated, load or create a guest user in local storage.
  */
-export const initializeApp = async (dispatch, navigate) => {
+export const initializeApp = async (dispatch) => {
   const auth = getAuth();
 
   try {
@@ -36,8 +36,7 @@ export const initializeApp = async (dispatch, navigate) => {
       const user = await dispatch(fetchUserByUid(uid)).unwrap();
 
       if (user && user._id) {
-        dispatch(setUserIds(user));
-        dispatch(setAuthenticated(true));
+        dispatch(setUser(user));
         dispatch(fetchOrdersByUid(uid));
       }
     } catch (error) {

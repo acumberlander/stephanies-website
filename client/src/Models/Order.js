@@ -1,7 +1,7 @@
 export const Order = {
   uid: null,
-  sessionId: null,
+  payment_intent: null,
   items: [],
   total: 0,
-  createdAt: new Date.now(),
+  created: new Date(),
 };

@@ -11,17 +11,12 @@ import { emptyCart } from "../cartThunks/cartThunks";
  */
 export const createOrder = createAsyncThunk(
   "order/createOrder",
-  async (sessionId, { getState, dispatch, rejectWithValue }) => {
-    const { user } = getState();
-    const { subtotal } = user.cart;
+  async ({ sessionId, user }, { dispatch, rejectWithValue }) => {
     const { uid } = user;
 
     try {
-      // Get user's array of past orders
-      const oldOrders = await _fetchOrdersByUid(uid);
-
       // Creates an order object in mongoDB
-      const newOrder = await _createOrder(sessionId, uid, subtotal);
+      const newOrder = await _createOrder(sessionId, user);
 
       if (!uid && uid.includes("guest")) {
         const storedGuestUser = JSON.parse(localStorage.getItem("guestUser"));
@@ -46,7 +41,7 @@ export const createOrder = createAsyncThunk(
       dispatch(emptyCart(true));
 
       // Updates the cart in redux state
-      return { orders: [...oldOrders, newOrder] };
+      return newOrder;
     } catch (err) {
       return rejectWithValue("Unable to create order at this time.");
     }

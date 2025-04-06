@@ -26,6 +26,7 @@ const App = () => {
     import("./Pages/ProductDetailsPage/ProductDetails")
   );
   const AccountSettings = lazy(() => import("./Pages/AccountPage/AccountSettings"));
+  const OrdersPage = lazy(() => import("./Pages/OrdersPage/OrdersPage"));
 
   useEffect(() => {
     initializeApp(dispatch);
@@ -58,6 +59,7 @@ const App = () => {
               <Route path="/about" element={<About />} />
               <Route path="/shop/:category" element={<Shop />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/orders" element={<OrdersPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/thank-you" element={<ThankYou />} />

@@ -34,14 +34,13 @@ router.put("/product/:id", stripeController.updateStripeProduct);
 // PUT set a product to active or inactive in Stripe (archive/unarchive)
 router.put("/product/:id/status", stripeController.toggleActiveStatus);
 
-
 /***************************************** Stripe Payment Intent Routes ********************************************/
 
 // GET all payment intents from Stripe
 router.get("/paymentIntents", stripeController.fetchAllStripePaymentIntents);
 
-// GET a single payment intent from Stripe
-router.get("/paymentIntents/:id", stripeController.fetchStripePaymentIntentById);
+// GET payment intents by customer
+router.get("/customer/:id/paymentIntents", stripeController.fetchPaymentIntentsByCustomer);
 
 /***************************************** Stripe Invoice Routes ********************************************/
 
@@ -51,6 +50,8 @@ router.get("/invoices", stripeController.fetchAllInvoices);
 // GET a single invoice from Stripe
 router.get("/invoices/:id", stripeController.fetchInvoiceById);
 
+// GET customer invoices from Stripe
+router.get("/customer/:id/invoices", stripeController.fetchCustomerInvoices);
 
 /***************************************** Stripe Coupon Routes ********************************************/
 
@@ -66,11 +67,19 @@ router.delete("/coupons/:id", stripeController.deleteStripeCoupon);
 // PUT update a coupon in Stripe
 router.put("/coupons/:id", stripeController.editStripeCoupon);
 
-
 /***************************************** Stripe Customer Routes ********************************************/
 
 // POST create a new customer in Stripe
 router.post("/customers", stripeController.createStripeCustomer);
 
+/***************************************** Stripe Tax Routes ********************************************/
+
+// GET tax rate from Stripe
+router.get("/taxRate", stripeController.fetchTaxRate);
+
+/***************************************** Stripe Shipping Routes ********************************************/
+
+// GET shipping rate from Stripe
+router.get("/shippingRate", stripeController.fetchShippingRate);
 
 module.exports = router;

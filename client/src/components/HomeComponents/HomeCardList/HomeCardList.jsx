@@ -4,7 +4,7 @@ import teePic from "../../../assets/tees/tee-category.png";
 import steph1 from "../../../assets/steph/steph-1.jpg";
 import steph2 from "../../../assets/denim/denim-one-shot.jpg";
 import tribalPic from "../../../assets/tribal-pic.png";
-import HomeCard from "../../../components/HomeComponents/HomeCard/HomeCard";
+import HomeCard from "../HomeCard/HomeCard.jsx";
 
 const HomeCardList = () => {
   return (

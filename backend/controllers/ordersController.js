@@ -1,33 +1,19 @@
 const Order = require("../models/Order");
-const { GROUND_SHIPPING } = require("../../client/src/constants/constants");
 
 const createOrder = async (req, res) => {
-  const { uid, sessionId, lineItems, subtotal } = req.body;
-
-  const formattedLineItemsStructure = lineItems.map((item) => {
-    return {
-      name: item.description,
-      id: item.id,
-      price: (item.price.unit_amount / 100).toFixed(2),
-      quantity: item.quantity.toFixed(0),
-      subtotal: (
-        (item.price.unit_amount / 100) *
-        item.quantity.toFixed(0)
-      ).toFixed(2),
-    };
-  });
-
-  const orderTotal = () => {
-    const tax = subtotal * 0.0975;
-    return tax + subtotal + GROUND_SHIPPING;
-  };
+  const { uid, payment_intent, lineItems, subtotal, tax, shipping, discount, total, created } = req.body;
 
   try {
     const newOrder = new Order({
       uid: uid,
-      sessionId: sessionId,
-      items: formattedLineItemsStructure,
-      total: orderTotal().toFixed(2),
+      payment_intent: payment_intent,
+      items: lineItems,
+      subtotal: subtotal,
+      tax: tax,
+      shipping: shipping,
+      discount: discount,
+      total: total,
+      created: created,
     });
 
     const savedOrder = await newOrder.save();

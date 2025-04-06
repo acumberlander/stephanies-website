@@ -1,6 +1,10 @@
 import axios from "axios";
 import { userModel } from "../Models/User";
-import { _fetchSessionLineItems } from "./stripeRequests";
+import {
+  _fetchCheckoutSession,
+  _fetchSessionLineItems,
+} from "./stripeRequests";
+import { formatStripeAmount } from "../utils/formatFunctions/formatStripeAmounts";
 
 const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5001";
 
@@ -45,17 +49,32 @@ export const _fetchOrdersByUid = async (uid) => {
  * @param {number} subtotal
  * @returns {orderObject} Newly created mongoDB order object
  */
-export const _createOrder = async (sessionId, uid, subtotal) => {
-  // Get items from Stripe order session
-  const lineItems = await _fetchSessionLineItems(sessionId);
+export const _createOrder = async (sessionId, user) => {
+  const { uid, cart } = user;
+  const cartItems = cart.cart_items;
+  const { subtotal } = cart;
 
-  // Pass in lineItems to create an order object in mongoDB
+  const session = await _fetchCheckoutSession(sessionId);
+
+  console.log("session: ", session);
+  console.log("uid: ", uid);
+
+  const { amount_tax, amount_shipping, amount_discount, created } = session.total_details;
+  const { payment_intent } = session;
+  const total = subtotal + amount_tax + amount_shipping - amount_discount;
+
   const { data: newOrder } = await axios.post(`${baseUrl}/orders`, {
-    uid,
-    sessionId,
-    lineItems,
+    uid: uid,
+    payment_intent: payment_intent,
+    lineItems: cartItems,
     subtotal,
+    tax: amount_tax,
+    shipping: amount_shipping,
+    discount: amount_discount,
+    total: total,
+    created,
   });
+
   return newOrder;
 };
 

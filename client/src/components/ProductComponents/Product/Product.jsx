@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CircularProgress, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import "./Product.scss";
+import { formatStripeAmount } from "../../../utils/formatFunctions/formatStripeAmounts";
 
 const Product = ({ product }) => {
   const [imageLoaded, setimageLoaded] = useState(false);
@@ -48,7 +49,7 @@ const Product = ({ product }) => {
         </Typography>
         <hr className="line-break" />
         <Typography variant="h6" className="price">
-          ${product.price}
+          ${formatStripeAmount(product.price)}
         </Typography>
       </Link>
     </div>

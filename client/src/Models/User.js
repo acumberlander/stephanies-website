@@ -1,7 +1,7 @@
 export const userModel = {
   _id: null,
+  stripeCustomerId: null,
   uid: null,
-  isAuthenticated: false,
   cart: {
     cart_items: [],
     total_items: 0,
@@ -10,4 +10,5 @@ export const userModel = {
   status: "idle",
   error: null,
   isAdmin: false,
+  isAuthenticated: false,
 };
