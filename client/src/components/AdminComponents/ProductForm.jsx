@@ -31,7 +31,7 @@ const ProductForm = ({ product, onSave }) => {
   const [newSize, setNewSize] = useState("");
   const [error, setError] = useState("");
 
-  const categories = ["tees", "accessories", "glassware", "other"];
+  const categories = ["tees", "accessories", "glassware", "denim", "other"];
 
   useEffect(() => {
     if (product) {

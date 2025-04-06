@@ -19,7 +19,10 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import { _fetchAllPaymentIntents } from "../../api/stripeRequests";
 import DetailsModal from "../../modals/DetailsModal";
-import { renderMobileCard, renderDesktopRow } from "../../utils/statusFunctions";
+import {
+  renderMobileCard,
+  renderDesktopRow,
+} from "../../utils/statusFunctions";
 
 const TransactionList = () => {
   const [transactions, setTransactions] = useState([]);
@@ -122,11 +125,13 @@ const TransactionList = () => {
         </Typography>
       ) : isMobile ? (
         <Box sx={{ maxHeight: 400, overflow: "auto" }}>
-          {filteredTransactions.map((tx, index) => renderMobileCard(tx, index, openDetails))}
+          {filteredTransactions.map((tx, index) =>
+            renderMobileCard(tx, index, openDetails)
+          )}
         </Box>
       ) : (
         <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
-          <Table>
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell>Transaction ID</TableCell>
@@ -137,7 +142,11 @@ const TransactionList = () => {
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>{filteredTransactions.map((tx, index) => renderDesktopRow(tx, index, openDetails))}</TableBody>
+            <TableBody>
+              {filteredTransactions.map((tx, index) =>
+                renderDesktopRow(tx, index, openDetails)
+              )}
+            </TableBody>
           </Table>
         </TableContainer>
       )}

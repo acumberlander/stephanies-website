@@ -20,10 +20,8 @@ const userSlice = createSlice({
   name: "user",
   initialState: userModel,
   reducers: {
-    setUserIds(state, action) {
-      state._id = action.payload._id;
-      state.uid = action.payload.uid;
-      state.isAuthenticated = true;
+    setUser(state, action) {
+      return {...state, ...action.payload, isAuthenticated: true};
     },
     setAuthenticated(state, action) {
       state.isAuthenticated = action.payload;
@@ -228,7 +226,7 @@ const userSlice = createSlice({
       });
   },
 });
-export const { setUserIds, setAuthenticated, setGuestUser, updateGuestUser, setAdmin } =
+export const { setUser, setAuthenticated, setGuestUser, updateGuestUser, setAdmin } =
   userSlice.actions;
 
 export default userSlice.reducer;

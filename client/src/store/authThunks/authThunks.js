@@ -7,7 +7,7 @@ import {
   updateProfile
 } from "firebase/auth";
 import { auth, googleProvider, db } from "../../firebase/firebaseConfig";
-import { setUserIds, setAuthenticated, setAdmin } from "../slices/userSlice";
+import { setUser, setAuthenticated, setAdmin } from "../slices/userSlice";
 import { userModel } from "../../Models/User";
 import { _createUser, _fetchUserByUid } from "../../api/mongoRequests";
 import { _createStripeCustomer } from "../../api/stripeRequests";
@@ -18,12 +18,12 @@ import { doc, updateDoc } from "firebase/firestore";
 export const signInWithGoogle = createAsyncThunk(
   "auth/signInWithGoogle",
   async (_, { dispatch, getState }) => {
-    let name;
     try {
-      // Authenticate with Google
+      // 1. Authenticate with Google
       const { user } = await signInWithPopup(auth, googleProvider);
-      name = user.displayName;
-      // Get current guest cart from Redux state
+      const name = user.displayName;
+
+      // 2. Get current guest cart from Redux
       const guestCart = getState().user.cart || {
         cart_items: [],
         total_items: 0,
@@ -33,72 +33,53 @@ export const signInWithGoogle = createAsyncThunk(
       const googleUser = {
         uid: user.uid,
         email: user.email,
-        firstName: user.displayName.split(" ")[0] || "",
-        lastName: user.displayName.split(" ")[1] || "",
+        firstName: name?.split(" ")[0] || "",
+        lastName: name?.split(" ")[1] || "",
         cart: guestCart,
         orders: [],
-        isAuthenticatied: true,
         isAdmin: false,
       };
 
-      // Remove guest user from localStorage when authenticated
+      // 3. Remove guest user from localStorage
       localStorage.removeItem("guestUser");
 
-      _fetchUserByUid(googleUser.uid)
-        .then((existingUser) => {
-          // Step 2: Set Redux state
-          dispatch(
-            setUserIds({
-              ...existingUser,
-              ...googleUser.cart,
-            })
-          );
-          dispatch(setAuthenticated(true));
-          if (existingUser.isAdmin === "true") {
-            dispatch(setAdmin(true));
-          } else {
-            dispatch(setAdmin(false));
-          }
-          toast(`Welcome back, ${name.split(" ")[0]}!`);
+      try {
+        // 4. Try fetching user from MongoDB
+        const existingUser = await _fetchUserByUid(googleUser.uid);
 
-          return {
-            ...existingUser,
-            ...googleUser.cart,
-          };
-        })
-        .catch((err) => {
-          // if user not found in mongoDB
-          if (err) {
-            // Create Stripe customer
-            _createStripeCustomer({
-              email: googleUser.email,
-              name: `${googleUser.firstName} ${googleUser.lastName}`.trim()
-            }).then(stripeCustomer => {
-              // Add stripeCustomerId to user data
-              const userWithStripe = {
-                ...googleUser,
-                stripeCustomerId: stripeCustomer.id
-              };
-              
-              // create the user in mongoDB
-              _createUser(userWithStripe)
-                .then((newUser) => {
-                  // Step 2: Set Redux state
-                  dispatch(setUserIds(newUser));
-                  dispatch(setAuthenticated(true));
-                  toast(`Welcome, ${name.split(" ")[0]}!`);
+        dispatch(setUser({ ...existingUser, ...guestCart }));
+        dispatch(setAdmin(existingUser.isAdmin === "true"));
+        toast(`Welcome back, ${googleUser.firstName}!`);
 
-                  return newUser;
-                });
-            });
-          }
+        return { ...existingUser, ...guestCart };
+      } catch (err) {
+        // 5. If user not found, create new Stripe customer
+        const stripeCustomer = await _createStripeCustomer({
+          email: googleUser.email,
+          name: `${googleUser.firstName} ${googleUser.lastName}`.trim(),
         });
+
+        const userWithStripe = {
+          ...googleUser,
+          stripeCustomerId: stripeCustomer.id,
+        };
+
+        // 6. Create user in MongoDB
+        const newUser = await _createUser(userWithStripe);
+
+        dispatch(setUser(newUser));
+        dispatch(setAuthenticated(true));
+        toast(`Welcome, ${googleUser.firstName}!`);
+
+        return newUser;
+      }
     } catch (error) {
       console.error("Google Sign-In Error:", error);
       return { error: "Unable to sign in with Google at this time." };
     }
   }
 );
+
 
 export const signInWithEmail = createAsyncThunk(
   "user/signInWithEmail",
@@ -187,7 +168,7 @@ export const signOutUser = createAsyncThunk(
       "guestUser",
       JSON.stringify({ ...userModel, _id: null, uid: null })
     );
-    dispatch(setUserIds({ _id: null, uid: null }));
+    dispatch(setUser({ _id: null, uid: null }));
     dispatch(setAuthenticated(false));
     toast("See you next time!");
     return null;

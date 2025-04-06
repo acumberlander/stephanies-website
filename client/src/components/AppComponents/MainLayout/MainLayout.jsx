@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { MyNavbar, AuthModal, Footer, AdminBar } from "../../../components";
+import { MyNavbar, AuthModal, Footer, AdminBar } from "../../index";
 import { useModal, useIsMobile } from "../../../hooks/hooks";
 import { useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -29,7 +29,7 @@ const MainLayout = ({ children }) => {
           rtl={false}
           pauseOnFocusLoss
           draggable
-          pauseOnHover
+          pauseOnHover={false}
           theme="light"
           style={{
             marginTop: "60px",

@@ -7,6 +7,7 @@ import {
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import "./CartItem.scss";
+import { formatStripeAmount } from "../../../utils/formatFunctions/formatStripeAmounts";
 
 const CartItem = ({ product }) => {
   const dispatch = useDispatch();
@@ -49,9 +50,7 @@ const CartItem = ({ product }) => {
       </div>
       <div className="price-and-remove">
         {/* TODO need to apply logic to account for dynamic change amount (money) */}
-        <Typography>{`$${(product.price * product.quantity).toFixed(
-          2
-        )}`}</Typography>
+        <Typography>{`$${formatStripeAmount(product.price * product.quantity)}`}</Typography>
         <Button type="button" color="secondary" onClick={handleRemoveProduct}>
           X
         </Button>

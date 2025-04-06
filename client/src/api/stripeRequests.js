@@ -75,6 +75,20 @@ export const _unarchiveProduct = async (productId) => {
   return data;
 };
 
+/********************************************** Shipping Rate Request ***********************************************/
+
+export const _fetchShippingRate = async () => {
+  const { data } = await axios.get(`${baseUrl}/stripe/shippingRate`);
+  return data;
+};
+
+/********************************************** Tax Rate Request ***********************************************/
+
+export const _fetchTaxRate = async () => {
+  const { data } = await axios.get(`${baseUrl}/stripe/taxRate`);
+  return data;
+};
+
 /********************************************** Checkout Request ***********************************************/
 
 /**
@@ -82,10 +96,10 @@ export const _unarchiveProduct = async (productId) => {
  * @param {array} cartItems
  * @returns {Promise<sessionObject>} A stripe sessionObject
  */
-export const _createStripeCheckoutSession = async (cartItems) => {
+export const _createStripeCheckoutSession = async (cartItems, stripeCustomerId) => {
   const { data } = await axios.post(
     `${baseUrl}/stripe/create-checkout-session`,
-    { cartItems }
+    { cartItems, stripeCustomerId }
   );
   return data;
 };
@@ -99,7 +113,7 @@ export const _fetchCheckoutSession = async (sessionId) => {
   const { data } = await axios.get(
     `${baseUrl}/stripe/session/${sessionId}`
   );
-  return data.data;
+  return data;
 };
 
 /**
@@ -123,6 +137,13 @@ export const _fetchPaymentIntentById = async (id) => {
   return data.data;
 };
 
+export const _fetchPaymentIntentsByCustomer = async (id) => {
+  const { data } = await axios.get(
+    `${baseUrl}/stripe/customer/${id}/paymentIntents`
+  );
+  return data.data;
+};
+
 
 /********************************************** Invoice Request ***********************************************/
 
@@ -137,6 +158,10 @@ export const _fetchAllInvoices = async () => {
   return data;
 };
 
+export const _fetchCustomerInvoices = async (id) => {
+  const { data } = await axios.get(`${baseUrl}/stripe/customer/${id}/invoices`);
+  return data;
+};
 
 /********************************************** Order Session Request ***********************************************/
 
@@ -149,7 +174,7 @@ export const _fetchSessionLineItems = async (sessionId) => {
   const { data } = await axios.get(
     `${baseUrl}/stripe/sessions/${sessionId}/line_items`
   );
-  return data.data;
+  return data;
 };
 
 /********************************************** Coupon Requests ***********************************************/

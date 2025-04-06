@@ -20,11 +20,12 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_TEST_API_KEY);
 const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.user.cart.cart_items);
   const uid = useSelector((state) => state.user.uid);
+  const stripeCustomerId = useSelector((state) => state.user.stripeCustomerId);
   const fetchClientSecret = useCallback(async () => {
     // Create a Checkout Session
-    const data = await _createStripeCheckoutSession(cartItems, uid);
+    const data = await _createStripeCheckoutSession(cartItems, stripeCustomerId);
     return data.clientSecret;
-  }, [cartItems]);
+  }, [cartItems, stripeCustomerId]);
 
   const options = { fetchClientSecret };
   const navigate = useNavigate();

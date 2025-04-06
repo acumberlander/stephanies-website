@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { getStatusChip } from "../../../utils/statusFunctions";
+import { formatStripeAmount } from "../../../utils/formatFunctions/formatStripeAmounts";
 
 const TransactionView = ({ selectedTransaction }) => {
   const formatDate = (timestamp) =>
@@ -9,7 +10,7 @@ const TransactionView = ({ selectedTransaction }) => {
   return (
     <>
       <Typography variant="h5" fontWeight="bold">
-        ${(selectedTransaction.amount / 100).toFixed(2)} USD
+        ${formatStripeAmount(selectedTransaction.amount)} USD
       </Typography>
       {getStatusChip(selectedTransaction.status)}
       <Box display="flex" flexWrap="wrap" gap={4}>
@@ -49,7 +50,7 @@ const TransactionView = ({ selectedTransaction }) => {
         <Box display="flex" justifyContent="space-between">
           <Typography>Payment amount</Typography>
           <Typography>
-            ${(selectedTransaction.amount / 100).toFixed(2)}
+            ${formatStripeAmount(selectedTransaction.amount)}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between">
@@ -59,7 +60,7 @@ const TransactionView = ({ selectedTransaction }) => {
         <Box display="flex" justifyContent="space-between">
           <Typography fontWeight="bold">Net amount</Typography>
           <Typography fontWeight="bold">
-            ${((selectedTransaction.amount - 156) / 100).toFixed(2)}
+            ${formatStripeAmount(selectedTransaction.amount - 156)}
           </Typography>
         </Box>
       </Box>

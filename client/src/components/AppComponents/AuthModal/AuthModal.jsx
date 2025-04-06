@@ -87,25 +87,32 @@ const AuthModal = ({ isOpen, closeModal }) => {
               {!isRegistered ? (
                 <>
                   <Input
+                    required
                     type="name"
                     name="firstName"
                     placeholder="First Name"
-                    required
                   />
                   <Input
+                    required
                     type="name"
                     name="lastName"
                     placeholder="Last Name"
-                    required
                   />
                 </>
               ) : null}
-              <Input type="email" name="email" placeholder="Email" required />
               <Input
+                required
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={() => setAuthError("")}
+              />
+              <Input
+                required
                 type="password"
                 name="password"
                 placeholder="Password"
-                required
+                onChange={() => setAuthError("")}
               />
             </div>
 
@@ -118,7 +125,6 @@ const AuthModal = ({ isOpen, closeModal }) => {
             className="toggle-link"
             onClick={() => setIsRegistered(!isRegistered)}
           >
-
             {isRegistered
               ? "Don't have an account? Register"
               : "Already have an account? Sign In"}

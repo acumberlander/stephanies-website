@@ -10,6 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { _fetchInvoiceById } from "../../../api/stripeRequests";
+import { formatStripeAmount } from "../../../utils/formatFunctions/formatStripeAmounts";
 
 const formatDate = (timestamp) =>
   timestamp ? new Date(timestamp * 1000).toLocaleString() : "N/A";
@@ -34,7 +35,7 @@ const InvoiceView = ({ selectedTransaction }) => {
     };
 
     fetchInvoice();
-  }, [selectedTransaction?.invoice]); // ✅ avoids infinite loop
+  }, [selectedTransaction?.invoice]);
 
   if (loading) {
     return (
@@ -104,9 +105,9 @@ const InvoiceView = ({ selectedTransaction }) => {
                   <TableCell>{item.description || "N/A"}</TableCell>
                   <TableCell>{item.quantity || 1}</TableCell>
                   <TableCell>
-                    ${((item.price?.unit_amount || 0) / 100).toFixed(2)}
+                    ${formatStripeAmount(item.price?.unit_amount || 0)}
                   </TableCell>
-                  <TableCell>${(item.amount / 100).toFixed(2)}</TableCell>
+                  <TableCell>${formatStripeAmount(item.amount)}</TableCell>
                 </TableRow>
               ))
             ) : (
@@ -123,42 +124,42 @@ const InvoiceView = ({ selectedTransaction }) => {
       <Box mt={2}>
         <Box display="flex" justifyContent="space-between">
           <Typography>Subtotal</Typography>
-          <Typography>${(invoice.subtotal / 100).toFixed(2)}</Typography>
+          <Typography>${formatStripeAmount(invoice.subtotal)}</Typography>
         </Box>
         {invoice.amount_shipping > 0 && (
           <Box display="flex" justifyContent="space-between">
             <Typography>Shipping</Typography>
             <Typography>
-              ${(invoice.amount_shipping / 100).toFixed(2)}
+              ${formatStripeAmount(invoice.amount_shipping)}
             </Typography>
           </Box>
         )}
         <Box display="flex" justifyContent="space-between">
           <Typography>Total excluding tax</Typography>
           <Typography>
-            ${(invoice.total_excluding_tax / 100).toFixed(2)}
+            ${formatStripeAmount(invoice.total_excluding_tax)}
           </Typography>
         </Box>
         {invoice.tax !== null && (
           <Box display="flex" justifyContent="space-between">
             <Typography>Sales tax</Typography>
-            <Typography>${(invoice.tax / 100).toFixed(2)}</Typography>
+            <Typography>${formatStripeAmount(invoice.tax)}</Typography>
           </Box>
         )}
         <Box display="flex" justifyContent="space-between" fontWeight="bold">
           <Typography>Total</Typography>
-          <Typography>${(invoice.total / 100).toFixed(2)}</Typography>
+          <Typography>${formatStripeAmount(invoice.total)}</Typography>
         </Box>
         <Box display="flex" justifyContent="space-between">
           <Typography color="text.secondary">Amount paid</Typography>
           <Typography color="text.secondary">
-            – ${(invoice.amount_paid / 100).toFixed(2)}
+            – ${formatStripeAmount(invoice.amount_paid)}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between">
           <Typography color="text.secondary">Amount due</Typography>
           <Typography color="text.secondary">
-            ${(invoice.amount_due / 100).toFixed(2)}
+            ${formatStripeAmount(invoice.amount_due)}
           </Typography>
         </Box>
       </Box>
@@ -183,7 +184,7 @@ const InvoiceView = ({ selectedTransaction }) => {
                   <TableCell>{tax.display_name || "Sales Tax"}</TableCell>
                   <TableCell>{tax.country || "N/A"}</TableCell>
                   <TableCell>{(tax.percentage || 0).toFixed(2)}%</TableCell>
-                  <TableCell>${(invoice.tax / 100).toFixed(2)}</TableCell>
+                  <TableCell>${formatStripeAmount(invoice.tax)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

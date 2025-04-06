@@ -19,8 +19,8 @@ const ThankYou = () => {
   };
 
   useEffect(() => {
-    if (sessionId && user.uid) {
-      dispatch(createOrder(sessionId))
+    if (sessionId) {
+      dispatch(createOrder({ sessionId, user }))
         .unwrap()
         .then(() => {
           goBackHome();

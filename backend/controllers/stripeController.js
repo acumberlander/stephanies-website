@@ -1,10 +1,38 @@
 const Stripe = require("stripe");
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+/***************************************** Stripe Tax Controller Requests ********************************************/
+
+const fetchTaxRate = async (req, res) => {
+  try {
+    const taxRate = await stripe.taxRates.retrieve(
+      "txr_1QqzpFGZ9VpDdAnjyMTL3zKV"
+    );
+    res.send(taxRate);
+  } catch (err) {
+    console.error("Error fetching tax rate:", err.message);
+    throw err;
+  }
+};
+
+/***************************************** Stripe Shipping Controller Requests ********************************************/
+
+const fetchShippingRate = async (req, res) => {
+  try {
+    const shippingRate = await stripe.shippingRates.retrieve(
+      "shr_1QqjHMGZ9VpDdAnjnlJUCbUU"
+    );
+    res.send(shippingRate);
+  } catch (err) {
+    console.error("Error fetching shipping rate:", err.message);
+    throw err;
+  }
+};
+
 /***************************************** Stripe Checkout Session Controller Requests ********************************************/
 
 const createCheckoutSession = async (req, res) => {
-  const { cartItems } = req.body;
+  const { cartItems, stripeCustomerId } = req.body;
 
   try {
     const lineItems = cartItems.map((item) => ({
@@ -18,14 +46,13 @@ const createCheckoutSession = async (req, res) => {
             id: item.id,
           },
         },
-        unit_amount: Math.round(item.price * 100), // Convert to cents
+        unit_amount: item.price,
       },
       quantity: item.quantity,
       dynamic_tax_rates: ["txr_1QqzpFGZ9VpDdAnjyMTL3zKV"],
-      // tax_rates: ["txr_1R9Vjp2f37aim8QKGOFM0Mge"],
     }));
 
-    const session = await stripe.checkout.sessions.create({
+    const sessionParams = {
       line_items: lineItems,
       invoice_creation: { enabled: true },
       billing_address_collection: "required",
@@ -58,11 +85,18 @@ const createCheckoutSession = async (req, res) => {
       ui_mode: "embedded",
       return_url: `${
         process.env.FRONTEND_URL || "http://localhost:3000"
-      }/thank-you?session_id={CHECKOUT_SESSION_ID}`, // Where user lands after payment
-    });
+      }/thank-you?session_id={CHECKOUT_SESSION_ID}`,
+    };
+
+    if (stripeCustomerId) {
+      sessionParams.customer = stripeCustomerId;
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     res.send({ clientSecret: session.client_secret });
   } catch (error) {
+    console.error("Error creating checkout session:", error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -82,7 +116,8 @@ const getCartItems = async (req, res) => {
 
   try {
     const { data: lineItems } = await stripe.checkout.sessions.listLineItems(
-      sessionId
+      sessionId,
+      { expand: ["data.price.product"] }
     );
     res.send(lineItems);
   } catch (error) {
@@ -117,8 +152,8 @@ const fetchAllStripeProducts = async (req, res) => {
         id: product.id,
         name: product.name,
         description: product.description,
-        price: price?.unit_amount ? price.unit_amount / 100 : null, // Convert from cents
-        price_id: price?.id ? price.id : null, // Needed for checkout
+        price: price?.unit_amount ? price.unit_amount : null,
+        price_id: price?.id ? price.id : null,
         images: product.images,
         category: product.metadata.category || "Uncategorized",
         sizes: product.metadata.sizes ? JSON.parse(product.metadata.sizes) : [],
@@ -145,7 +180,7 @@ const fetchStripeProductById = async (req, res) => {
       id: product.id,
       name: product.name,
       description: product.description,
-      price: prices.data.length ? prices.data[0].unit_amount / 100 : null,
+      price: prices.data.length ? prices.data[0].unit_amount : null,
       price_id: prices.data.length ? prices.data[0].id : null,
       images: product.images,
       category: product.metadata.category || "Uncategorized",
@@ -280,6 +315,22 @@ const fetchInvoiceById = async (req, res) => {
   }
 };
 
+/**
+ * Retrieves customer invoices
+ */
+const fetchCustomerInvoices = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const invoices = await stripe.invoices.search({
+      query: `customer:"${id}"`,
+      limit: 100,
+    });
+    res.json(invoices.data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 /***************************************** Stripe Payment Intent Controller Requests ********************************************/
 
 const fetchAllStripePaymentIntents = async (req, res) => {
@@ -298,6 +349,20 @@ const fetchStripePaymentIntentById = async (req, res) => {
   try {
     const paymentIntent = await stripe.paymentIntents.retrieve(id);
     res.json(paymentIntent);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const fetchPaymentIntentsByCustomer = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const paymentIntents = await stripe.paymentIntents.list({
+      customer: id,
+      limit: 100,
+      expand: ["data.lines"],
+    });
+    res.json(paymentIntents);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -389,9 +454,13 @@ module.exports = {
   fetchStripePaymentIntentById,
   fetchAllInvoices,
   fetchInvoiceById,
+  fetchCustomerInvoices,
+  fetchPaymentIntentsByCustomer,
   createStripeCoupon,
   fetchStripeCoupons,
   deleteStripeCoupon,
   editStripeCoupon,
   createStripeCustomer,
+  fetchTaxRate,
+  fetchShippingRate,
 };

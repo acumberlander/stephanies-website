@@ -15,7 +15,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import ProductDetailsDropdowns from "../../components/ProductComponents/ProductDetailsDropdowns/ProductDetailsDropdowns";
 import productModel from "../../Models/Product";
 import { motion } from "framer-motion";
-
+import { formatStripeAmount } from "../../utils/formatFunctions/formatStripeAmounts";
 import "./ProductDetails.scss";
 
 const ProductDetails = () => {
@@ -112,7 +112,7 @@ const ProductDetails = () => {
           </div>
           {/* Right Section */}
           <div className="right-section">
-            <Typography className="price-header">${product.price}</Typography>
+            <Typography className="price-header">${formatStripeAmount(product.price)}</Typography>
 
             <Typography className="quantity-header">Quantity</Typography>
 
