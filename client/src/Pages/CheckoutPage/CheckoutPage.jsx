@@ -21,9 +21,10 @@ const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.user.cart.cart_items);
   const uid = useSelector((state) => state.user.uid);
   const stripeCustomerId = useSelector((state) => state.user.stripeCustomerId);
+  const newMember = useSelector((state) => state.user.newMember);
   const fetchClientSecret = useCallback(async () => {
     // Create a Checkout Session
-    const data = await _createStripeCheckoutSession(cartItems, stripeCustomerId);
+    const data = await _createStripeCheckoutSession(cartItems, stripeCustomerId, newMember);
     return data.clientSecret;
   }, [cartItems, stripeCustomerId]);
 

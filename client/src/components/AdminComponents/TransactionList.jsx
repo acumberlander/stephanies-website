@@ -159,6 +159,7 @@ const TransactionList = () => {
         selectedTransaction={selectedTransaction}
         filteredTransactions={filteredTransactions}
         isMobile={isMobile}
+        isOrders={false}
       />
     </Box>
   );

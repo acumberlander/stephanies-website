@@ -16,9 +16,10 @@ import { Link as RouterLink } from "react-router-dom";
 import myLogo from "../../../assets/logos/logo-white.png";
 import { signOutUser } from "../../../store/authThunks/authThunks";
 import { useIsMobile } from "../../../hooks/hooks";
+import { useModal } from "../../../context/ModalContext";
 import "./MyNavbar.scss";
 
-const MyNavbar = ({ openModal }) => {
+const MyNavbar = () => {
   const totalItems = useSelector((state) => state.user.cart.total_items) || 0;
   const { isAuthenticated, isAdmin, email } = useSelector(
     (state) => state.user
@@ -27,6 +28,7 @@ const MyNavbar = ({ openModal }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const isMobile = useIsMobile(700);
   const dispatch = useDispatch();
+  const { openModal } = useModal();
 
   const handleSignOut = () => {
     dispatch(signOutUser());
@@ -63,6 +65,7 @@ const MyNavbar = ({ openModal }) => {
             totalItems={totalItems}
             isAuthenticated={isAuthenticated}
             isAdmin={isAdmin}
+            openModal={openModal}
             handleSignOut={handleSignOut}
             getAvatarLetter={getAvatarLetter}
           />
@@ -115,7 +118,7 @@ const MyNavbar = ({ openModal }) => {
               </IconButton>
 
               {!isAuthenticated ? (
-                <Button aria-label="login" id="login-button" onClick={openModal}>
+                <Button aria-label="login" id="login-button" onClick={() => openModal(false)}>
                   Login
                 </Button>
               ) : (

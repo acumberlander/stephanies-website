@@ -18,7 +18,7 @@ const AdminPage = () => {
     if (productsStatus === 'idle') {
       dispatch(fetchAllStripeProducts())
     }
-  }, [dispatch, productsStatus])
+  }, [dispatch, productsStatus]);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue)

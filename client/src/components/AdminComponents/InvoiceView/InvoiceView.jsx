@@ -9,7 +9,10 @@ import {
   TableRow,
   CircularProgress,
 } from "@mui/material";
-import { _fetchInvoiceById } from "../../../api/stripeRequests";
+import {
+  _fetchInvoiceById,
+  _fetchPaymentIntentById,
+} from "../../../api/stripeRequests";
 import { formatStripeAmount } from "../../../utils/formatFunctions/formatStripeAmounts";
 
 const formatDate = (timestamp) =>
@@ -21,12 +24,20 @@ const InvoiceView = ({ selectedTransaction }) => {
 
   useEffect(() => {
     const fetchInvoice = async () => {
-      if (!selectedTransaction?.invoice) return;
+      if (!selectedTransaction?.invoice && !selectedTransaction?.payment_intent) return;
 
       setLoading(true);
       try {
-        const res = await _fetchInvoiceById(selectedTransaction.invoice);
-        setInvoice(res);
+        if (selectedTransaction.payment_intent) {
+          const { invoice: invoiceId } = await _fetchPaymentIntentById(
+            selectedTransaction.payment_intent
+          );
+          const invoice = await _fetchInvoiceById(invoiceId);
+          setInvoice(invoice);
+        } else {
+          const invoice = await _fetchInvoiceById(selectedTransaction.invoice);
+          setInvoice(invoice);
+        }
       } catch (err) {
         console.error("Error fetching invoice:", err);
       } finally {
@@ -35,7 +46,7 @@ const InvoiceView = ({ selectedTransaction }) => {
     };
 
     fetchInvoice();
-  }, [selectedTransaction?.invoice]);
+  }, [selectedTransaction?.invoice, selectedTransaction?.payment_intent]);
 
   if (loading) {
     return (
@@ -183,7 +194,9 @@ const InvoiceView = ({ selectedTransaction }) => {
                 <TableRow key={index}>
                   <TableCell>{tax.display_name || "Sales Tax"}</TableCell>
                   <TableCell>{tax.country || "N/A"}</TableCell>
-                  <TableCell>{(tax.percentage || 0).toFixed(2)}%</TableCell>
+                  <TableCell>
+                    {(tax.percentage || 0).toFixed(2)}%
+                  </TableCell>
                   <TableCell>${formatStripeAmount(invoice.tax)}</TableCell>
                 </TableRow>
               ))}

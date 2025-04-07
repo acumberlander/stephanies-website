@@ -10,5 +10,6 @@ export const userModel = {
   status: "idle",
   error: null,
   isAdmin: false,
+  newMember: false,
   isAuthenticated: false,
 };

@@ -2,12 +2,25 @@ import { Fade, Typography, Input, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import HomeCardList from "../../components/HomeComponents/HomeCardList/HomeCardList";
 import MyCarousel from "../../components/HomeComponents/MyCarousel/MyCarousel";
+import { useModal } from "../../context/ModalContext";
 import "./Home.scss";
+import { useEffect } from "react";
 
 const Home = () => {
-  if (window.scrollY !== 0) {
-    window.scrollTo({ left: 0, top: 0, behavior: "auto" });
-  }
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const { openModal } = useModal();
+
+  const handleNewMember = () => {
+    scrollToTop();
+    openModal(true);
+  };
 
   return (
     <div className="home-container">
@@ -26,14 +39,11 @@ const Home = () => {
           10% OFF YOUR FIRST ORDER
         </Typography>
         <div className="input-and-button">
-          <label htmlFor="email-input"></label>
-          <Input
-            id="email-input"
-            className="email-input"
-            placeholder="Enter your email here*"
-            disableUnderline={true}
-          />
-          <Button className="join-button" variant="text">
+          <Button
+            className="join-button"
+            variant="text"
+            onClick={handleNewMember}
+          >
             Join
           </Button>
         </div>

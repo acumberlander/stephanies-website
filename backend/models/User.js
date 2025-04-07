@@ -23,6 +23,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  newMember: {
+    type: Boolean,
+    default: false,
+  },
+  isGuest: {
+    type: Boolean,
+    default: false,
+  },
   cart: {
     cart_items: {
       type: Array,

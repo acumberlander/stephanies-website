@@ -26,7 +26,7 @@ const MobileView = ({
   const handleDrawerClose = () => setDrawerOpen(false);
   const handleAuth = () => {
     handleDrawerClose();
-    openModal();
+    openModal(false);
   };
   const handleLogOut = () => {
     handleDrawerClose();

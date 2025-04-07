@@ -50,14 +50,11 @@ export const _fetchOrdersByUid = async (uid) => {
  * @returns {orderObject} Newly created mongoDB order object
  */
 export const _createOrder = async (sessionId, user) => {
-  const { uid, cart } = user;
+  const { uid, cart, newMember } = user;
   const cartItems = cart.cart_items;
   const { subtotal } = cart;
 
   const session = await _fetchCheckoutSession(sessionId);
-
-  console.log("session: ", session);
-  console.log("uid: ", uid);
 
   const { amount_tax, amount_shipping, amount_discount, created } = session.total_details;
   const { payment_intent } = session;
@@ -73,6 +70,7 @@ export const _createOrder = async (sessionId, user) => {
     discount: amount_discount,
     total: total,
     created,
+    newMember: newMember,
   });
 
   return newOrder;

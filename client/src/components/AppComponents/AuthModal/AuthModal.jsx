@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, Box, Input } from "@mui/material";
 import "./AuthModal.scss";
 import { useDispatch } from "react-redux";
@@ -8,6 +8,7 @@ import {
   registerWithEmail,
 } from "../../../store/authThunks/authThunks";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { useModal } from "../../../context/ModalContext";
 
 const googleIcon = require("../../../assets/icons/icons8-google-48.png");
 
@@ -28,10 +29,15 @@ const style = {
   textAlign: "center",
 };
 
-const AuthModal = ({ isOpen, closeModal }) => {
+const AuthModal = () => {
   const dispatch = useDispatch();
-  const [isRegistered, setIsRegistered] = useState(true);
+  const { isOpen, closeModal, newMember } = useModal();
+  const [isRegistered, setIsRegistered] = useState(false);
   const [authError, setAuthError] = useState("");
+
+  useEffect(() => {
+    setIsRegistered(!newMember);
+  }, [newMember]);
 
   const handleGoogleAuth = () => {
     closeModal();
@@ -50,8 +56,8 @@ const AuthModal = ({ isOpen, closeModal }) => {
     }
 
     const action = isRegistered
-      ? dispatch(signInWithEmail({ email, password }))
-      : dispatch(registerWithEmail({ email, password, firstName, lastName }));
+      ? dispatch(signInWithEmail({ email, password, newMember }))
+      : dispatch(registerWithEmail({ email, password, firstName, lastName, newMember }));
 
     const actionResult = await action.unwrap();
 

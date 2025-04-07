@@ -1,7 +1,7 @@
 const Order = require("../models/Order");
 
 const createOrder = async (req, res) => {
-  const { uid, payment_intent, lineItems, subtotal, tax, shipping, discount, total, created } = req.body;
+  const { uid, payment_intent, lineItems, subtotal, tax, shipping, discount, total, created, newMember } = req.body;
 
   try {
     const newOrder = new Order({
@@ -14,6 +14,7 @@ const createOrder = async (req, res) => {
       discount: discount,
       total: total,
       created: created,
+      newMember: newMember,
     });
 
     const savedOrder = await newOrder.save();

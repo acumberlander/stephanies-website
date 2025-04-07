@@ -2,7 +2,7 @@ const User = require("../models/User");
 
 const createUser = async (req, res) => {
   try {
-    const { uid, email, firstName, lastName, cart, orders, stripeCustomerId } = req.body;
+    const { uid, email, firstName, lastName, cart, orders, stripeCustomerId, newMember } = req.body;
 
     if (!uid) {
       return res.status(400).json({ error: "UID is required" });
@@ -23,6 +23,7 @@ const createUser = async (req, res) => {
       firstName: firstName || "Guest",
       lastName: lastName || "",
       stripeCustomerId: stripeCustomerId || null,
+      newMember: newMember || false,
       cart: cart || { cart_items: [], total_items: 0, subtotal: 0 },
       orders: orders || [],
     });

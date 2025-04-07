@@ -34,10 +34,14 @@ export const initializeApp = async (dispatch) => {
     try {
       const uid = firebaseUser.uid;
       const user = await dispatch(fetchUserByUid(uid)).unwrap();
-
-      if (user && user._id) {
-        dispatch(setUser(user));
-        dispatch(fetchOrdersByUid(uid));
+      const userOrders = await dispatch(fetchOrdersByUid(uid)).unwrap();
+      
+      if (user && user._id && userOrders && userOrders.length > 0) {
+        dispatch(setUser({ ...user, newMember: false }));
+      } else {
+        if (user && user._id) {
+          dispatch(setUser(user));
+        }
       }
     } catch (error) {
       console.warn("User not found in MongoDB. User must sign up first.");
@@ -54,10 +58,8 @@ export const initializeApp = async (dispatch) => {
       };
       localStorage.setItem("guestUser", JSON.stringify(newGuestUser));
       dispatch(setGuestUser(newGuestUser));
-      dispatch(fetchOrdersByUid(newGuestUser.uid));
     } else {
       dispatch(setGuestUser(storedGuestUser));
-      dispatch(fetchOrdersByUid(storedGuestUser.uid));
     }
     dispatch(setAuthenticated(false));
   }

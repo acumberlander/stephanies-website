@@ -42,6 +42,9 @@ router.get("/paymentIntents", stripeController.fetchAllStripePaymentIntents);
 // GET payment intents by customer
 router.get("/customer/:id/paymentIntents", stripeController.fetchPaymentIntentsByCustomer);
 
+// GET a single payment intent from Stripe
+router.get("/paymentIntents/:id", stripeController.fetchStripePaymentIntentById);
+
 /***************************************** Stripe Invoice Routes ********************************************/
 
 // GET all invoices from Stripe

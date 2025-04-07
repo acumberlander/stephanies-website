@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "../../store/orderThunks/orderThunks";
+import { setUser } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import "./ThankYou.scss";
 
@@ -18,18 +19,21 @@ const ThankYou = () => {
     }, 2000);
   };
 
-  useEffect(() => {
-    if (sessionId) {
-      dispatch(createOrder({ sessionId, user }))
-        .unwrap()
-        .then(() => {
-          goBackHome();
-        })
-        .catch((error) => {
-          console.error("There was a problem creating your order... ", error);
-        });
-    }
-  }, [sessionId, dispatch, user.uid]);
+ useEffect(() => {
+   const processOrder = async () => {
+     if (!sessionId || !user.uid) return;
+
+     try {
+       await dispatch(setUser({ ...user, newMember: false }));
+       await dispatch(createOrder({ sessionId, user }));
+       goBackHome();
+     } catch (error) {
+       console.error("There was a problem processing your order:", error);
+     }
+   };
+
+   processOrder();
+ }, [sessionId, dispatch, user.uid]);
 
   return (
     <div className="thank-you-container">
