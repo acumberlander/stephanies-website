@@ -1,66 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { getStatusChip } from "../../../utils/statusFunctions";
 import { formatStripeAmount } from "../../../utils/formatFunctions/formatStripeAmounts";
+import { formateDateAndTime } from "../../../utils/formatFunctions/formatDateAndTime";
+import { _fetchPaymentIntentById } from "../../../api/stripeRequests";
 
-const TransactionView = ({ selectedTransaction }) => {
-  const formatDate = (timestamp) =>
-    new Date(timestamp * 1000).toLocaleString();
+const TransactionView = ({ user, selectedTransaction, isOrders }) => {
+  const formatDate = (timestamp) => new Date(timestamp * 1000).toLocaleString();
+  const [selectedOrder, setSelectedOrder] = useState(selectedTransaction);
 
   return (
     <>
       <Typography variant="h5" fontWeight="bold">
-        ${formatStripeAmount(selectedTransaction.amount)} USD
+        $
+        {isOrders
+          ? formatStripeAmount(selectedOrder.total)
+          : formatStripeAmount(selectedTransaction.amount)}{" "}
+        USD
       </Typography>
-      {getStatusChip(selectedTransaction.status)}
+      {!isOrders && getStatusChip(selectedTransaction.status)}
       <Box display="flex" flexWrap="wrap" gap={4}>
         <Box>
           <Typography variant="caption" color="text.secondary">
             Customer
           </Typography>
           <Typography>
-            {selectedTransaction.shipping?.name || "Guest"}
+            {isOrders
+              ? `${user.firstName} ${user.lastName}`
+              : selectedTransaction.shipping?.name || "Guest"}
           </Typography>
         </Box>
         <Box>
           <Typography variant="caption" color="text.secondary">
             Email
           </Typography>
-          <Typography>{selectedTransaction.receipt_email || "N/A"}</Typography>
+          <Typography>
+            {isOrders ? user.email : selectedTransaction.receipt_email || "N/A"}
+          </Typography>
         </Box>
         <Box>
           <Typography variant="caption" color="text.secondary">
             Created
           </Typography>
-          <Typography>{formatDate(selectedTransaction.created)}</Typography>
+          <Typography>
+            {isOrders
+              ? formateDateAndTime(selectedTransaction.created)
+              : formatDate(selectedTransaction.created)}
+          </Typography>
         </Box>
         <Box>
           <Typography variant="caption" color="text.secondary">
             Transaction ID
           </Typography>
           <Typography sx={{ wordBreak: "break-all" }}>
-            {selectedTransaction.id}
+            {isOrders
+              ? selectedTransaction.payment_intent
+              : selectedTransaction.id}
           </Typography>
         </Box>
       </Box>
       <Box>
-        <Typography variant="subtitle1" fontWeight="bold" mb={1}>
-          Payment Breakdown
-        </Typography>
         <Box display="flex" justifyContent="space-between">
-          <Typography>Payment amount</Typography>
-          <Typography>
-            ${formatStripeAmount(selectedTransaction.amount)}
+          <Typography variant="subtitle1" fontWeight="bold">
+            Payment amount
           </Typography>
-        </Box>
-        <Box display="flex" justifyContent="space-between">
-          <Typography>Stripe processing fees</Typography>
-          <Typography color="text.secondary">– $1.56</Typography>
-        </Box>
-        <Box display="flex" justifyContent="space-between">
-          <Typography fontWeight="bold">Net amount</Typography>
-          <Typography fontWeight="bold">
-            ${formatStripeAmount(selectedTransaction.amount - 156)}
+          <Typography>
+            $
+            {isOrders
+              ? formatStripeAmount(selectedTransaction.total)
+              : formatStripeAmount(selectedTransaction.amount)}
           </Typography>
         </Box>
       </Box>

@@ -21,7 +21,7 @@ const userSlice = createSlice({
   initialState: userModel,
   reducers: {
     setUser(state, action) {
-      return {...state, ...action.payload, isAuthenticated: true};
+      return { ...state, ...action.payload, isAuthenticated: true };
     },
     setAuthenticated(state, action) {
       state.isAuthenticated = action.payload;
@@ -46,9 +46,8 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(createUser.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.user = action.payload.user;
         Object.assign(state, action.payload);
+        state.status = "succeeded";
       })
       .addCase(createUser.rejected, (state, action) => {
         state.status = "failed";
@@ -57,8 +56,8 @@ const userSlice = createSlice({
 
       // Google Sign In
       .addCase(signInWithGoogle.fulfilled, (state, action) => {
+        Object.assign(state, action.payload);
         state.isAuthenticated = true;
-        state.user = action.payload;
       })
 
       // Register with Email
@@ -99,13 +98,15 @@ const userSlice = createSlice({
       .addCase(signOutUser.fulfilled, (state) => {
         state.isAuthenticated = false;
         state.isAdmin = false; // Reset admin status
+        state.newMember = false;
         state.uid = null;
         state._id = null;
+        state.isGuest = true;
         // Reset cart state
         state.cart = {
           cart_items: [],
           total_items: 0,
-          subtotal: 0
+          subtotal: 0,
         };
       })
 
@@ -114,8 +115,8 @@ const userSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchUserByUid.fulfilled, (state, action) => {
-        state.status = "succeeded";
         Object.assign(state, action.payload);
+        state.status = "succeeded";
       })
       .addCase(fetchUserByUid.rejected, (state, action) => {
         state.status = "failed";
@@ -222,11 +223,16 @@ const userSlice = createSlice({
         state.phoneNumber = action.payload.phoneNumber;
       })
       .addCase(updateUserProfile.rejected, (state) => {
-        state.status = 'failed';
+        state.status = "failed";
       });
   },
 });
-export const { setUser, setAuthenticated, setGuestUser, updateGuestUser, setAdmin } =
-  userSlice.actions;
+export const {
+  setUser,
+  setAuthenticated,
+  setGuestUser,
+  updateGuestUser,
+  setAdmin,
+} = userSlice.actions;
 
 export default userSlice.reducer;

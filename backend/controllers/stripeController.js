@@ -32,7 +32,7 @@ const fetchShippingRate = async (req, res) => {
 /***************************************** Stripe Checkout Session Controller Requests ********************************************/
 
 const createCheckoutSession = async (req, res) => {
-  const { cartItems, stripeCustomerId } = req.body;
+  const { cartItems, stripeCustomerId, newMember } = req.body;
 
   try {
     const lineItems = cartItems.map((item) => ({
@@ -59,6 +59,7 @@ const createCheckoutSession = async (req, res) => {
       shipping_address_collection: {
         allowed_countries: ["US", "CA"],
       },
+      discounts: newMember ? [{ promotion_code: "promo_1QuFYKGZ9VpDdAnjCURFfs6m" }] : [],
       shipping_options: [
         {
           shipping_rate_data: {

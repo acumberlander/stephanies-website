@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Box,
   Typography,
@@ -8,23 +8,66 @@ import {
   TextField,
   InputAdornment,
   useMediaQuery,
+  Button,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { fetchOrdersByUid } from "../../store/orderThunks/orderThunks";
 import { formateDateAndTime } from "../../utils/formatFunctions/formatDateAndTime";
-import LoadingPage from "../LoadingPage/LoadingPage";
+import LoadingPage from "../../Pages/LoadingPage/LoadingPage";
 import { formatStripeAmount } from "../../utils/formatFunctions/formatStripeAmounts";
+import DetailsModal from "../../modals/DetailsModal";
+import { _fetchOrdersByUid } from "../../api/mongoRequests";
 
 const OrdersPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [userOrders, setUserOrders] = useState([]);
+
+  const user = useSelector((state) => state.user);
+  const uid = user.uid;
+
   const isMobile = useMediaQuery("(max-width:800px)");
-  const dispatch = useDispatch();
-  const { orders } = useSelector((state) => state.orders);
-  const { uid } = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(fetchOrdersByUid(uid));
-  }, [dispatch, uid]);
+    const fetchUserOrders = async () => {
+      setLoading(true);
+      try {
+        const response = await _fetchOrdersByUid(uid);
+        setUserOrders(response);
+      } catch (error) {
+        console.error("Error fetching user orders:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserOrders();
+  }, [uid]);
+
+  const filteredOrders =
+    userOrders?.filter((order) =>
+      order.items.some((item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    ) || [];
+
+  const selectedOrders =
+    selectedIndex !== null ? filteredOrders[selectedIndex] : null;
+
+  const handleOpenDetails = (index) => {
+    setSelectedIndex(index);
+  };
+  const handleCloseDetails = () => setSelectedIndex(null);
+
+  const handleNext = () => {
+    if (selectedIndex < filteredOrders.length - 1) {
+      setSelectedIndex((prev) => prev + 1);
+    }
+  };
+  const handlePrev = () => {
+    if (selectedIndex > 0) {
+      setSelectedIndex((prev) => prev - 1);
+    }
+  };
 
   return (
     <Box
@@ -57,21 +100,17 @@ const OrdersPage = () => {
         sx={{ mb: 3 }}
       />
 
-      {!orders ? (
+      {!userOrders ? (
         <Typography variant="body2" color="text.secondary">
           <LoadingPage />
         </Typography>
-      ) : orders.length === 0 ? (
-        <Typography
-          sx={{ color: "#cc34ab" }}
-          variant="body2"
-          color="text.secondary"
-        >
+      ) : filteredOrders.length === 0 ? (
+        <Typography sx={{ color: "#cc34ab" }} variant="body2">
           You don’t have any orders yet...
         </Typography>
       ) : (
         <Box display="flex" flexDirection="column" gap={3}>
-          {orders.map((order) => (
+          {filteredOrders.map((order, index) => (
             <Paper
               key={order.payment_intent}
               elevation={2}
@@ -112,7 +151,6 @@ const OrdersPage = () => {
                     />
                     <Link
                       to={`/product/${item?.id}`}
-                      underline="hover"
                       style={{ color: "#cc34ab", textDecoration: "none" }}
                     >
                       {item?.name}
@@ -120,28 +158,32 @@ const OrdersPage = () => {
                   </Box>
                 ))}
               </Box>
-              {/* <Box mt={2} display="flex" gap={3}>
-                <Link
-                  href="#"
-                  underline="hover"
-                  color="primary"
-                  variant="body2"
+              <Box mt={2} display="flex" gap={2}>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  onClick={() => handleOpenDetails(index)}
+                  sx={{ color: "#cc34ab", borderColor: "#cc34ab" }}
                 >
                   View order details
-                </Link>
-                <Link
-                  href="#"
-                  underline="hover"
-                  color="primary"
-                  variant="body2"
-                >
-                  View invoice
-                </Link>
-              </Box> */}
+                </Button>
+              </Box>
             </Paper>
           ))}
         </Box>
       )}
+
+      <DetailsModal
+        selectedIndex={selectedIndex}
+        closeDetails={handleCloseDetails}
+        next={handleNext}
+        prev={handlePrev}
+        selectedTransaction={selectedOrders}
+        filteredTransactions={filteredOrders}
+        isMobile={isMobile}
+        isOrders={true}
+        user={user}
+      />
     </Box>
   );
 };

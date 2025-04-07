@@ -47,11 +47,11 @@ export const signInWithGoogle = createAsyncThunk(
         // 4. Try fetching user from MongoDB
         const existingUser = await _fetchUserByUid(googleUser.uid);
 
-        dispatch(setUser({ ...existingUser, ...guestCart }));
+        dispatch(setUser({ ...existingUser, ...guestCart, newMember: false }));
         dispatch(setAdmin(existingUser.isAdmin === "true"));
         toast(`Welcome back, ${googleUser.firstName}!`);
 
-        return { ...existingUser, ...guestCart };
+        return { ...existingUser, ...guestCart, newMember: false };
       } catch (err) {
         // 5. If user not found, create new Stripe customer
         const stripeCustomer = await _createStripeCustomer({
@@ -62,6 +62,7 @@ export const signInWithGoogle = createAsyncThunk(
         const userWithStripe = {
           ...googleUser,
           stripeCustomerId: stripeCustomer.id,
+          newMember: true,
         };
 
         // 6. Create user in MongoDB
@@ -114,7 +115,7 @@ export const signInWithEmail = createAsyncThunk(
 // Email & Password registration
 export const registerWithEmail = createAsyncThunk(
   "auth/registerWithEmail",
-  async ({ email, password, firstName, lastName }) => {
+  async ({ email, password, firstName, lastName, newMember }) => {
     try {
       // Create user in Firebase
       const { user } = await createUserWithEmailAndPassword(
@@ -135,7 +136,8 @@ export const registerWithEmail = createAsyncThunk(
         email,
         firstName,
         lastName,
-        stripeCustomerId: stripeCustomer.id
+        stripeCustomerId: stripeCustomer.id,
+        newMember
       };
 
       // Remove guest user from localStorage when authenticated

@@ -25,6 +25,7 @@ const orderSchema = new mongoose.Schema({
   tax: { type: Number, default: 0 },
   shipping: { type: Number, default: 0 },
   discount: { type: Number, default: 0 },
+  newMember: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("Order", orderSchema);

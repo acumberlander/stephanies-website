@@ -96,10 +96,10 @@ export const _fetchTaxRate = async () => {
  * @param {array} cartItems
  * @returns {Promise<sessionObject>} A stripe sessionObject
  */
-export const _createStripeCheckoutSession = async (cartItems, stripeCustomerId) => {
+export const _createStripeCheckoutSession = async (cartItems, stripeCustomerId, newMember) => {
   const { data } = await axios.post(
     `${baseUrl}/stripe/create-checkout-session`,
-    { cartItems, stripeCustomerId }
+    { cartItems, stripeCustomerId, newMember }
   );
   return data;
 };
@@ -134,7 +134,7 @@ export const _fetchAllPaymentIntents = async () => {
 
 export const _fetchPaymentIntentById = async (id) => {
   const { data } = await axios.get(`${baseUrl}/stripe/paymentIntents/${id}`);
-  return data.data;
+  return data;
 };
 
 export const _fetchPaymentIntentsByCustomer = async (id) => {

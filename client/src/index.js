@@ -1,6 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import { ModalProvider } from "../src/context/ModalContext";
+
 
 import App from "./App";
 
@@ -9,6 +11,8 @@ const root = createRoot(container);
 
 root.render(
   <Provider store={store}>
-    <App />
+    <ModalProvider>
+      <App />
+    </ModalProvider>
   </Provider>
 );

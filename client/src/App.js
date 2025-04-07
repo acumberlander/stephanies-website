@@ -1,9 +1,9 @@
-import React, { useEffect, Suspense, lazy } from "react";
+import React, { useEffect, Suspense, lazy, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeApp } from "./utils/initializeApp";
 import { MainLayout, LoadingPage, Home } from "./components";
-import { useModal } from "./hooks/hooks";
+import { useModal } from "./context/ModalContext";
 import { ErrorBoundary } from "react-error-boundary";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
@@ -12,6 +12,7 @@ import "./App.scss";
 const App = () => {
   const dispatch = useDispatch();
   const { uid } = useSelector((state) => state.user);
+  const uidRef = useRef(uid);
   const { closeModal } = useModal();
 
   // Lazy Loaded Pages
@@ -33,9 +34,10 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (uid !== null) {
+    if (uidRef.current === null && uid !== null) {
       closeModal();
     }
+    uidRef.current = uid;
   }, [uid, closeModal]);
 
   return (

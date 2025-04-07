@@ -1,13 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { MyNavbar, AuthModal, Footer, AdminBar } from "../../index";
-import { useModal, useIsMobile } from "../../../hooks/hooks";
+import { useIsMobile } from "../../../hooks/hooks";
 import { useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "./MainLayout.scss";
 
 const MainLayout = ({ children }) => {
-  const { isOpen, openModal, closeModal } = useModal();
   const location = useLocation();
   const isMobile = useIsMobile();
   const { isAdmin } = useSelector((state) => state.user);
@@ -16,9 +15,9 @@ const MainLayout = ({ children }) => {
 
   return (
     <>
-      <MyNavbar openModal={openModal} />
+      <MyNavbar />
       {isAdmin && <AdminBar />}
-      <AuthModal isOpen={isOpen} closeModal={closeModal} />
+      <AuthModal />
       {isMobile ? null : (
         <ToastContainer
           position="top-right"
@@ -31,6 +30,7 @@ const MainLayout = ({ children }) => {
           draggable
           pauseOnHover={false}
           theme="light"
+          stacked
           style={{
             marginTop: "60px",
             maxHeight: "40px",
@@ -38,7 +38,6 @@ const MainLayout = ({ children }) => {
           }}
         />
       )}
-
       {children}
       {!onAdminPage && <Footer />}
     </>

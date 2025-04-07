@@ -22,8 +22,12 @@ const DetailsModal = ({
   selectedTransaction,
   filteredTransactions,
   isMobile,
+  isOrders,
+  user,
 }) => {
   const [viewMode, setViewMode] = useState("transaction");
+
+  const OrderOrTransaction = isOrders ? "Order" : "Transaction";
 
   return (
     <Dialog
@@ -52,7 +56,7 @@ const DetailsModal = ({
         }}
       >
         <Box display="flex" alignItems="center" gap={2}>
-          {viewMode === "transaction" ? "Transaction Details" : "Invoice"}
+          {viewMode === "transaction" ? `${OrderOrTransaction} Details` : "Invoice"}
         </Box>
         <IconButton onClick={closeDetails}>
           <CloseIcon />
@@ -72,7 +76,7 @@ const DetailsModal = ({
           }}
           onClick={() => setViewMode("transaction")}
         >
-          Transaction
+          {OrderOrTransaction}
         </Button>
         <Button
           size="small"
@@ -103,10 +107,10 @@ const DetailsModal = ({
         >
           {viewMode === "transaction" ? (
             // 💳 Transaction View
-            <TransactionView selectedTransaction={selectedTransaction} />
+            <TransactionView user={user} isOrders={isOrders} selectedTransaction={selectedTransaction} />
           ) : (
             // 📄 Invoice View
-            <InvoiceView selectedTransaction={selectedTransaction} />
+            <InvoiceView selectedTransaction={selectedTransaction} user={user} />
           )}
         </DialogContent>
       )}

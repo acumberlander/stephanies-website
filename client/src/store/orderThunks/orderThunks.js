@@ -16,7 +16,7 @@ export const createOrder = createAsyncThunk(
 
     try {
       // Creates an order object in mongoDB
-      const newOrder = await _createOrder(sessionId, user);
+      const newOrder = await _createOrder(sessionId, { ...user, newMember: false });
 
       if (!uid && uid.includes("guest")) {
         const storedGuestUser = JSON.parse(localStorage.getItem("guestUser"));
